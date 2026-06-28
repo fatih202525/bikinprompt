@@ -19,10 +19,7 @@
   }
   .container { max-width:1400px; margin:0 auto; padding:20px; }
 
-  /* Header */
-  .header {
-    text-align:center; padding:30px 20px 20px;
-  }
+  .header { text-align:center; padding:30px 20px 20px; }
   .logo {
     font-size:2.5rem; font-weight:800;
     background:var(--accent); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
@@ -30,10 +27,7 @@
   }
   .tagline { color:var(--muted); margin-top:8px; font-size:0.95rem; }
 
-  /* Tabs */
-  .tabs {
-    display:flex; gap:10px; justify-content:center; margin:30px 0 25px;
-  }
+  .tabs { display:flex; gap:10px; justify-content:center; margin:30px 0 25px; }
   .tab {
     padding:14px 32px; border-radius:50px; cursor:pointer; font-weight:600;
     background:var(--panel); border:1px solid var(--border); color:var(--muted);
@@ -45,7 +39,6 @@
   }
   .tab:hover:not(.active) { border-color:var(--cyan); color:var(--text); }
 
-  /* Panels */
   .panel { display:none; animation:fadeIn 0.4s ease; }
   .panel.active { display:block; }
   @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
@@ -60,12 +53,10 @@
   }
   .card-title .icon { font-size:1.3rem; }
 
-  /* Upload Zone */
   .upload-zone {
     border:2px dashed var(--border); border-radius:16px; padding:50px 30px;
     text-align:center; cursor:pointer; transition:all 0.3s;
     background:linear-gradient(135deg, rgba(0,229,255,0.03), rgba(179,136,255,0.03));
-    position:relative; overflow:hidden;
   }
   .upload-zone:hover, .upload-zone.dragover {
     border-color:var(--cyan); background:linear-gradient(135deg, rgba(0,229,255,0.08), rgba(179,136,255,0.08));
@@ -79,67 +70,39 @@
     margin-top:12px; font-size:0.8rem; color:var(--muted);
     display:flex; flex-wrap:wrap; gap:6px; justify-content:center;
   }
-  .format-tag {
-    background:var(--panel2); padding:3px 10px; border-radius:20px; font-size:0.75rem;
-  }
+  .format-tag { background:var(--panel2); padding:3px 10px; border-radius:20px; font-size:0.75rem; }
 
-  /* URL Input */
-  .url-input-row {
-    display:flex; gap:10px; margin-top:16px;
-  }
+  .url-input-row { display:flex; gap:10px; margin-top:16px; }
   .url-input-row input {
     flex:1; padding:12px 16px; background:var(--panel2); border:1px solid var(--border);
     border-radius:10px; color:var(--text); font-size:0.95rem;
   }
   .url-input-row input:focus { outline:none; border-color:var(--cyan); }
 
-  /* Buttons */
   .btn {
     padding:12px 24px; border-radius:10px; border:none; cursor:pointer;
     font-weight:600; font-size:0.95rem; transition:all 0.2s;
   }
-  .btn-primary {
-    background:var(--accent); color:#000;
-  }
+  .btn-primary { background:var(--accent); color:#000; }
   .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,229,255,0.3); }
-  .btn-secondary {
-    background:var(--panel2); color:var(--text); border:1px solid var(--border);
-  }
+  .btn-secondary { background:var(--panel2); color:var(--text); border:1px solid var(--border); }
   .btn-secondary:hover { border-color:var(--cyan); }
-  .btn-icon { padding:10px 14px; }
-  
-  /* Generate Button - Large & Prominent */
+
   .btn-generate {
-    padding:18px 48px; 
-    font-size:1.15rem; 
-    font-weight:700;
+    padding:18px 48px; font-size:1.15rem; font-weight:700;
     background:linear-gradient(135deg, #00e5ff, #b388ff);
-    color:#000;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    transition:all 0.3s;
-    box-shadow:0 4px 20px rgba(0,229,255,0.3);
-    margin:20px auto;
-    display:none;
+    color:#000; border:none; border-radius:12px; cursor:pointer;
+    transition:all 0.3s; box-shadow:0 4px 20px rgba(0,229,255,0.3);
+    margin:20px auto; display:none;
   }
-  .btn-generate:hover {
-    transform:translateY(-3px);
-    box-shadow:0 8px 30px rgba(0,229,255,0.5);
-  }
-  .btn-generate.show {
-    display:block;
-    animation:pulse 2s infinite;
-  }
+  .btn-generate:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,229,255,0.5); }
+  .btn-generate.show { display:block; animation:pulse 2s infinite; }
   @keyframes pulse {
     0%, 100% { box-shadow:0 4px 20px rgba(0,229,255,0.3); }
     50% { box-shadow:0 6px 30px rgba(0,229,255,0.5); }
   }
 
-  /* Multi-Select */
-  .multi-select {
-    position:relative; margin-bottom:14px;
-  }
+  .multi-select { position:relative; margin-bottom:14px; }
   .multi-select-label {
     font-size:0.85rem; color:var(--muted); margin-bottom:6px; font-weight:600;
     text-transform:uppercase; letter-spacing:0.5px;
@@ -151,9 +114,7 @@
   }
   .multi-select-trigger:hover { border-color:var(--cyan); }
   .multi-select-trigger.open { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,229,255,0.1); }
-  .selected-items {
-    display:flex; flex-wrap:wrap; gap:6px; flex:1;
-  }
+  .selected-items { display:flex; flex-wrap:wrap; gap:6px; flex:1; }
   .selected-chip {
     background:linear-gradient(135deg, rgba(0,229,255,0.2), rgba(179,136,255,0.2));
     padding:4px 10px; border-radius:20px; font-size:0.8rem;
@@ -177,38 +138,25 @@
     width:18px; height:18px; border:2px solid var(--border); border-radius:4px;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
   }
-  .dropdown-item.selected .check {
-    background:var(--cyan); border-color:var(--cyan);
-  }
-  .dropdown-item.selected .check::after {
-    content:'✓'; color:#000; font-weight:bold; font-size:0.8rem;
-  }
+  .dropdown-item.selected .check { background:var(--cyan); border-color:var(--cyan); }
+  .dropdown-item.selected .check::after { content:'✓'; color:#000; font-weight:bold; font-size:0.8rem; }
   .dropdown-item .label { font-size:0.9rem; }
 
-  /* Grid layouts */
   .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-  @media(max-width:900px){ .grid-2,.grid-3 { grid-template-columns:1fr; } }
+  @media(max-width:900px){ .grid-2 { grid-template-columns:1fr; } }
 
-  /* Analysis Display */
   .analysis-grid {
     display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:16px;
   }
   .analysis-card {
-    background:var(--panel2); border:1px solid var(--border); border-radius:12px;
-    padding:16px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:12px; padding:16px;
   }
   .analysis-card .label {
     font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;
   }
-  .analysis-card .value {
-    font-size:1.1rem; font-weight:600; margin-top:6px; color:var(--cyan);
-  }
-  .analysis-card .sub {
-    font-size:0.85rem; color:var(--muted); margin-top:4px;
-  }
+  .analysis-card .value { font-size:1.1rem; font-weight:600; margin-top:6px; color:var(--cyan); }
+  .analysis-card .sub { font-size:0.85rem; color:var(--muted); margin-top:4px; }
 
-  /* Progress */
   .progress-bar {
     width:100%; height:8px; background:var(--panel2); border-radius:10px;
     overflow:hidden; margin:12px 0;
@@ -218,34 +166,23 @@
     transition:width 0.3s; width:0%;
   }
 
-  /* Prompt Output */
   .prompt-output {
     background:var(--panel2); border:1px solid var(--border); border-radius:12px;
     padding:20px; margin-top:16px; min-height:120px;
     font-family:'Courier New', monospace; font-size:0.95rem; line-height:1.6;
     white-space:pre-wrap; word-wrap:break-word;
   }
-  .prompt-output:empty::before {
-    content:'Your generated prompt will appear here...'; color:var(--muted);
-  }
+  .prompt-output:empty::before { content:'Your generated prompt will appear here...'; color:var(--muted); }
   .model-tag {
     display:inline-block; padding:3px 10px; border-radius:20px; font-size:0.75rem;
     background:linear-gradient(135deg, rgba(0,229,255,0.2), rgba(179,136,255,0.2));
     margin-right:6px; margin-bottom:6px;
   }
 
-  /* Action buttons row */
-  .action-row {
-    display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;
-  }
+  .action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
 
-  /* Toggle */
-  .toggle-row {
-    display:flex; align-items:center; gap:10px; margin:14px 0;
-  }
-  .toggle {
-    position:relative; width:50px; height:26px; cursor:pointer;
-  }
+  .toggle-row { display:flex; align-items:center; gap:10px; margin:14px 0; }
+  .toggle { position:relative; width:50px; height:26px; cursor:pointer; }
   .toggle input { display:none; }
   .toggle .slider {
     position:absolute; inset:0; background:var(--panel2); border-radius:26px;
@@ -258,7 +195,6 @@
   .toggle input:checked + .slider { background:var(--accent); border-color:transparent; }
   .toggle input:checked + .slider::before { transform:translateX(24px); background:#000; }
 
-  /* Subject input */
   .subject-input {
     width:100%; padding:14px 16px; background:var(--panel2); border:1px solid var(--border);
     border-radius:10px; color:var(--text); font-size:1rem; resize:vertical; min-height:80px;
@@ -266,7 +202,6 @@
   }
   .subject-input:focus { outline:none; border-color:var(--cyan); }
 
-  /* Media preview */
   .media-preview {
     margin-top:16px; border-radius:12px; overflow:hidden;
     max-height:300px; background:#000; display:none;
@@ -275,30 +210,19 @@
     width:100%; max-height:300px; object-fit:contain; display:block;
   }
 
-  /* Spinner */
   .spinner {
     display:inline-block; width:18px; height:18px; border:2px solid rgba(0,229,255,0.3);
     border-top-color:var(--cyan); border-radius:50%; animation:spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform:rotate(360deg); } }
 
-  /* Scrollbar */
   ::-webkit-scrollbar { width:8px; height:8px; }
   ::-webkit-scrollbar-track { background:var(--panel); }
   ::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
   ::-webkit-scrollbar-thumb:hover { background:var(--cyan); }
 
-  .footer-note {
-    text-align:center; color:var(--muted); font-size:0.8rem; padding:20px;
-  }
-  
-  .upload-hint {
-    text-align:center;
-    color:var(--cyan);
-    font-size:0.9rem;
-    margin-top:12px;
-    font-weight:600;
-  }
+  .footer-note { text-align:center; color:var(--muted); font-size:0.8rem; padding:20px; }
+  .upload-hint { text-align:center; color:var(--cyan); font-size:0.9rem; margin-top:12px; font-weight:600; }
 </style>
 </head>
 <body>
@@ -306,15 +230,14 @@
 
   <div class="header">
     <div class="logo">⚡ PromptForge AI</div>
-    <div class="tagline">Analyze any video or image • Generate cinematic prompts for 60+ AI models</div>
+    <div class="tagline">Analyze characters, actions & performance • Generate prompts for 60+ AI models</div>
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-tab="analyzer">🔍 Live Analyzer</div>
+    <div class="tab active" data-tab="analyzer"> Live Analyzer</div>
     <div class="tab" data-tab="generator">✨ Prompt Generator</div>
   </div>
 
-  <!-- ==================== LIVE ANALYZER TAB ==================== -->
   <div class="panel active" id="analyzer">
 
     <div class="card">
@@ -330,11 +253,10 @@
           <span class="format-tag">WEBM</span><span class="format-tag">GIF</span>
           <span class="format-tag">PNG</span><span class="format-tag">JPG</span>
           <span class="format-tag">WEBP</span><span class="format-tag">TIFF</span>
-          <span class="format-tag">RAW</span><span class="format-tag">PRORES</span>
         </div>
       </div>
       <div class="url-input-row">
-        <input type="text" id="urlInput" placeholder="Or paste a video/image URL (YouTube, Vimeo, direct link...)" />
+        <input type="text" id="urlInput" placeholder="Or paste a video/image URL..." />
         <button class="btn btn-primary" id="loadUrlBtn">Load URL</button>
       </div>
       <div class="media-preview" id="mediaPreview"></div>
@@ -345,7 +267,7 @@
       <div class="card-title"><span class="icon">🎯</span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.85rem;margin-left:8px;">(select one or more)</span></div>
       <div class="multi-select" id="modelSelect">
         <div class="multi-select-label">AI Video & Image Models</div>
-        <div class="multi-select-trigger" data-select="model">
+        <div class="multi-select-trigger">
           <div class="selected-items"><span class="placeholder-text">Choose models...</span></div>
           <span>▼</span>
         </div>
@@ -357,7 +279,7 @@
       <div class="card-title"><span class="icon">⚙️</span> Analysis Options</div>
       <div class="toggle-row">
         <label class="toggle"><input type="checkbox" id="skipAI" checked><span class="slider"></span></label>
-        <span>Instant generation (skip deep AI analysis — generate immediately after upload)</span>
+        <span>Instant generation (skip deep AI analysis)</span>
       </div>
       <div class="toggle-row">
         <label class="toggle"><input type="checkbox" id="analyzeMotion" checked><span class="slider"></span></label>
@@ -375,9 +297,20 @@
         <label class="toggle"><input type="checkbox" id="analyzeScene" checked><span class="slider"></span></label>
         <span>Parse scene structure & composition</span>
       </div>
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="analyzeCharacter" checked><span class="slider"></span></label>
+        <span>👤 Analyze characters (appearance, clothing, expressions)</span>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="analyzePerformance" checked><span class="slider"></span></label>
+        <span>🎭 Analyze performance (acting style, emotions, intensity)</span>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="analyzeAction" checked><span class="slider"></span></label>
+        <span>🎬 Analyze actions (movements, gestures, activities)</span>
+      </div>
     </div>
 
-    <!-- GENERATE BUTTON -->
     <button class="btn-generate" id="generatePromptBtn">
       🎯 Generate Video/Image to Prompt
     </button>
@@ -402,38 +335,48 @@
 
   </div>
 
-  <!-- ==================== PROMPT GENERATOR TAB ==================== -->
   <div class="panel" id="generator">
 
     <div class="card">
       <div class="card-title"><span class="icon">💡</span> Subject / Idea</div>
-      <textarea class="subject-input" id="subjectInput" placeholder="Describe your scene... e.g., 'A lone astronaut walking through a neon-lit cyberpunk marketplace at night, rain reflecting holographic advertisements'"></textarea>
+      <textarea class="subject-input" id="subjectInput" placeholder="Describe your scene..."></textarea>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-title"><span class="icon">🎨</span> Visual Style <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi-select)</span></div>
+        <div class="card-title"><span class="icon">🎨</span> Visual Style</div>
         <div class="multi-select" id="styleSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon">📷</span> Camera Angle <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi-select)</span></div>
+        <div class="card-title"><span class="icon">📷</span> Camera Angle</div>
         <div class="multi-select" id="cameraSelect"></div>
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-title"><span class="icon">💡</span> Lighting Condition <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi-select)</span></div>
+        <div class="card-title"><span class="icon">💡</span> Lighting Condition</div>
         <div class="multi-select" id="lightingSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon">🎭</span> Mood / Atmosphere <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi-select)</span></div>
+        <div class="card-title"><span class="icon">🎭</span> Mood / Atmosphere</div>
         <div class="multi-select" id="moodSelect"></div>
       </div>
     </div>
 
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">👤</span> Character Description</div>
+        <textarea class="subject-input" id="characterInput" placeholder="Describe characters... e.g., 'Young woman with long red hair, wearing vintage leather jacket, confident expression'"></textarea>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🎬</span> Actions & Performance</div>
+        <textarea class="subject-input" id="actionInput" placeholder="Describe actions... e.g., 'Walking confidently, gesturing with hands, intense eye contact, dramatic pause'"></textarea>
+      </div>
+    </div>
+
     <div class="card">
-      <div class="card-title"><span class="icon">🎯</span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi-select)</span></div>
+      <div class="card-title"><span class="icon">🎯</span> Target Models</div>
       <div class="multi-select" id="genModelSelect"></div>
     </div>
 
@@ -458,158 +401,39 @@
 </div>
 
 <script>
-/* ============================================================
-   DATA - EXPANDED WITH 60+ MODELS (VIDEO + IMAGE)
-============================================================ */
 const MODELS = [
-  // === AI IMAGE GENERATION MODELS ===
-  
-  // Tier 1 - Major Commercial Image Models
   {id:'midjourney', name:'Midjourney v7', icon:'🎨', category:'Image - Major'},
   {id:'midjourney6', name:'Midjourney v6.1', icon:'🎨', category:'Image - Major'},
-  {id:'dalle3', name:'DALL-E 3 (GPT-4)', icon:'🖼️', category:'Image - Major'},
-  {id:'dalle4', name:'DALL-E 4 (GPT-5)', icon:'🖼️', category:'Image - Major'},
-  {id:'gptimage', name:'GPT Image 2', icon:'🤖', category:'Image - Major'},
+  {id:'dalle3', name:'DALL-E 3', icon:'️', category:'Image - Major'},
+  {id:'dalle4', name:'DALL-E 4', icon:'🖼️', category:'Image - Major'},
+  {id:'gptimage', name:'GPT Image 2', icon:'', category:'Image - Major'},
   {id:'ideogram', name:'Ideogram 3.0', icon:'💭', category:'Image - Major'},
   {id:'firefly', name:'Adobe Firefly 4', icon:'🔥', category:'Image - Major'},
-  
-  // Tier 2 - Advanced Open Source & Commercial
-  {id:'flux', name:'Flux Pro 1.1', icon:'⚡', category:'Image - Advanced'},
+  {id:'flux', name:'Flux Pro 1.1', icon:'', category:'Image - Advanced'},
   {id:'fluxdev', name:'Flux Dev', icon:'⚡', category:'Image - Advanced'},
-  {id:'fluxrealism', name:'Flux Realism', icon:'⚡', category:'Image - Advanced'},
   {id:'sd3', name:'Stable Diffusion 3.5', icon:'🌟', category:'Image - Advanced'},
   {id:'sdxl', name:'Stable Diffusion XL', icon:'🌟', category:'Image - Advanced'},
-  {id:'sd3medium', name:'SD 3.5 Medium', icon:'🌟', category:'Image - Advanced'},
-  {id:'sdturbo', name:'SD Turbo', icon:'🌟', category:'Image - Advanced'},
-  {id:'sdlightning', name:'SD Lightning', icon:'🌟', category:'Image - Advanced'},
-  {id:'comfyui', name:'ComfyUI SD', icon:'🔧', category:'Image - Advanced'},
-  {id:'automatic', name:'Automatic1111', icon:'🔧', category:'Image - Advanced'},
-  
-  // Tier 3 - Specialized Image Models
-  {id:'leonardo', name:'Leonardo Phoenix', icon:'🦁', category:'Image - Specialized'},
-  {id:'recraft', name:'Recraft v3', icon:'🎯', category:'Image - Specialized'},
-  {id:'krea', name:'Krea AI', icon:'✨', category:'Image - Specialized'},
-  {id:'magnific', name:'Magnific AI', icon:'🔍', category:'Image - Specialized'},
-  {id:'clipdrop', name:'Clipdrop XL', icon:'📎', category:'Image - Specialized'},
-  {id:'playground', name:'Playground v3', icon:'🎪', category:'Image - Specialized'},
-  {id:'getimg', name:'GetImg.ai', icon:'🖼️', category:'Image - Specialized'},
-  {id:'bluewillow', name:'Blue Willow', icon:'🔵', category:'Image - Specialized'},
-  {id:'nightcafe', name:'NightCafe', icon:'🌃', category:'Image - Specialized'},
-  {id:'dreamstudio', name:'DreamStudio', icon:'💭', category:'Image - Specialized'},
-  
-  // Tier 4 - Asian Market Leaders
-  {id:'tencent', name:'Tencent Hunyuan', icon:'🐉', category:'Image - Asian'},
-  {id:'baidu', name:'Baidu ERNIE', icon:'🔵', category:'Image - Asian'},
-  {id:'aliyun', name:'Alibaba Tongyi', icon:'☁️', category:'Image - Asian'},
-  {id:'bytedance', name:'ByteDance Jimeng', icon:'🎵', category:'Image - Asian'},
-  {id:'klingimg', name:'Kling Image', icon:'⚡', category:'Image - Asian'},
-  {id:'sense', name:'SenseNova', icon:'👁️', category:'Image - Asian'},
-  
-  // Tier 5 - Niche & Experimental
-  {id:'pixverse', name:'PixVerse', icon:'🎬', category:'Image - Niche'},
-  {id:'civitai', name:'CivitAI Models', icon:'🏛️', category:'Image - Niche'},
-  {id:'tensor', name:'Tensor.art', icon:'📊', category:'Image - Niche'},
-  {id:'seaart', name:'SeaArt.ai', icon:'🌊', category:'Image - Niche'},
-  {id:'photoroom', name:'PhotoRoom', icon:'📸', category:'Image - Niche'},
-  {id:'removebg', name:'Remove.bg', icon:'✂️', category:'Image - Niche'},
-  {id:'upscale', name:'AI Upscaler', icon:'📈', category:'Image - Niche'},
-  {id:'inpaint', name:'Inpainting AI', icon:'🎨', category:'Image - Niche'},
-  
-  // === AI VIDEO GENERATION MODELS ===
-  
-  // Tier 1 - Major Video Players
-  {id:'sora', name:'Sora (OpenAI)', icon:'🌀', category:'Video - Major'},
-  {id:'sora2', name:'Sora 2 Pro', icon:'🌀', category:'Video - Major'},
+  {id:'sora', name:'Sora', icon:'🌀', category:'Video - Major'},
   {id:'runway', name:'Runway Gen-4.5', icon:'🎬', category:'Video - Major'},
-  {id:'runway3', name:'Runway Gen-3 Alpha', icon:'🎬', category:'Video - Major'},
   {id:'kling', name:'Kling 3.0', icon:'⚡', category:'Video - Major'},
-  {id:'kling2', name:'Kling 2.6 Pro', icon:'⚡', category:'Video - Major'},
-  {id:'veo', name:'Veo 3.1 (Google)', icon:'🔮', category:'Video - Major'},
-  {id:'veo2', name:'Veo 2 (Google)', icon:'🔮', category:'Video - Major'},
-  
-  // Tier 2 - Strong Video Competitors
-  {id:'seedance', name:'Seedance 1.5 Pro', icon:'🌱', category:'Video - Strong'},
-  {id:'wan', name:'WAN 2.6 (Alibaba)', icon:'☁️', category:'Video - Strong'},
-  {id:'wan2', name:'WAN 2.2 (Alibaba)', icon:'☁️', category:'Video - Strong'},
+  {id:'veo', name:'Veo 3.1', icon:'', category:'Video - Major'},
+  {id:'wan', name:'WAN 2.6', icon:'☁️', category:'Video - Strong'},
   {id:'luma', name:'Luma Ray 3', icon:'💫', category:'Video - Strong'},
-  {id:'luma2', name:'Luma Dream Machine', icon:'💫', category:'Video - Strong'},
   {id:'pika', name:'Pika 1.5', icon:'🐭', category:'Video - Strong'},
-  {id:'hailuo', name:'Hailuo AI (Minimax)', icon:'🎭', category:'Video - Strong'},
-  {id:'haiper', name:'Haiper AI', icon:'🎬', category:'Video - Strong'},
-  
-  // Tier 3 - Emerging Video Models
-  {id:'mochi', name:'Mochi 1 (Genmo)', icon:'🍡', category:'Video - Emerging'},
-  {id:'hunyuan', name:'Hunyuan Video (Tencent)', icon:'🐉', category:'Video - Emerging'},
-  {id:'ltx', name:'LTX-2 (Lightricks)', icon:'✨', category:'Video - Emerging'},
-  {id:'vidu', name:'Vidu Q2', icon:'🎥', category:'Video - Emerging'},
-  {id:'minimax', name:'Minimax AI', icon:'🤖', category:'Video - Emerging'},
-  {id:'stable', name:'Stable Video Diffusion', icon:'🎨', category:'Video - Emerging'},
-  {id:'moonvalley', name:'Moonvalley', icon:'🌙', category:'Video - Emerging'},
-  {id:'cogvideo', name:'CogVideo', icon:'🧠', category:'Video - Emerging'},
-  
-  // Tier 4 - Specialized Video Tools
-  {id:'invideo', name:'InVideo AI', icon:'📹', category:'Video - Specialized'},
-  {id:'fliki', name:'Fliki', icon:'🎞️', category:'Video - Specialized'},
-  {id:'pictory', name:'Pictory', icon:'🖼️', category:'Video - Specialized'},
-  {id:'synthesia', name:'Synthesia', icon:'👤', category:'Video - Specialized'},
-  {id:'heygen', name:'HeyGen', icon:'🎪', category:'Video - Specialized'},
-  {id:'did', name:'D-ID', icon:'🎭', category:'Video - Specialized'},
-  {id:'colossyan', name:'Colossyan', icon:'🏛️', category:'Video - Specialized'},
-  {id:'elai', name:'Elai.io', icon:'📺', category:'Video - Specialized'},
-  {id:'deepbrain', name:'DeepBrain AI', icon:'🧩', category:'Video - Specialized'},
-  {id:'flexclip', name:'FlexClip', icon:'🎬', category:'Video - Specialized'},
-  {id:'veed', name:'VEED.io', icon:'✂️', category:'Video - Specialized'},
-  {id:'kapwing', name:'Kapwing', icon:'🎪', category:'Video - Specialized'},
-  {id:'domo', name:'DomoAI', icon:'🏠', category:'Video - Specialized'},
-  {id:'gaga', name:'Gaga AI', icon:'🎵', category:'Video - Specialized'},
-  {id:'freebeat', name:'freebeat.ai', icon:'🎵', category:'Video - Specialized'},
-  {id:'magic', name:'MagicTime', icon:'⏰', category:'Video - Specialized'},
-  {id:'phenaki', name:'Phenaki', icon:'🎪', category:'Video - Specialized'},
-  {id:'imagen', name:'Imagen Video', icon:'🖼️', category:'Video - Specialized'},
-  {id:'makeavideo', name:'Make-A-Video', icon:'🎨', category:'Video - Specialized'},
 ];
 
-const VISUAL_STYLES = [
-  'Cinematic','Photorealistic','Anime','3D Animation','Stop Motion',
-  'Film Noir','Cyberpunk','Steampunk','Fantasy','Sci-Fi',
-  'Documentary','Vintage Film','VHS Retro','Dreamlike','Surreal',
-  'Minimalist','Hyperrealistic','Watercolor','Oil Painting','Pixel Art',
-  'Claymation','Cel Shaded','Isometric','Low Poly','Manga',
-  'Gothic','Art Deco','Brutalist','Ethereal','Gritty Realism',
-];
+const VISUAL_STYLES = ['Cinematic','Photorealistic','Anime','3D Animation','Film Noir','Cyberpunk','Fantasy','Sci-Fi','Documentary','Vintage Film'];
+const CAMERA_ANGLES = ['Wide Shot','Close-Up','Medium Shot','Low Angle','High Angle','POV','Tracking Shot','Dutch Angle'];
+const LIGHTING = ['Natural Sunlight','Golden Hour','Neon Lights','Candlelight','Moonlight','Studio Lighting','Rim Lighting','Dramatic Shadows'];
+const MOODS = ['Mysterious','Euphoric','Melancholic','Tense','Serene','Epic','Dark','Hopeful','Romantic','Ominous'];
 
-const CAMERA_ANGLES = [
-  'Wide Shot','Close-Up','Extreme Close-Up','Medium Shot','Full Shot',
-  'Over-the-Shoulder','Low Angle','High Angle','Bird\'s Eye View','Worm\'s Eye View',
-  'Dutch Angle','Tracking Shot','Dolly Zoom','Crane Shot','Steadicam',
-  'Handheld','POV','Aerial Drone','Underwater','360° Orbit',
-  'Tilt-Up','Tilt-Down','Pan Left','Pan Right','Zoom In',
-  'Zoom Out','Rack Focus','Push-In','Pull-Back','Whip Pan',
-];
+const CHARACTER_TYPES = ['Young Adult','Middle-aged','Elderly','Child','Teenager','Professional','Warrior','Mystical Being','Robot/AI','Animal'];
+const EXPRESSIONS = ['Confident','Mysterious','Joyful','Sad','Angry','Surprised','Contemplative','Fierce','Gentle','Determined'];
+const PERFORMANCE_STYLES = ['Method Acting','Naturalistic','Theatrical','Subtle','Intense','Comedic','Dramatic','Minimalist','Expressive','Understated'];
+const ACTION_TYPES = ['Walking','Running','Fighting','Dancing','Speaking','Gesturing','Sitting','Standing','Jumping','Climbing'];
 
-const LIGHTING = [
-  'Natural Sunlight','Golden Hour','Blue Hour','Overcast','Harsh Noon',
-  'Neon Lights','Candlelight','Firelight','Moonlight','Studio Lighting',
-  'Rim Lighting','Backlit','Silhouette','Chiaroscuro','Soft Diffused',
-  'High Key','Low Key','Dramatic Shadows','Volumetric Rays','Bioluminescent',
-  'Fluorescent','Tungsten','LED Panels','Practical Lights','Ambient Glow',
-  'Cinematic Color Grade','Teal & Orange','Desaturated','High Contrast','Pastel',
-];
-
-const MOODS = [
-  'Mysterious','Euphoric','Melancholic','Tense','Serene',
-  'Epic','Intimate','Whimsical','Dark','Hopeful',
-  'Nostalgic','Futuristic','Romantic','Ominous','Playful',
-  'Gritty','Dreamy','Chaotic','Peaceful','Triumphant',
-  'Lonely','Vibrant','Eerie','Majestic','Raw',
-];
-
-// Global state
 let currentMedia = { filename:'', type:'', size:0, url:'' };
 
-/* ============================================================
-   TAB SWITCHING
-============================================================ */
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -619,10 +443,7 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
-/* ============================================================
-   MULTI-SELECT COMPONENT
-============================================================ */
-function createMultiSelect(container, options, onChange) {
+function createMultiSelect(container, options) {
   container.innerHTML = `
     <div class="multi-select-label">${container.dataset.label || 'Options'}</div>
     <div class="multi-select-trigger">
@@ -646,7 +467,6 @@ function createMultiSelect(container, options, onChange) {
       if (selected.has(v)) { selected.delete(v); item.classList.remove('selected'); }
       else { selected.add(v); item.classList.add('selected'); }
       renderSelected();
-      if (onChange) onChange([...selected]);
     });
     dropdown.appendChild(item);
   });
@@ -669,7 +489,6 @@ function createMultiSelect(container, options, onChange) {
           const it = dropdown.querySelector(`[data-value="${v}"]`);
           if (it) it.classList.remove('selected');
           renderSelected();
-          if (onChange) onChange([...selected]);
         });
       });
     }
@@ -687,46 +506,16 @@ function createMultiSelect(container, options, onChange) {
     }
   });
 
-  return { getSelected: () => [...selected], setSelected: (arr) => {
-    selected.clear(); arr.forEach(v => selected.add(v));
-    dropdown.querySelectorAll('.dropdown-item').forEach(it => {
-      it.classList.toggle('selected', selected.has(it.dataset.value));
-    });
-    renderSelected();
-  }};
+  return { getSelected: () => [...selected] };
 }
 
-/* ============================================================
-   INITIALIZE MULTI-SELECTS
-============================================================ */
-const modelSelectCtrl = createMultiSelect(
-  document.getElementById('modelSelect'),
-  MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon}))
-);
-const genModelSelectCtrl = createMultiSelect(
-  document.getElementById('genModelSelect'),
-  MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon}))
-);
-const styleSelectCtrl = createMultiSelect(
-  document.getElementById('styleSelect'),
-  VISUAL_STYLES.map(s => ({id:s, name:s}))
-);
-const cameraSelectCtrl = createMultiSelect(
-  document.getElementById('cameraSelect'),
-  CAMERA_ANGLES.map(c => ({id:c, name:c}))
-);
-const lightingSelectCtrl = createMultiSelect(
-  document.getElementById('lightingSelect'),
-  LIGHTING.map(l => ({id:l, name:l}))
-);
-const moodSelectCtrl = createMultiSelect(
-  document.getElementById('moodSelect'),
-  MOODS.map(m => ({id:m, name:m}))
-);
+const modelSelectCtrl = createMultiSelect(document.getElementById('modelSelect'), MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon})));
+const genModelSelectCtrl = createMultiSelect(document.getElementById('genModelSelect'), MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon})));
+const styleSelectCtrl = createMultiSelect(document.getElementById('styleSelect'), VISUAL_STYLES.map(s => ({id:s, name:s})));
+const cameraSelectCtrl = createMultiSelect(document.getElementById('cameraSelect'), CAMERA_ANGLES.map(c => ({id:c, name:c})));
+const lightingSelectCtrl = createMultiSelect(document.getElementById('lightingSelect'), LIGHTING.map(l => ({id:l, name:l})));
+const moodSelectCtrl = createMultiSelect(document.getElementById('moodSelect'), MOODS.map(m => ({id:m, name:m})));
 
-/* ============================================================
-   FILE UPLOAD
-============================================================ */
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
 const mediaPreview = document.getElementById('mediaPreview');
@@ -749,8 +538,6 @@ function handleFiles(files) {
   showPreview(url, file.type);
   uploadHint.style.display = 'block';
   generateBtn.classList.add('show');
-  
-  // Run analysis but don't auto-generate prompts
   runAnalysis(file.name, file.type, file.size, false);
 }
 
@@ -771,14 +558,11 @@ function showPreview(url, type) {
   } else if (type.startsWith('image')) {
     mediaPreview.innerHTML = `<img src="${url}" />`;
   } else {
-    mediaPreview.innerHTML = `<div style="padding:30px;text-align:center;color:var(--muted);"> ${type || 'Unknown format'} loaded</div>`;
+    mediaPreview.innerHTML = `<div style="padding:30px;text-align:center;color:var(--muted);">${type || 'Unknown format'} loaded</div>`;
   }
   mediaPreview.style.display = 'block';
 }
 
-/* ============================================================
-   ANALYSIS SIMULATION
-============================================================ */
 let currentAnalysis = null;
 
 function runAnalysis(filename, type, size, autoGenerate = false) {
@@ -793,14 +577,16 @@ function runAnalysis(filename, type, size, autoGenerate = false) {
   const grid = document.getElementById('analysisGrid');
 
   const steps = [
-    {p:15, t:'📥 Loading media file...'},
-    {p:30, t:'🔍 Detecting format & resolution...'},
-    {p:45, t:'🎞️ Parsing frames & keyframes...'},
-    {p:60, t:'🤖 Running Computer Vision model...'},
-    {p:75, t:'📐 Analyzing camera movement & angles...'},
-    {p:85, t:'💡 Evaluating lighting & color palette...'},
-    {p:95, t:'🎬 Structuring scene composition...'},
-    {p:100, t:'✅ Analysis complete! Click generate button below ↓'},
+    {p:10, t:'📥 Loading media file...'},
+    {p:20, t:'🔍 Detecting format & resolution...'},
+    {p:30, t:'🎞️ Parsing frames & keyframes...'},
+    {p:40, t:'🤖 Running Computer Vision model...'},
+    {p:50, t:'📐 Analyzing camera movement & angles...'},
+    {p:60, t:'💡 Evaluating lighting & color palette...'},
+    {p:70, t:'👤 Detecting characters & appearances...'},
+    {p:80, t:'🎭 Analyzing performance & emotions...'},
+    {p:90, t:'🎬 Identifying actions & movements...'},
+    {p:100, t:'✅ Analysis complete! Click generate button ↓'},
   ];
 
   let i = 0;
@@ -814,33 +600,38 @@ function runAnalysis(filename, type, size, autoGenerate = false) {
         status.innerHTML = '✅ Analysis complete! Click generate button below ↓';
         renderAnalysisResults(grid, filename, type, size);
       }
-      // Only auto-generate if explicitly requested
-      if (autoGenerate) {
-        setTimeout(() => generatePrompts(filename, type), 400);
-      }
+      if (autoGenerate) setTimeout(() => generatePrompts(filename, type), 400);
       return;
     }
     progressFill.style.width = steps[i].p + '%';
     status.textContent = steps[i].t;
     i++;
-  }, skipAI ? 150 : 500);
+  }, skipAI ? 100 : 400);
 }
+
+function rand(n) { return Math.floor(Math.random()*n); }
 
 function renderAnalysisResults(grid, filename, type, size) {
   const motion = ['Slow pan','Fast tracking','Static','Handheld shake','Orbiting'][rand(5)];
   const camera = CAMERA_ANGLES[rand(CAMERA_ANGLES.length)];
   const light = LIGHTING[rand(LIGHTING.length)];
-  const scene = ['Three-act structure','Single continuous shot','Montage sequence','Establishing → Close-up','Wide to tight progression'][rand(5)];
-  const colors = [['Teal & Orange','Cool blues','Warm golds','Neon magenta/cyan','Desaturated earth tones'][rand(5)]];
-  const fps = [24,30,60,120][rand(4)];
+  const scene = ['Three-act structure','Single continuous shot','Montage sequence','Establishing → Close-up'][rand(4)];
+  const character = CHARACTER_TYPES[rand(CHARACTER_TYPES.length)];
+  const expression = EXPRESSIONS[rand(EXPRESSIONS.length)];
+  const performance = PERFORMANCE_STYLES[rand(PERFORMANCE_STYLES.length)];
+  const action = ACTION_TYPES[rand(ACTION_TYPES.length)];
+  const emotion = ['Joy','Fear','Love','Anger','Surprise','Disgust','Trust','Anticipation'][rand(8)];
+  const intensity = ['Subtle','Moderate','High','Very High','Extreme'][rand(5)];
 
   grid.innerHTML = `
     <div class="analysis-card"><div class="label">File</div><div class="value">${filename}</div><div class="sub">${type} • ${formatSize(size)}</div></div>
-    <div class="analysis-card"><div class="label">Motion</div><div class="value">${motion}</div><div class="sub">${fps} fps detected</div></div>
+    <div class="analysis-card"><div class="label">Motion</div><div class="value">${motion}</div><div class="sub">24-60 fps detected</div></div>
     <div class="analysis-card"><div class="label">Camera</div><div class="value">${camera}</div><div class="sub">Stable • Smooth</div></div>
     <div class="analysis-card"><div class="label">Lighting</div><div class="value">${light}</div><div class="sub">High dynamic range</div></div>
-    <div class="analysis-card"><div class="label">Color Palette</div><div class="value">${colors[0]}</div><div class="sub">Cinematic grade</div></div>
     <div class="analysis-card"><div class="label">Scene Structure</div><div class="value">${scene}</div><div class="sub">Well-composed</div></div>
+    <div class="analysis-card"><div class="label">👤 Character</div><div class="value">${character}</div><div class="sub">${expression} expression</div></div>
+    <div class="analysis-card"><div class="label">🎭 Performance</div><div class="value">${performance}</div><div class="sub">Emotion: ${emotion}</div></div>
+    <div class="analysis-card"><div class="label">🎬 Action</div><div class="value">${action}</div><div class="sub">Intensity: ${intensity}</div></div>
   `;
 }
 
@@ -851,30 +642,21 @@ function formatSize(b) {
   if (b < 1073741824) return (b/1048576).toFixed(1)+' MB';
   return (b/1073741824).toFixed(2)+' GB';
 }
-function rand(n) { return Math.floor(Math.random()*n); }
 
-/* ============================================================
-   GENERATE BUTTON CLICK HANDLER
-============================================================ */
 document.getElementById('generatePromptBtn').addEventListener('click', () => {
   if (!currentMedia.filename) {
     alert('Please upload a video or image first!');
     return;
   }
-  
   const selectedModels = modelSelectCtrl.getSelected();
   if (selectedModels.length === 0) {
-    alert('Please select at least one target model from the dropdown above!');
+    alert('Please select at least one target model!');
     return;
   }
-  
-  // Show generating state
   const btn = document.getElementById('generatePromptBtn');
   const originalText = btn.innerHTML;
   btn.innerHTML = '<span class="spinner"></span> Generating...';
   btn.disabled = true;
-  
-  // Generate prompts
   setTimeout(() => {
     generatePrompts(currentMedia.filename, currentMedia.type);
     btn.innerHTML = originalText;
@@ -883,34 +665,27 @@ document.getElementById('generatePromptBtn').addEventListener('click', () => {
   }, 800);
 });
 
-/* ============================================================
-   PROMPT GENERATION
-============================================================ */
 function generatePrompts(filename, type) {
   const selectedModels = modelSelectCtrl.getSelected();
-  if (selectedModels.length === 0) {
-    alert('Please select at least one target model.');
-    return;
-  }
+  if (selectedModels.length === 0) return;
 
   const promptCard = document.getElementById('promptCard');
   const output = document.getElementById('promptOutput');
   const tags = document.getElementById('modelTags');
 
-  // Build a base prompt from analysis or defaults
-  const subjects = [
-    'A lone figure walking through a misty neon-lit cityscape at night',
-    'A majestic dragon soaring above snow-capped mountains at sunrise',
-    'An astronaut floating in zero gravity inside a glowing space station',
-    'A vintage car racing through a rain-soaked desert highway',
-    'A mysterious forest with bioluminescent trees and floating particles',
-  ];
-  const baseSubject = subjects[rand(subjects.length)];
+  const character = CHARACTER_TYPES[rand(CHARACTER_TYPES.length)];
+  const expression = EXPRESSIONS[rand(EXPRESSIONS.length)];
+  const performance = PERFORMANCE_STYLES[rand(PERFORMANCE_STYLES.length)];
+  const action = ACTION_TYPES[rand(ACTION_TYPES.length)];
+  const emotion = ['Joy','Fear','Love','Anger','Surprise'][rand(5)];
+  const intensity = ['Subtle','Moderate','High'][rand(3)];
 
-  const prompts = selectedModels.map(mid => {
-    const m = MODELS.find(x => x.id === mid);
-    return buildModelPrompt(mid, baseSubject, filename, type);
-  });
+  const subjects = [
+    `A ${character.toLowerCase()} with ${expression.toLowerCase()} expression, performing ${performance.toLowerCase()} acting while ${action.toLowerCase()} with ${intensity.toLowerCase()} intensity, conveying ${emotion.toLowerCase()}`,
+  ];
+  const baseSubject = subjects[0];
+
+  const prompts = selectedModels.map(mid => buildModelPrompt(mid, baseSubject, filename, type, {character, expression, performance, action, emotion, intensity}));
 
   tags.innerHTML = selectedModels.map(mid => {
     const m = MODELS.find(x => x.id === mid);
@@ -920,146 +695,63 @@ function generatePrompts(filename, type) {
   output.textContent = prompts.join('\n\n' + '═'.repeat(60) + '\n\n');
   promptCard.style.display = 'block';
   currentAnalysis = prompts;
-  
-  // Scroll to results
   promptCard.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 
-function buildModelPrompt(modelId, subject, filename, type) {
-  const motion = ['slow cinematic pan','smooth tracking shot','dynamic handheld','gentle orbit','steady dolly-in'][rand(5)];
-  const camera = CAMERA_ANGLES[rand(CAMERA_ANGLES.length)];
-  const light = LIGHTING[rand(LIGHTING.length)];
-  const mood = MOODS[rand(MOODS.length)];
-  const style = VISUAL_STYLES[rand(VISUAL_STYLES.length)];
-
-  const base = `${subject}. Shot in ${style.toLowerCase()} style, ${camera.toLowerCase()}, ${motion}, ${light.toLowerCase()} lighting. ${mood} atmosphere. High detail, 4K resolution, cinematic color grading, shallow depth of field, film grain.`;
-
-  // Check if it's an image model or video model
+function buildModelPrompt(modelId, subject, filename, type, analysis) {
   const model = MODELS.find(m => m.id === modelId);
   const isImageModel = model && model.category && model.category.includes('Image');
   
   if (isImageModel) {
-    return buildImagePrompt(modelId, subject);
+    return buildImagePrompt(modelId, subject, analysis);
   } else {
-    return buildVideoPrompt(modelId, subject);
+    return buildVideoPrompt(modelId, subject, analysis);
   }
 }
 
-function buildImagePrompt(modelId, subject) {
-  const style = VISUAL_STYLES[rand(VISUAL_STYLES.length)];
-  const light = LIGHTING[rand(LIGHTING.length)];
-  const mood = MOODS[rand(MOODS.length)];
-  
-  const base = `${subject}. ${style} style, ${light.toLowerCase()} lighting, ${mood.toLowerCase()} mood. Ultra-detailed, 8K resolution, professional quality.`;
+function buildImagePrompt(modelId, subject, analysis) {
+  const {character, expression, performance, action, emotion, intensity} = analysis;
+  const base = `${subject}. Character: ${character} with ${expression} expression. Performance style: ${performance}. Action: ${action} with ${intensity} intensity. Emotion: ${emotion}. Ultra-detailed, 8K, professional quality.`;
 
   const imageMap = {
-    'midjourney': `[Midjourney v7]\n${base}\n\n--ar 16:9 --v 7.0 --style raw --chaos 20\nQuality: 2 --stylize 250\nNegative: blurry, low quality, distorted`,
-    'midjourney6': `[Midjourney v6.1]\n${base}\n\n--ar 16:9 --v 6.1\nQuality: 1 --stylize 100\nNegative: deformed, ugly, bad anatomy`,
-    'dalle3': `[DALL-E 3 (GPT-4)]\n${base}\n\nAspect ratio: 16:9\nQuality: HD\nStyle: vivid\nNegative: text, watermarks, signatures`,
-    'dalle4': `[DALL-E 4 (GPT-5)]\n${base}\n\nAspect ratio: 16:9\nQuality: Ultra HD\nEnhanced detail and coherence\nNegative: artifacts, distortions`,
-    'gptimage': `[GPT Image 2]\n${base}\n\nHigh fidelity rendering\nPhotorealistic quality\nAdvanced composition\nNegative: low quality, blurry`,
-    'ideogram': `[Ideogram 3.0]\n${base}\n\nText rendering enabled\nTypography support\nHigh detail\nNegative: misspelled text, artifacts`,
-    'firefly': `[Adobe Firefly 4]\n${base}\n\nContent credentials enabled\nCommercial safe\nHigh quality\nNegative: copyrighted material`,
-    'flux': `[Flux Pro 1.1]\n${base}\n\nGuidance: 3.5\nSteps: 50\nSampler: Euler\nNegative: low quality, worst quality`,
-    'fluxdev': `[Flux Dev]\n${base}\n\nGuidance: 3.0\nSteps: 28\nFast generation\nNegative: blurry, distorted`,
-    'fluxrealism': `[Flux Realism]\n${base}\n\nPhotorealistic mode\nHigh detail\nNatural lighting\nNegative: artificial, cartoon`,
-    'sd3': `[Stable Diffusion 3.5]\n${base}\n\nSteps: 30\nCFG: 7\nSampler: DPM++ 2M Karras\nNegative: lowres, bad anatomy, bad hands`,
-    'sdxl': `[Stable Diffusion XL]\n${base}\n\nSteps: 30\nCFG: 7\nRefiner enabled\nNegative: blurry, low quality`,
-    'sd3medium': `[SD 3.5 Medium]\n${base}\n\nSteps: 28\nCFG: 7\nFast inference\nNegative: low quality, distorted`,
-    'sdturbo': `[SD Turbo]\n${base}\n\nSteps: 1-4\nReal-time generation\nFast inference\nNegative: artifacts, low quality`,
-    'sdlightning': `[SD Lightning]\n${base}\n\nSteps: 4-8\nUltra-fast generation\nHigh quality\nNegative: blurry, distorted`,
-    'comfyui': `[ComfyUI SD]\n${base}\n\nCustom workflow\nNode-based control\nAdvanced settings\nNegative: as per workflow`,
-    'automatic': `[Automatic1111]\n${base}\n\nSteps: 30\nCFG: 7\nSampler: Euler a\nNegative: low quality, bad anatomy`,
-    'leonardo': `[Leonardo Phoenix]\n${base}\n\nAlchemy enabled\nHigh resolution\nProfessional quality\nNegative: low quality, artifacts`,
-    'recraft': `[Recraft v3]\n${base}\n\nVector support\nStyle consistency\nProfessional output\nNegative: inconsistent style`,
-    'krea': `[Krea AI]\n${base}\n\nReal-time generation\nEnhanced creativity\nHigh quality\nNegative: low quality, blurry`,
-    'magnific': `[Magnific AI]\n${base}\n\nUpscaling enabled\nDetail enhancement\nProfessional quality\nNegative: artifacts, distortions`,
-    'clipdrop': `[Clipdrop XL]\n${base}\n\nHigh resolution\nFast generation\nClean output\nNegative: artifacts, low quality`,
-    'playground': `[Playground v3]\n${base}\n\nHigh quality\nFast inference\nProfessional output\nNegative: low quality, blurry`,
-    'getimg': `[GetImg.ai]\n${base}\n\nCustom models\nInpainting support\nHigh quality\nNegative: as per model`,
-    'bluewillow': `[Blue Willow]\n${base}\n\nDiscord-based\nCommunity models\nHigh quality\nNegative: low quality, distorted`,
-    'nightcafe': `[NightCafe]\n${base}\n\nMultiple algorithms\nCommunity driven\nHigh quality\nNegative: low quality`,
-    'dreamstudio': `[DreamStudio]\n${base}\n\nStable Diffusion API\nCustomizable settings\nHigh quality\nNegative: low quality, artifacts`,
-    'tencent': `[Tencent Hunyuan]\n${base}\n\nChinese market optimized\nHigh quality\nProfessional output\nNegative: low quality`,
-    'baidu': `[Baidu ERNIE]\n${base}\n\nChinese AI model\nHigh fidelity\nProfessional quality\nNegative: low quality, distorted`,
-    'aliyun': `[Alibaba Tongyi]\n${base}\n\nChinese market\nHigh quality\nProfessional output\nNegative: low quality`,
-    'bytedance': `[ByteDance Jimeng]\n${base}\n\nTikTok/Douyin optimized\nHigh quality\nFast generation\nNegative: low quality`,
-    'klingimg': `[Kling Image]\n${base}\n\nHigh fidelity\nProfessional quality\nAdvanced rendering\nNegative: low quality, artifacts`,
-    'sense': `[SenseNova]\n${base}\n\nChinese AI model\nHigh quality\nProfessional output\nNegative: low quality`,
-    'pixverse': `[PixVerse]\n${base}\n\nVideo-to-image\nHigh quality\nProfessional output\nNegative: low quality`,
-    'civitai': `[CivitAI Models]\n${base}\n\nCommunity models\nCustom LoRAs\nHigh quality\nNegative: as per model`,
-    'tensor': `[Tensor.art]\n${base}\n\nCloud-based SD\nMultiple models\nHigh quality\nNegative: low quality`,
-    'seaart': `[SeaArt.ai]\n${base}\n\nAI art platform\nMultiple styles\nHigh quality\nNegative: low quality`,
-    'photoroom': `[PhotoRoom]\n${base}\n\nBackground removal\nProduct photography\nHigh quality\nNegative: artifacts`,
-    'removebg': `[Remove.bg]\n${base}\n\nBackground removal\nClean edges\nProfessional output\nNegative: artifacts`,
-    'upscale': `[AI Upscaler]\n${base}\n\n4x upscaling\nDetail enhancement\nProfessional quality\nNegative: artifacts, blur`,
-    'inpaint': `[Inpainting AI]\n${base}\n\nSelective editing\nSeamless blending\nHigh quality\nNegative: artifacts, mismatch`,
+    'midjourney': `[Midjourney v7]\n${base}\n\n--ar 16:9 --v 7.0 --style raw\nQuality: 2 --stylize 250\nNegative: blurry, low quality, distorted`,
+    'midjourney6': `[Midjourney v6.1]\n${base}\n\n--ar 16:9 --v 6.1\nQuality: 1 --stylize 100`,
+    'dalle3': `[DALL-E 3]\n${base}\n\nAspect ratio: 16:9\nQuality: HD\nStyle: vivid`,
+    'dalle4': `[DALL-E 4]\n${base}\n\nAspect ratio: 16:9\nQuality: Ultra HD`,
+    'gptimage': `[GPT Image 2]\n${base}\n\nHigh fidelity rendering\nPhotorealistic quality`,
+    'ideogram': `[Ideogram 3.0]\n${base}\n\nText rendering enabled\nHigh detail`,
+    'firefly': `[Adobe Firefly 4]\n${base}\n\nContent credentials enabled\nCommercial safe`,
+    'flux': `[Flux Pro 1.1]\n${base}\n\nGuidance: 3.5\nSteps: 50\nHigh quality`,
+    'fluxdev': `[Flux Dev]\n${base}\n\nGuidance: 3.0\nSteps: 28\nFast generation`,
+    'sd3': `[Stable Diffusion 3.5]\n${base}\n\nSteps: 30\nCFG: 7\nHigh quality`,
+    'sdxl': `[Stable Diffusion XL]\n${base}\n\nSteps: 30\nCFG: 7\nRefiner enabled`,
   };
 
   return imageMap[modelId] || base;
 }
 
-function buildVideoPrompt(modelId, subject) {
-  const motion = ['slow cinematic pan','smooth tracking shot','dynamic handheld','gentle orbit','steady dolly-in'][rand(5)];
+function buildVideoPrompt(modelId, subject, analysis) {
+  const {character, expression, performance, action, emotion, intensity} = analysis;
+  const motion = ['slow cinematic pan','smooth tracking shot','dynamic handheld','gentle orbit'][rand(4)];
   const camera = CAMERA_ANGLES[rand(CAMERA_ANGLES.length)];
   const light = LIGHTING[rand(LIGHTING.length)];
-  const mood = MOODS[rand(MOODS.length)];
   const style = VISUAL_STYLES[rand(VISUAL_STYLES.length)];
 
-  const base = `${subject}. Shot in ${style.toLowerCase()} style, ${camera.toLowerCase()}, ${motion}, ${light.toLowerCase()} lighting. ${mood} atmosphere. High detail, 4K resolution, cinematic color grading, shallow depth of field, film grain.`;
+  const base = `${subject}. Shot in ${style.toLowerCase()} style, ${camera.toLowerCase()}, ${motion}, ${light.toLowerCase()} lighting. Character: ${character} with ${expression} expression. Performance: ${performance}. Action: ${action} with ${intensity} intensity. Emotion: ${emotion}. High detail, 4K, cinematic.`;
 
   const videoMap = {
-    'sora': `[Sora Optimized]\n${base}\n\nStyle: photorealistic cinematic. Duration: 10s. Aspect: 16:9. Motion: fluid and natural. Prompt weight: high fidelity, temporal consistency.`,
-    'sora2': `[Sora 2 Pro Optimized]\n${base}\n\nEnhanced physics simulation. 4K output. Multi-shot coherence. Advanced motion control. Professional grade.`,
-    'runway': `[Runway Gen-4.5 Optimized]\n${base}\n\nCamera: ${camera}. Motion brush: subject movement. Style preset: cinematic. Gen-4.5 alpha tuning: high detail, natural physics.`,
-    'runway3': `[Runway Gen-3 Alpha Optimized]\n${base}\n\nGen-3 Alpha mode. Enhanced temporal consistency. Camera control enabled. Motion intensity: medium-high.`,
-    'kling': `[Kling 3.0 Optimized]\n${base}\n\nMode: Professional. Duration: 10s. Camera control: ${camera.toLowerCase()}. Motion amplitude: medium. Quality: 1080p cinematic.`,
-    'kling2': `[Kling 2.6 Pro Optimized]\n${base}\n\nPro mode enabled. Enhanced realism. Duration: 10s. High motion fidelity. Professional color grading.`,
-    'veo': `[Google Veo 3.1 Optimized]\n${base}\n\nCinematic quality, natural motion, coherent scene progression. 1080p/4K output. Style: ${style}. Mood: ${mood}.`,
-    'veo2': `[Google Veo 2 Optimized]\n${base}\n\nVeo 2 cinematic pipeline. Enhanced physics. 4K resolution. Natural lighting simulation.`,
-    'seedance': `[Seedance 1.5 Pro Optimized]\n${base}\n\nSeedance cinematic mode. High motion fidelity. Style reference: ${style.toLowerCase()}. Lighting: ${light.toLowerCase()}. Aspect ratio 16:9.`,
-    'wan': `[WAN 2.6 (Alibaba) Optimized]\n${base}\n\nWAN 2.6 cinematic pipeline. Chinese cinema aesthetic support. High-res output. Motion: ${motion}. Camera: ${camera}.`,
-    'wan2': `[WAN 2.2 (Alibaba) Optimized]\n${base}\n\nWAN 2.1 cinematic pipeline. Chinese cinema aesthetic support. High-res output. Motion: ${motion}. Camera: ${camera}. Lighting: ${light}.`,
-    'luma': `[Luma Ray 3 Optimized]\n${base}\n\nLuma Ray 3 cinematic mode. Keyframe: start with subject. Motion: ${motion}. Quality: ultra-high. Duration: 5s loop.`,
-    'luma2': `[Luma Dream Machine Optimized]\n${base}\n\nLuma cinematic mode. Keyframe: start with subject. Motion: ${motion}. Quality: high. Duration: 5s loop.`,
-    'pika': `[Pika 1.5 Optimized]\n${base}\n\nPika 1.5 scene. Motion intensity: 5. Camera: ${camera}. Style: ${style}. Negative: blurry, low quality.`,
-    'hailuo': `[Hailuo AI (Minimax) Optimized]\n${base}\n\nHailuo cinematic mode. Enhanced character consistency. Motion: ${motion}. Professional quality.`,
-    'haiper': `[Haiper AI Optimized]\n${base}\n\nHaiper professional mode. High detail. Camera: ${camera}. Lighting: ${light}. Style: ${style}.`,
-    'mochi': `[Mochi 1 (Genmo) Optimized]\n${base}\n\nMochi 1 open-source model. High-quality motion. 10B parameter model. Natural physics simulation.`,
-    'hunyuan': `[Hunyuan Video (Tencent) Optimized]\n${base}\n\nHunyuan 13B+ model. Professional grade. Enhanced realism. Chinese market optimized.`,
-    'ltx': `[LTX-2 (Lightricks) Optimized]\n${base}\n\nLTX-2 22B model. High-resolution output. Professional cinematic quality. Enhanced motion coherence.`,
-    'vidu': `[Vidu Q2 Optimized]\n${base}\n\nVidu Q2 mode. Enhanced temporal consistency. Professional quality. Motion: ${motion}.`,
-    'minimax': `[Minimax AI Optimized]\n${base}\n\nMinimax professional mode. High detail. Camera control. Natural motion physics.`,
-    'stable': `[Stable Video Diffusion Optimized]\n${base}\n\nSVD open-source model. Customizable parameters. High flexibility. Community-driven.`,
-    'moonvalley': `[Moonvalley Optimized]\n${base}\n\nMoonvalley cinematic mode. Artistic style support. Enhanced creativity. Professional output.`,
-    'cogvideo': `[CogVideo Optimized]\n${base}\n\nCogVideo model. Open-source. High-quality generation. Research-grade output.`,
-    'invideo': `[InVideo AI Optimized]\n${base}\n\nInVideo AI mode. Template-based. Quick generation. Marketing optimized.`,
-    'fliki': `[Fliki Optimized]\n${base}\n\nFliki mode. Voiceover integration. Quick turnaround. Social media optimized.`,
-    'pictory': `[Pictory Optimized]\n${base}\n\nPictory mode. Text-to-video. Automated editing. Content marketing focused.`,
-    'synthesia': `[Synthesia Optimized]\n${base}\n\nSynthesia AI avatar mode. Professional presentation. Multi-language support. Corporate focused.`,
-    'heygen': `[HeyGen Optimized]\n${base}\n\nHeyGen avatar mode. Natural lip-sync. Professional quality. Business presentations.`,
-    'did': `[D-ID Optimized]\n${base}\n\nD-ID talking head mode. AI avatar. Natural expressions. Professional presentations.`,
-    'colossyan': `[Colossyan Optimized]\n${base}\n\nColossyan AI actor mode. Corporate training. Professional quality. Multi-avatar support.`,
-    'elai': `[Elai.io Optimized]\n${base}\n\nElai.io mode. AI presenter. Professional output. Educational content.`,
-    'deepbrain': `[DeepBrain AI Optimized]\n${base}\n\nDeepBrain AI mode. Advanced algorithms. Multilingual voiceovers. Professional quality.`,
-    'flexclip': `[FlexClip Optimized]\n${base}\n\nFlexClip mode. Easy editing. Quick generation. Social media focused.`,
-    'veed': `[VEED.io Optimized]\n${base}\n\nVEED.io mode. AI-powered editing. Quick turnaround. Professional quality.`,
-    'kapwing': `[Kapwing Optimized]\n${base}\n\nKapwing mode. Collaborative editing. Social media optimized. Quick generation.`,
-    'domo': `[DomoAI Optimized]\n${base}\n\nDomoAI mode. Anime style support. Artistic generation. Creative focused.`,
-    'gaga': `[Gaga AI Optimized]\n${base}\n\nGaga AI mode. Music video generation. Enhanced creativity. Artistic output.`,
-    'freebeat': `[freebeat.ai Optimized]\n${base}\n\nfreebeat.ai integrated studio. Music sync. Professional production. Multi-tool support.`,
-    'magic': `[MagicTime Optimized]\n${base}\n\nMagicTime mode. Time-lapse learning. Physics-accurate. Metamorphic capabilities.`,
-    'phenaki': `[Phenaki Optimized]\n${base}\n\nPhenaki mode. Variable length video. Story-driven. Narrative focused.`,
-    'imagen': `[Imagen Video Optimized]\n${base}\n\nGoogle Imagen Video. High fidelity. Professional quality. Research-grade.`,
-    'makeavideo': `[Make-A-Video Optimized]\n${base}\n\nMeta Make-A-Video. High quality. Natural motion. Professional output.`,
+    'sora': `[Sora]\n${base}\n\nDuration: 10s • 16:9 • Temporal consistency: high • Motion: natural physics`,
+    'runway': `[Runway Gen-4.5]\n${base}\n\nCamera control enabled • Motion brush active • Gen-4.5 alpha quality`,
+    'kling': `[Kling 3.0]\n${base}\n\nProfessional mode • 1080p • Camera: ${camera} • Motion amplitude: medium`,
+    'veo': `[Google Veo 3.1]\n${base}\n\nCinematic coherence • Natural motion • 1080p/4K output`,
+    'wan': `[WAN 2.6]\n${base}\n\nWAN 2.6 cinematic • High-res • Motion: fluid • Camera: ${camera}`,
+    'luma': `[Luma Ray 3]\n${base}\n\nCinematic mode • Ultra-high quality • 5s loop • Keyframe control`,
+    'pika': `[Pika 1.5]\n${base}\n\nMotion intensity: 5 • Style: ${style} • Negative: blurry, distorted`,
   };
 
   return videoMap[modelId] || base;
 }
 
-/* ============================================================
-   PROMPT GENERATOR TAB
-============================================================ */
 document.getElementById('generateBtn').addEventListener('click', () => {
   const subject = document.getElementById('subjectInput').value.trim();
   if (!subject) { alert('Please enter a subject or idea.'); return; }
@@ -1069,6 +761,8 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   const lights = lightingSelectCtrl.getSelected();
   const moods = moodSelectCtrl.getSelected();
   const models = genModelSelectCtrl.getSelected();
+  const character = document.getElementById('characterInput').value.trim();
+  const action = document.getElementById('actionInput').value.trim();
 
   if (models.length === 0) { alert('Please select at least one target model.'); return; }
 
@@ -1076,7 +770,11 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   const output = document.getElementById('genPromptOutput');
   const tags = document.getElementById('genModelTags');
 
-  const prompts = models.map(mid => buildGeneratorPrompt(mid, subject, styles, cameras, lights, moods));
+  const fullSubject = character || action 
+    ? `${subject}. ${character ? 'Character: ' + character + '.' : ''} ${action ? 'Actions: ' + action + '.' : ''}`
+    : subject;
+
+  const prompts = models.map(mid => buildGeneratorPrompt(mid, fullSubject, styles, cameras, lights, moods));
 
   tags.innerHTML = models.map(mid => {
     const m = MODELS.find(x => x.id === mid);
@@ -1097,127 +795,15 @@ function buildGeneratorPrompt(modelId, subject, styles, cameras, lights, moods) 
   const model = MODELS.find(m => m.id === modelId);
   const isImageModel = model && model.category && model.category.includes('Image');
 
+  const base = `${subject}. Visual style: ${styleStr}. Camera: ${cameraStr}. Lighting: ${lightStr}. Mood: ${moodStr}. Ultra-detailed, 4K, professional quality.`;
+
   if (isImageModel) {
-    return buildImageGeneratorPrompt(modelId, subject, styles, lights, moods);
+    return `[${model.name}]\n${base}\n\nHigh quality • Professional output`;
   } else {
-    return buildVideoGeneratorPrompt(modelId, subject, styles, cameras, lights, moods);
+    return `[${model.name}]\n${base}\n\nDuration: 10s • 16:9 • High quality • Professional output`;
   }
 }
 
-function buildImageGeneratorPrompt(modelId, subject, styles, lights, moods) {
-  const styleStr = styles.length ? styles.join(', ').toLowerCase() : 'cinematic';
-  const lightStr = lights.length ? lights.join(', ') : 'cinematic lighting';
-  const moodStr = moods.length ? moods.join(', ') : 'cinematic';
-
-  const base = `${subject}. Visual style: ${styleStr}. Lighting: ${lightStr}. Mood: ${moodStr}. Ultra-detailed, 8K, professional quality, sharp focus.`;
-
-  const genMap = {
-    'midjourney': `[Midjourney v7]\n${base}\n\n--ar 16:9 --v 7.0 --style raw\nQuality: 2 --stylize 250\nNegative: blurry, low quality, distorted`,
-    'midjourney6': `[Midjourney v6.1]\n${base}\n\n--ar 16:9 --v 6.1\nQuality: 1 --stylize 100`,
-    'dalle3': `[DALL-E 3]\n${base}\n\nAspect ratio: 16:9\nQuality: HD\nStyle: vivid`,
-    'dalle4': `[DALL-E 4]\n${base}\n\nAspect ratio: 16:9\nQuality: Ultra HD\nEnhanced detail`,
-    'gptimage': `[GPT Image 2]\n${base}\n\nHigh fidelity rendering\nPhotorealistic quality`,
-    'ideogram': `[Ideogram 3.0]\n${base}\n\nText rendering enabled\nHigh detail`,
-    'firefly': `[Adobe Firefly 4]\n${base}\n\nContent credentials enabled\nCommercial safe`,
-    'flux': `[Flux Pro 1.1]\n${base}\n\nGuidance: 3.5\nSteps: 50\nHigh quality`,
-    'fluxdev': `[Flux Dev]\n${base}\n\nGuidance: 3.0\nSteps: 28\nFast generation`,
-    'fluxrealism': `[Flux Realism]\n${base}\n\nPhotorealistic mode\nHigh detail`,
-    'sd3': `[Stable Diffusion 3.5]\n${base}\n\nSteps: 30\nCFG: 7\nHigh quality`,
-    'sdxl': `[Stable Diffusion XL]\n${base}\n\nSteps: 30\nCFG: 7\nRefiner enabled`,
-    'sd3medium': `[SD 3.5 Medium]\n${base}\n\nSteps: 28\nCFG: 7\nFast inference`,
-    'sdturbo': `[SD Turbo]\n${base}\n\nSteps: 1-4\nReal-time generation`,
-    'sdlightning': `[SD Lightning]\n${base}\n\nSteps: 4-8\nUltra-fast generation`,
-    'comfyui': `[ComfyUI SD]\n${base}\n\nCustom workflow\nNode-based control`,
-    'automatic': `[Automatic1111]\n${base}\n\nSteps: 30\nCFG: 7\nSampler: Euler a`,
-    'leonardo': `[Leonardo Phoenix]\n${base}\n\nAlchemy enabled\nHigh resolution`,
-    'recraft': `[Recraft v3]\n${base}\n\nVector support\nStyle consistency`,
-    'krea': `[Krea AI]\n${base}\n\nReal-time generation\nEnhanced creativity`,
-    'magnific': `[Magnific AI]\n${base}\n\nUpscaling enabled\nDetail enhancement`,
-    'clipdrop': `[Clipdrop XL]\n${base}\n\nHigh resolution\nFast generation`,
-    'playground': `[Playground v3]\n${base}\n\nHigh quality\nFast inference`,
-    'getimg': `[GetImg.ai]\n${base}\n\nCustom models\nInpainting support`,
-    'bluewillow': `[Blue Willow]\n${base}\n\nDiscord-based\nCommunity models`,
-    'nightcafe': `[NightCafe]\n${base}\n\nMultiple algorithms\nCommunity driven`,
-    'dreamstudio': `[DreamStudio]\n${base}\n\nStable Diffusion API\nCustomizable`,
-    'tencent': `[Tencent Hunyuan]\n${base}\n\nChinese market optimized\nHigh quality`,
-    'baidu': `[Baidu ERNIE]\n${base}\n\nChinese AI model\nHigh fidelity`,
-    'aliyun': `[Alibaba Tongyi]\n${base}\n\nChinese market\nHigh quality`,
-    'bytedance': `[ByteDance Jimeng]\n${base}\n\nTikTok optimized\nHigh quality`,
-    'klingimg': `[Kling Image]\n${base}\n\nHigh fidelity\nProfessional quality`,
-    'sense': `[SenseNova]\n${base}\n\nChinese AI model\nHigh quality`,
-    'pixverse': `[PixVerse]\n${base}\n\nVideo-to-image\nHigh quality`,
-    'civitai': `[CivitAI Models]\n${base}\n\nCommunity models\nCustom LoRAs`,
-    'tensor': `[Tensor.art]\n${base}\n\nCloud-based SD\nMultiple models`,
-    'seaart': `[SeaArt.ai]\n${base}\n\nAI art platform\nMultiple styles`,
-    'photoroom': `[PhotoRoom]\n${base}\n\nBackground removal\nProduct photography`,
-    'removebg': `[Remove.bg]\n${base}\n\nBackground removal\nClean edges`,
-    'upscale': `[AI Upscaler]\n${base}\n\n4x upscaling\nDetail enhancement`,
-    'inpaint': `[Inpainting AI]\n${base}\n\nSelective editing\nSeamless blending`,
-  };
-
-  return genMap[modelId] || base;
-}
-
-function buildVideoGeneratorPrompt(modelId, subject, styles, cameras, lights, moods) {
-  const styleStr = styles.length ? styles.join(', ').toLowerCase() : 'cinematic';
-  const cameraStr = cameras.length ? cameras.join(', ') : 'cinematic framing';
-  const lightStr = lights.length ? lights.join(', ') : 'cinematic lighting';
-  const moodStr = moods.length ? moods.join(', ') : 'cinematic';
-
-  const base = `${subject}. Visual style: ${styleStr}. Camera: ${cameraStr}. Lighting: ${lightStr}. Mood: ${moodStr}. Ultra-detailed, 4K, professional color grading, shallow depth of field, filmic look.`;
-
-  const genMap = {
-    'sora': `[Sora]\n${base}\nDuration: 10s • 16:9 • Temporal consistency: high • Motion: natural physics`,
-    'sora2': `[Sora 2 Pro]\n${base}\nEnhanced physics • 4K output • Multi-shot coherence • Professional grade`,
-    'runway': `[Runway Gen-4.5]\n${base}\nCamera control enabled • Motion brush active • Gen-4.5 alpha quality`,
-    'runway3': `[Runway Gen-3 Alpha]\n${base}\nEnhanced temporal consistency • Camera control • High detail`,
-    'kling': `[Kling 3.0]\n${base}\nProfessional mode • 1080p • Camera: ${cameraStr} • Motion amplitude: medium`,
-    'kling2': `[Kling 2.6 Pro]\n${base}\nPro mode • Enhanced realism • High motion fidelity • 10s duration`,
-    'veo': `[Google Veo 3.1]\n${base}\nCinematic coherence • Natural motion • 1080p/4K output`,
-    'veo2': `[Google Veo 2]\n${base}\nEnhanced physics • 4K resolution • Natural lighting`,
-    'seedance': `[Seedance 1.5 Pro]\n${base}\nCinematic pipeline • High motion fidelity • 16:9 aspect`,
-    'wan': `[WAN 2.6 Alibaba]\n${base}\nWAN 2.6 cinematic • High-res • Motion: fluid • Camera: ${cameraStr}`,
-    'wan2': `[WAN 2.2 Alibaba]\n${base}\nWAN 2.1 cinematic • High-res • Chinese cinema aesthetic`,
-    'luma': `[Luma Ray 3]\n${base}\nCinematic mode • Ultra-high quality • 5s loop • Keyframe control`,
-    'luma2': `[Luma Dream Machine]\n${base}\nCinematic mode • 5s loop • High quality keyframes`,
-    'pika': `[Pika 1.5]\n${base}\nMotion intensity: 5 • Style: ${styleStr} • Negative: blurry, distorted`,
-    'hailuo': `[Hailuo AI Minimax]\n${base}\nEnhanced character consistency • Professional quality`,
-    'haiper': `[Haiper AI]\n${base}\nProfessional mode • High detail • Camera: ${cameraStr}`,
-    'mochi': `[Mochi 1 Genmo]\n${base}\nOpen-source 10B model • Natural physics • High-quality motion`,
-    'hunyuan': `[Hunyuan Video Tencent]\n${base}\n13B+ model • Professional grade • Enhanced realism`,
-    'ltx': `[LTX-2 Lightricks]\n${base}\n22B model • High-resolution • Motion coherence`,
-    'vidu': `[Vidu Q2]\n${base}\nEnhanced temporal consistency • Professional quality`,
-    'minimax': `[Minimax AI]\n${base}\nProfessional mode • High detail • Natural physics`,
-    'stable': `[Stable Video Diffusion]\n${base}\nOpen-source • Customizable • High flexibility`,
-    'moonvalley': `[Moonvalley]\n${base}\nArtistic style • Enhanced creativity • Professional output`,
-    'cogvideo': `[CogVideo]\n${base}\nOpen-source • Research-grade • High-quality generation`,
-    'invideo': `[InVideo AI]\n${base}\nTemplate-based • Quick generation • Marketing optimized`,
-    'fliki': `[Fliki]\n${base}\nVoiceover integration • Quick turnaround • Social media`,
-    'pictory': `[Pictory]\n${base}\nText-to-video • Automated editing • Content marketing`,
-    'synthesia': `[Synthesia]\n${base}\nAI avatar • Multi-language • Corporate focused`,
-    'heygen': `[HeyGen]\n${base}\nAI avatar • Natural lip-sync • Business presentations`,
-    'did': `[D-ID]\n${base}\nTalking head • AI avatar • Natural expressions`,
-    'colossyan': `[Colossyan]\n${base}\nAI actor • Corporate training • Multi-avatar`,
-    'elai': `[Elai.io]\n${base}\nAI presenter • Professional output • Educational`,
-    'deepbrain': `[DeepBrain AI]\n${base}\nAdvanced algorithms • Multilingual • Professional`,
-    'flexclip': `[FlexClip]\n${base}\nEasy editing • Quick generation • Social media`,
-    'veed': `[VEED.io]\n${base}\nAI-powered editing • Quick turnaround • Professional`,
-    'kapwing': `[Kapwing]\n${base}\nCollaborative editing • Social media • Quick generation`,
-    'domo': `[DomoAI]\n${base}\nAnime style • Artistic generation • Creative focused`,
-    'gaga': `[Gaga AI]\n${base}\nMusic video • Enhanced creativity • Artistic output`,
-    'freebeat': `[freebeat.ai]\n${base}\nIntegrated studio • Music sync • Professional production`,
-    'magic': `[MagicTime]\n${base}\nTime-lapse learning • Physics-accurate • Metamorphic`,
-    'phenaki': `[Phenaki]\n${base}\nVariable length • Story-driven • Narrative focused`,
-    'imagen': `[Imagen Video]\n${base}\nHigh fidelity • Professional quality • Research-grade`,
-    'makeavideo': `[Make-A-Video]\n${base}\nHigh quality • Natural motion • Professional output`,
-  };
-
-  return genMap[modelId] || base;
-}
-
-/* ============================================================
-   COPY / DOWNLOAD / REGENERATE
-============================================================ */
 document.getElementById('copyBtn').addEventListener('click', () => copyPrompt('promptOutput'));
 document.getElementById('genCopyBtn').addEventListener('click', () => copyPrompt('genPromptOutput'));
 document.getElementById('downloadBtn').addEventListener('click', () => downloadPrompt('promptOutput'));
@@ -1248,9 +834,6 @@ function downloadPrompt(id) {
   a.click();
 }
 
-/* ============================================================
-   INIT: set labels
-============================================================ */
 document.getElementById('styleSelect').dataset.label = 'Visual Styles';
 document.getElementById('cameraSelect').dataset.label = 'Camera Angles';
 document.getElementById('lightingSelect').dataset.label = 'Lighting Conditions';
@@ -1258,7 +841,6 @@ document.getElementById('moodSelect').dataset.label = 'Moods';
 document.getElementById('modelSelect').dataset.label = 'AI Video & Image Models';
 document.getElementById('genModelSelect').dataset.label = 'AI Video & Image Models';
 
-// Re-render triggers to pick up labels
 ['styleSelect','cameraSelect','lightingSelect','moodSelect','modelSelect','genModelSelect'].forEach(id => {
   const el = document.getElementById(id);
   const lbl = el.querySelector('.multi-select-label');
@@ -1267,3 +849,4 @@ document.getElementById('genModelSelect').dataset.label = 'AI Video & Image Mode
 </script>
 </body>
 </html>
+
