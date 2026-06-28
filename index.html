@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PromptForge AI — Video & Image Prompt Generator</title>
+<title>PromptForge AI — Real Media Analysis Prompt Generator</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', system-ui, -apple-system, sans-serif; }
   :root {
     --bg:#0a0a14; --panel:#12121f; --panel2:#1a1a2e; --border:#2a2a3e;
     --cyan:#00e5ff; --purple:#b388ff; --pink:#ff4081; --green:#00e676;
+    --orange:#ff9500; --red:#ff3b5c;
     --text:#e8e8f0; --muted:#8888a0; --accent:linear-gradient(135deg,#00e5ff,#b388ff);
   }
   body {
@@ -62,23 +63,31 @@
   .upload-zone p { color:var(--muted); font-size:0.9rem; }
   .upload-zone input { display:none; }
   .api-key-section {
-    background:var(--panel2); border:1px solid var(--border); border-radius:12px;
-    padding:16px; margin-top:16px;
+    background:linear-gradient(135deg, rgba(0,229,255,0.08), rgba(179,136,255,0.08));
+    border:2px solid var(--cyan); border-radius:12px;
+    padding:20px; margin-top:16px;
   }
-  .api-key-section label { display:block; font-size:0.9rem; color:var(--muted); margin-bottom:8px; }
+  .api-key-section label { display:block; font-size:0.95rem; color:var(--text); margin-bottom:10px; font-weight:600; }
   .api-key-input {
-    width:100%; padding:10px 14px; background:var(--panel); border:1px solid var(--border);
-    border-radius:8px; color:var(--text); font-size:0.9rem;
+    width:100%; padding:12px 14px; background:var(--panel); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-size:0.95rem;
   }
-  .api-key-input:focus { outline:none; border-color:var(--cyan); }
-  .api-hint { font-size:0.8rem; color:var(--muted); margin-top:8px; }
+  .api-key-input:focus { outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,229,255,0.15); }
+  .api-status {
+    margin-top:10px; padding:8px 12px; border-radius:8px; font-size:0.85rem;
+    display:flex; align-items:center; gap:8px;
+  }
+  .api-status.connected { background:rgba(0,230,118,0.15); color:var(--green); border:1px solid var(--green); }
+  .api-status.disconnected { background:rgba(255,59,92,0.15); color:var(--red); border:1px solid var(--red); }
+  .api-hint { font-size:0.82rem; color:var(--muted); margin-top:10px; line-height:1.5; }
   .api-hint a { color:var(--cyan); text-decoration:none; }
   .btn {
     padding:12px 24px; border-radius:10px; border:none; cursor:pointer;
     font-weight:600; font-size:0.95rem; transition:all 0.2s;
   }
   .btn-primary { background:var(--accent); color:#000; }
-  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,229,255,0.3); }
+  .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,229,255,0.3); }
+  .btn-primary:disabled { opacity:0.4; cursor:not-allowed; }
   .btn-secondary { background:var(--panel2); color:var(--text); border:1px solid var(--border); }
   .btn-secondary:hover { border-color:var(--cyan); }
   .btn-generate {
@@ -88,12 +97,9 @@
     transition:all 0.3s; box-shadow:0 4px 20px rgba(0,229,255,0.3);
     margin:20px auto; display:none;
   }
-  .btn-generate:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,229,255,0.5); }
-  .btn-generate.show { display:block; animation:pulse 2s infinite; }
-  @keyframes pulse {
-    0%, 100% { box-shadow:0 4px 20px rgba(0,229,255,0.3); }
-    50% { box-shadow:0 6px 30px rgba(0,229,255,0.5); }
-  }
+  .btn-generate:hover:not(:disabled) { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,229,255,0.5); }
+  .btn-generate.show { display:block; }
+  .btn-generate:disabled { opacity:0.5; cursor:not-allowed; }
   .multi-select { position:relative; margin-bottom:14px; }
   .multi-select-label {
     font-size:0.85rem; color:var(--muted); margin-bottom:6px; font-weight:600;
@@ -149,12 +155,16 @@
   .analysis-card .sub { font-size:0.85rem; color:var(--muted); margin-top:4px; line-height:1.5; }
   .analysis-card.story-card {
     grid-column: 1 / -1;
-    background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(179,136,255,0.05));
+    background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(179,136,255,0.08));
     border-color: var(--cyan);
   }
   .analysis-card.story-card .value {
     font-size:1rem; color:var(--text); line-height:1.7; font-weight:400;
     font-family:'Georgia', serif; font-style:italic;
+  }
+  .analysis-card.metadata-card {
+    background: linear-gradient(135deg, rgba(255,149,0,0.08), rgba(255,59,92,0.05));
+    border-color: var(--orange);
   }
   .progress-bar {
     width:100%; height:8px; background:var(--panel2); border-radius:10px;
@@ -177,19 +187,6 @@
     margin-right:6px; margin-bottom:6px;
   }
   .action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
-  .toggle-row { display:flex; align-items:center; gap:10px; margin:14px 0; }
-  .toggle { position:relative; width:50px; height:26px; cursor:pointer; }
-  .toggle input { display:none; }
-  .toggle .slider {
-    position:absolute; inset:0; background:var(--panel2); border-radius:26px;
-    transition:0.3s; border:1px solid var(--border);
-  }
-  .toggle .slider::before {
-    content:''; position:absolute; width:20px; height:20px; border-radius:50%;
-    background:var(--muted); top:2px; left:3px; transition:0.3s;
-  }
-  .toggle input:checked + .slider { background:var(--accent); border-color:transparent; }
-  .toggle input:checked + .slider::before { transform:translateX(24px); background:#000; }
   .subject-input {
     width:100%; padding:14px 16px; background:var(--panel2); border:1px solid var(--border);
     border-radius:10px; color:var(--text); font-size:1rem; resize:vertical; min-height:80px;
@@ -215,12 +212,16 @@
   ::-webkit-scrollbar-thumb:hover { background:var(--cyan); }
   .footer-note { text-align:center; color:var(--muted); font-size:0.8rem; padding:20px; }
   .upload-hint { text-align:center; color:var(--cyan); font-size:0.9rem; margin-top:12px; font-weight:600; }
-  .analysis-mode-badge {
-    display:inline-block; padding:4px 12px; border-radius:20px; font-size:0.75rem;
-    font-weight:600; margin-left:10px;
+  .warning-box {
+    background:rgba(255,59,92,0.1); border:1px solid var(--red); border-radius:10px;
+    padding:14px 18px; margin:16px 0; color:var(--red); font-size:0.9rem;
+    display:none;
   }
-  .badge-real { background:var(--green); color:#000; }
-  .badge-simulated { background:var(--muted); color:#000; }
+  .warning-box.show { display:block; }
+  .info-box {
+    background:rgba(0,229,255,0.08); border:1px solid var(--cyan); border-radius:10px;
+    padding:14px 18px; margin:16px 0; color:var(--cyan); font-size:0.9rem;
+  }
 </style>
 </head>
 <body>
@@ -228,7 +229,7 @@
 
   <div class="header">
     <div class="logo"> PromptForge AI</div>
-    <div class="tagline">Real AI analysis • Detailed story descriptions • 60+ models • Full creative control</div>
+    <div class="tagline">Real AI analysis of YOUR media • No simulation • Prompts based on actual content</div>
   </div>
 
   <div class="tabs">
@@ -240,32 +241,36 @@
   <div class="panel active" id="analyzer">
 
     <div class="card">
-      <div class="card-title"><span class="icon"></span> API Configuration (Optional)</div>
+      <div class="card-title"><span class="icon">🔑</span> OpenAI API Key — REQUIRED for Real Analysis</div>
       <div class="api-key-section">
-        <label>OpenAI API Key — for real GPT-4 Vision analysis with story detection</label>
+        <label>Your API key is used to analyze YOUR actual uploaded media with GPT-4 Vision</label>
         <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-..." />
+        <div class="api-status disconnected" id="apiStatus">
+          <span id="apiStatusIcon">✕</span>
+          <span id="apiStatusText">API key not connected — analysis requires a valid key</span>
+        </div>
         <div class="api-hint">
-          💡 Without API key: simulated analysis (generic story)<br>
-          🔑 With API key: REAL AI analysis — detects actual story, characters, and narrative<br>
-          <a href="https://platform.openai.com/api-keys" target="_blank">Get API key →</a>
+          💡 Your key stays in your browser — never sent anywhere except OpenAI<br>
+          🔑 <a href="https://platform.openai.com/api-keys" target="_blank">Get your OpenAI API key here →</a><br>
+          ⚠️ Without a valid key, content analysis cannot be performed
         </div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">📤</span> Upload Media</div>
+      <div class="card-title"><span class="icon">📤</span> Upload Your Media</div>
       <div class="upload-zone" id="uploadZone">
-        <div class="big-icon">🎬</div>
+        <div class="big-icon"></div>
         <h3>Drag & Drop Video or Image Here</h3>
         <p>or click to browse • All formats supported</p>
-        <input type="file" id="fileInput" accept="video/*,image/*" multiple />
+        <input type="file" id="fileInput" accept="video/*,image/*" />
       </div>
       <div class="media-preview" id="mediaPreview"></div>
-      <div class="upload-hint" id="uploadHint" style="display:none;">✅ Media loaded! Select models & click generate ↓</div>
+      <div class="upload-hint" id="uploadHint" style="display:none;">✅ Media loaded — ready for real AI analysis</div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🎯</span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.85rem;">(multi-select)</span></div>
+      <div class="card-title"><span class="icon"></span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.85rem;">(multi-select)</span></div>
       <div class="multi-select" id="modelSelect">
         <div class="multi-select-label">AI Video & Image Models</div>
         <div class="multi-select-trigger">
@@ -276,12 +281,14 @@
       </div>
     </div>
 
-    <button class="btn-generate" id="generatePromptBtn">🎯 Analyze Story & Generate Prompts</button>
+    <button class="btn-generate" id="generatePromptBtn"> Analyze Media & Generate Prompts</button>
+
+    <div class="warning-box" id="warningBox"></div>
 
     <div class="card" id="analysisCard" style="display:none;">
       <div class="card-title">
-        <span class="icon">🔬</span> Analysis Results
-        <span class="analysis-mode-badge" id="analysisModeBadge"></span>
+        <span class="icon">🔬</span> Real Analysis Results
+        <span style="background:var(--green);color:#000;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;margin-left:10px;">✓ FROM YOUR MEDIA</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       <div id="analysisStatus" style="color:var(--muted);font-size:0.9rem;">Initializing...</div>
@@ -289,11 +296,11 @@
     </div>
 
     <div class="card" id="promptCard" style="display:none;">
-      <div class="card-title"><span class="icon">📝</span> Generated Prompts (with Story)</div>
+      <div class="card-title"><span class="icon">📝</span> Prompts Based on Your Media</div>
       <div id="modelTags"></div>
       <div class="prompt-output" id="promptOutput"></div>
       <div class="action-row">
-        <button class="btn btn-primary" id="copyBtn">📋 Copy</button>
+        <button class="btn btn-primary" id="copyBtn"> Copy</button>
         <button class="btn btn-secondary" id="downloadBtn">💾 Download</button>
       </div>
     </div>
@@ -309,28 +316,28 @@
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">📖</span> Story / Narrative <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(detailed story description)</span></div>
-      <textarea class="subject-input story-input" id="storyInput" placeholder="Write the full story... e.g., 'A young detective named Maya discovers an ancient map hidden in her grandmother's attic. As she follows the clues through the foggy streets of Victorian London, she realizes she's being followed by a mysterious figure in a black cloak. The story builds tension as she races against time to solve the puzzle before the villain reaches the hidden treasure first. The climax reveals the treasure is not gold, but a family secret that changes everything...'"></textarea>
+      <div class="card-title"><span class="icon">📖</span> Story / Narrative</div>
+      <textarea class="subject-input story-input" id="storyInput" placeholder="Write the full story..."></textarea>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-title"><span class="icon">🎨</span> Visual Style <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
+        <div class="card-title"><span class="icon">🎨</span> Visual Style</div>
         <div class="multi-select" id="styleSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon">📷</span> Camera Angle <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
+        <div class="card-title"><span class="icon">📷</span> Camera Angle</div>
         <div class="multi-select" id="cameraSelect"></div>
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-title"><span class="icon">💡</span> Lighting <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
+        <div class="card-title"><span class="icon">💡</span> Lighting</div>
         <div class="multi-select" id="lightingSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon">🎭</span> Mood <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
+        <div class="card-title"><span class="icon">🎭</span> Mood</div>
         <div class="multi-select" id="moodSelect"></div>
       </div>
     </div>
@@ -338,27 +345,27 @@
     <div class="grid-2">
       <div class="card">
         <div class="card-title"><span class="icon">👤</span> Character Description</div>
-        <textarea class="subject-input" id="characterInput" placeholder="e.g., 'Maya - a 25-year-old detective with sharp green eyes, wearing a vintage trench coat, determined expression'"></textarea>
+        <textarea class="subject-input" id="characterInput" placeholder="Describe characters..."></textarea>
       </div>
       <div class="card">
         <div class="card-title"><span class="icon">🎬</span> Actions & Performance</div>
-        <textarea class="subject-input" id="actionInput" placeholder="e.g., 'Sneaking through shadows, examining clues with magnifying glass, sudden realization moment, running through foggy streets'"></textarea>
+        <textarea class="subject-input" id="actionInput" placeholder="Describe actions..."></textarea>
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
         <div class="card-title"><span class="icon">🎭</span> Story Arc</div>
-        <textarea class="subject-input" id="arcInput" placeholder="e.g., 'Setup: Discovery of map → Rising Action: Following clues → Climax: Confrontation → Resolution: Secret revealed'"></textarea>
+        <textarea class="subject-input" id="arcInput" placeholder="Setup → Conflict → Climax → Resolution"></textarea>
       </div>
       <div class="card">
         <div class="card-title"><span class="icon">💭</span> Emotional Journey</div>
-        <textarea class="subject-input" id="emotionInput" placeholder="e.g., 'Curiosity → Suspense → Fear → Determination → Shock → Relief → Wonder'"></textarea>
+        <textarea class="subject-input" id="emotionInput" placeholder="Emotional arc..."></textarea>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🎯</span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
+      <div class="card-title"><span class="icon"></span> Target Models</div>
       <div class="multi-select" id="genModelSelect"></div>
     </div>
 
@@ -378,7 +385,7 @@
 
   </div>
 
-  <div class="footer-note">PromptForge AI • Real AI analysis + detailed story descriptions • 60+ models • 100% client-side</div>
+  <div class="footer-note">PromptForge AI • Real AI analysis only • No simulation • Your media, your prompts</div>
 
 </div>
 
@@ -387,15 +394,13 @@
    FULL DATA - 60+ MODELS
 ============================================================ */
 const MODELS = [
-  // IMAGE - Major
-  {id:'midjourney', name:'Midjourney v7', icon:'🎨', category:'Image - Major'},
+  {id:'midjourney', name:'Midjourney v7', icon:'', category:'Image - Major'},
   {id:'midjourney6', name:'Midjourney v6.1', icon:'🎨', category:'Image - Major'},
-  {id:'dalle3', name:'DALL-E 3', icon:'🖼️', category:'Image - Major'},
+  {id:'dalle3', name:'DALL-E 3', icon:'️', category:'Image - Major'},
   {id:'dalle4', name:'DALL-E 4', icon:'🖼️', category:'Image - Major'},
-  {id:'gptimage', name:'GPT Image 2', icon:'🤖', category:'Image - Major'},
+  {id:'gptimage', name:'GPT Image 2', icon:'', category:'Image - Major'},
   {id:'ideogram', name:'Ideogram 3.0', icon:'💭', category:'Image - Major'},
   {id:'firefly', name:'Adobe Firefly 4', icon:'', category:'Image - Major'},
-  // IMAGE - Advanced
   {id:'flux', name:'Flux Pro 1.1', icon:'⚡', category:'Image - Advanced'},
   {id:'fluxdev', name:'Flux Dev', icon:'', category:'Image - Advanced'},
   {id:'fluxrealism', name:'Flux Realism', icon:'⚡', category:'Image - Advanced'},
@@ -406,7 +411,6 @@ const MODELS = [
   {id:'sdlightning', name:'SD Lightning', icon:'🌟', category:'Image - Advanced'},
   {id:'comfyui', name:'ComfyUI SD', icon:'🔧', category:'Image - Advanced'},
   {id:'automatic', name:'Automatic1111', icon:'', category:'Image - Advanced'},
-  // IMAGE - Specialized
   {id:'leonardo', name:'Leonardo Phoenix', icon:'🦁', category:'Image - Specialized'},
   {id:'recraft', name:'Recraft v3', icon:'', category:'Image - Specialized'},
   {id:'krea', name:'Krea AI', icon:'✨', category:'Image - Specialized'},
@@ -417,23 +421,20 @@ const MODELS = [
   {id:'bluewillow', name:'Blue Willow', icon:'🔵', category:'Image - Specialized'},
   {id:'nightcafe', name:'NightCafe', icon:'', category:'Image - Specialized'},
   {id:'dreamstudio', name:'DreamStudio', icon:'💭', category:'Image - Specialized'},
-  // IMAGE - Asian
   {id:'tencent', name:'Tencent Hunyuan', icon:'', category:'Image - Asian'},
-  {id:'baidu', name:'Baidu ERNIE', icon:'🔵', category:'Image - Asian'},
+  {id:'baidu', name:'Baidu ERNIE', icon:'', category:'Image - Asian'},
   {id:'aliyun', name:'Alibaba Tongyi', icon:'☁️', category:'Image - Asian'},
   {id:'bytedance', name:'ByteDance Jimeng', icon:'', category:'Image - Asian'},
   {id:'klingimg', name:'Kling Image', icon:'⚡', category:'Image - Asian'},
   {id:'sense', name:'SenseNova', icon:'👁️', category:'Image - Asian'},
-  // IMAGE - Niche
   {id:'pixverse', name:'PixVerse', icon:'', category:'Image - Niche'},
   {id:'civitai', name:'CivitAI Models', icon:'🏛️', category:'Image - Niche'},
-  {id:'tensor', name:'Tensor.art', icon:'📊', category:'Image - Niche'},
+  {id:'tensor', name:'Tensor.art', icon:'', category:'Image - Niche'},
   {id:'seaart', name:'SeaArt.ai', icon:'🌊', category:'Image - Niche'},
   {id:'photoroom', name:'PhotoRoom', icon:'', category:'Image - Niche'},
   {id:'removebg', name:'Remove.bg', icon:'✂️', category:'Image - Niche'},
   {id:'upscale', name:'AI Upscaler', icon:'📈', category:'Image - Niche'},
   {id:'inpaint', name:'Inpainting AI', icon:'🎨', category:'Image - Niche'},
-  // VIDEO - Major
   {id:'sora', name:'Sora (OpenAI)', icon:'🌀', category:'Video - Major'},
   {id:'sora2', name:'Sora 2 Pro', icon:'', category:'Video - Major'},
   {id:'runway', name:'Runway Gen-4.5', icon:'🎬', category:'Video - Major'},
@@ -442,43 +443,40 @@ const MODELS = [
   {id:'kling2', name:'Kling 2.6 Pro', icon:'', category:'Video - Major'},
   {id:'veo', name:'Veo 3.1 (Google)', icon:'🔮', category:'Video - Major'},
   {id:'veo2', name:'Veo 2 (Google)', icon:'', category:'Video - Major'},
-  // VIDEO - Strong
   {id:'seedance', name:'Seedance 1.5 Pro', icon:'', category:'Video - Strong'},
   {id:'wan', name:'WAN 2.6 (Alibaba)', icon:'☁️', category:'Video - Strong'},
   {id:'wan2', name:'WAN 2.2 (Alibaba)', icon:'☁️', category:'Video - Strong'},
   {id:'luma', name:'Luma Ray 3', icon:'💫', category:'Video - Strong'},
   {id:'luma2', name:'Luma Dream Machine', icon:'💫', category:'Video - Strong'},
   {id:'pika', name:'Pika 1.5', icon:'', category:'Video - Strong'},
-  {id:'hailuo', name:'Hailuo AI (Minimax)', icon:'🎭', category:'Video - Strong'},
+  {id:'hailuo', name:'Hailuo AI (Minimax)', icon:'', category:'Video - Strong'},
   {id:'haiper', name:'Haiper AI', icon:'🎬', category:'Video - Strong'},
-  // VIDEO - Emerging
   {id:'mochi', name:'Mochi 1 (Genmo)', icon:'', category:'Video - Emerging'},
   {id:'hunyuan', name:'Hunyuan Video (Tencent)', icon:'🐉', category:'Video - Emerging'},
   {id:'ltx', name:'LTX-2 (Lightricks)', icon:'✨', category:'Video - Emerging'},
   {id:'vidu', name:'Vidu Q2', icon:'🎥', category:'Video - Emerging'},
-  {id:'minimax', name:'Minimax AI', icon:'🤖', category:'Video - Emerging'},
+  {id:'minimax', name:'Minimax AI', icon:'', category:'Video - Emerging'},
   {id:'stable', name:'Stable Video Diffusion', icon:'🎨', category:'Video - Emerging'},
   {id:'moonvalley', name:'Moonvalley', icon:'', category:'Video - Emerging'},
   {id:'cogvideo', name:'CogVideo', icon:'🧠', category:'Video - Emerging'},
-  // VIDEO - Specialized
   {id:'invideo', name:'InVideo AI', icon:'📹', category:'Video - Specialized'},
   {id:'fliki', name:'Fliki', icon:'🎞️', category:'Video - Specialized'},
-  {id:'pictory', name:'Pictory', icon:'🖼️', category:'Video - Specialized'},
+  {id:'pictory', name:'Pictory', icon:'️', category:'Video - Specialized'},
   {id:'synthesia', name:'Synthesia', icon:'👤', category:'Video - Specialized'},
   {id:'heygen', name:'HeyGen', icon:'', category:'Video - Specialized'},
   {id:'did', name:'D-ID', icon:'', category:'Video - Specialized'},
   {id:'colossyan', name:'Colossyan', icon:'🏛️', category:'Video - Specialized'},
   {id:'elai', name:'Elai.io', icon:'📺', category:'Video - Specialized'},
-  {id:'deepbrain', name:'DeepBrain AI', icon:'🧩', category:'Video - Specialized'},
+  {id:'deepbrain', name:'DeepBrain AI', icon:'', category:'Video - Specialized'},
   {id:'flexclip', name:'FlexClip', icon:'', category:'Video - Specialized'},
-  {id:'veed', name:'VEED.io', icon:'✂️', category:'Video - Specialized'},
+  {id:'veed', name:'VEED.io', icon:'️', category:'Video - Specialized'},
   {id:'kapwing', name:'Kapwing', icon:'🎪', category:'Video - Specialized'},
   {id:'domo', name:'DomoAI', icon:'🏠', category:'Video - Specialized'},
   {id:'gaga', name:'Gaga AI', icon:'', category:'Video - Specialized'},
   {id:'freebeat', name:'freebeat.ai', icon:'🎵', category:'Video - Specialized'},
   {id:'magic', name:'MagicTime', icon:'⏰', category:'Video - Specialized'},
-  {id:'phenaki', name:'Phenaki', icon:'🎪', category:'Video - Specialized'},
-  {id:'imagen', name:'Imagen Video', icon:'🖼️', category:'Video - Specialized'},
+  {id:'phenaki', name:'Phenaki', icon:'', category:'Video - Specialized'},
+  {id:'imagen', name:'Imagen Video', icon:'️', category:'Video - Specialized'},
   {id:'makeavideo', name:'Make-A-Video', icon:'🎨', category:'Video - Specialized'},
 ];
 
@@ -522,8 +520,7 @@ const MOODS = [
   'Contemplative','Joyful','Foreboding','Liberating','Haunting',
 ];
 
-let currentMedia = { filename:'', type:'', size:0, url:'', file:null };
-let realAnalysisData = null;
+let currentMedia = { filename:'', type:'', size:0, url:'', file:null, metadata:{} };
 
 /* ============================================================
    TABS
@@ -614,6 +611,28 @@ const lightingSelectCtrl = createMultiSelect(document.getElementById('lightingSe
 const moodSelectCtrl = createMultiSelect(document.getElementById('moodSelect'), MOODS.map(m => ({id:m, name:m})));
 
 /* ============================================================
+   API KEY VALIDATION
+============================================================ */
+const apiKeyInput = document.getElementById('apiKeyInput');
+const apiStatus = document.getElementById('apiStatus');
+const apiStatusIcon = document.getElementById('apiStatusIcon');
+const apiStatusText = document.getElementById('apiStatusText');
+
+function updateApiStatus() {
+  const key = apiKeyInput.value.trim();
+  if (key.length > 20 && key.startsWith('sk-')) {
+    apiStatus.className = 'api-status connected';
+    apiStatusIcon.textContent = '✓';
+    apiStatusText.textContent = 'API key connected — ready for real analysis';
+  } else {
+    apiStatus.className = 'api-status disconnected';
+    apiStatusIcon.textContent = '✕';
+    apiStatusText.textContent = key ? 'Invalid key format — must start with sk-' : 'API key not connected — analysis requires a valid key';
+  }
+}
+apiKeyInput.addEventListener('input', updateApiStatus);
+
+/* ============================================================
    FILE UPLOAD
 ============================================================ */
 const uploadZone = document.getElementById('uploadZone');
@@ -631,13 +650,51 @@ uploadZone.addEventListener('drop', e => {
 });
 fileInput.addEventListener('change', e => { if (e.target.files.length) handleFiles(e.target.files); });
 
-function handleFiles(files) {
+async function handleFiles(files) {
   const file = files[0];
   const url = URL.createObjectURL(file);
-  currentMedia = { filename:file.name, type:file.type, size:file.size, url:url, file:file };
+  currentMedia = { filename:file.name, type:file.type, size:file.size, url:url, file:file, metadata:{} };
   showPreview(url, file.type);
   uploadHint.style.display = 'block';
   generateBtn.classList.add('show');
+  
+  // Extract real metadata from the file
+  await extractRealMetadata(file);
+}
+
+async function extractRealMetadata(file) {
+  const metadata = {};
+  
+  if (file.type.startsWith('image')) {
+    // Extract image dimensions
+    const img = new Image();
+    img.onload = () => {
+      metadata.width = img.width;
+      metadata.height = img.height;
+      metadata.aspectRatio = (img.width / img.height).toFixed(2);
+      metadata.megapixels = ((img.width * img.height) / 1000000).toFixed(2);
+      currentMedia.metadata = metadata;
+    };
+    img.src = URL.createObjectURL(file);
+  } else if (file.type.startsWith('video')) {
+    // Extract video metadata
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.onloadedmetadata = () => {
+      metadata.width = video.videoWidth;
+      metadata.height = video.videoHeight;
+      metadata.duration = video.duration.toFixed(2) + 's';
+      metadata.fps = 'unknown (browser-limited)';
+      metadata.aspectRatio = (video.videoWidth / video.videoHeight).toFixed(2);
+      currentMedia.metadata = metadata;
+    };
+    video.src = URL.createObjectURL(file);
+  }
+  
+  metadata.fileSize = formatSize(file.size);
+  metadata.format = file.type || 'unknown';
+  metadata.fileName = file.name;
+  currentMedia.metadata = { ...currentMedia.metadata, ...metadata };
 }
 
 function showPreview(url, type) {
@@ -649,8 +706,16 @@ function showPreview(url, type) {
   mediaPreview.style.display = 'block';
 }
 
+function formatSize(b) {
+  if (!b) return 'unknown';
+  if (b < 1024) return b+' B';
+  if (b < 1048576) return (b/1024).toFixed(1)+' KB';
+  if (b < 1073741824) return (b/1048576).toFixed(1)+' MB';
+  return (b/1073741824).toFixed(2)+' GB';
+}
+
 /* ============================================================
-   VIDEO FRAME EXTRACTION
+   VIDEO FRAME EXTRACTION (for real analysis)
 ============================================================ */
 async function extractVideoFrames(videoFile, numFrames = 3) {
   return new Promise((resolve) => {
@@ -669,7 +734,7 @@ async function extractVideoFrames(videoFile, numFrames = 3) {
         video.currentTime = time;
         await new Promise(r => { video.onseeked = r; });
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        frames.push(canvas.toDataURL('image/jpeg', 0.8));
+        frames.push(canvas.toDataURL('image/jpeg', 0.85));
       }
       resolve(frames);
     };
@@ -678,189 +743,213 @@ async function extractVideoFrames(videoFile, numFrames = 3) {
 }
 
 /* ============================================================
-   REAL AI ANALYSIS (GPT-4 Vision) — WITH STORY DETECTION
+   REAL AI ANALYSIS ONLY — NO SIMULATION
 ============================================================ */
 async function analyzeWithAI(mediaData) {
-  const apiKey = document.getElementById('apiKeyInput').value.trim();
-  if (!apiKey) return null;
+  const apiKey = apiKeyInput.value.trim();
+  
+  // STRICT: No analysis without valid API key
+  if (!apiKey || apiKey.length < 20 || !apiKey.startsWith('sk-')) {
+    throw new Error('VALID_API_KEY_REQUIRED');
+  }
 
-  try {
-    let imageData;
-    if (mediaData.type.startsWith('image')) {
-      imageData = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(mediaData.file);
-      });
-    } else {
-      const frames = await extractVideoFrames(mediaData.file, 3);
-      imageData = frames[0] || frames[frames.length-1];
-    }
-    if (!imageData) return null;
+  let imageData;
+  if (mediaData.type.startsWith('image')) {
+    imageData = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('Failed to read image'));
+      reader.readAsDataURL(mediaData.file);
+    });
+  } else if (mediaData.type.startsWith('video')) {
+    const frames = await extractVideoFrames(mediaData.file, 3);
+    if (!frames.length) throw new Error('Failed to extract video frames');
+    imageData = frames[0];
+  } else {
+    throw new Error('Unsupported file type');
+  }
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: `You are a master cinematographer and storyteller. Analyze this ${mediaData.type.startsWith('video') ? 'video frame' : 'image'} in extreme detail.
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: 'gpt-4o',
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'text', text: `You are a master cinematographer, storyteller, and visual analyst. Analyze this ${mediaData.type.startsWith('video') ? 'video frame (representing the video content)' : 'image'} in EXTREME detail.
 
 CRITICAL RULES:
-- If the subject is a HUMAN, say "human" — NEVER say "animal"
-- If the subject is an ANIMAL, say "animal"
-- Be SPECIFIC: describe exact details, not generic terms
-- INVENT a compelling STORY based on what you see — what's the narrative?
+- Describe ONLY what you actually see in this specific media
+- If you see a HUMAN, say "human" — NEVER guess "animal" for a human
+- If you see an ANIMAL, say "animal" — be specific about species
+- Be SPECIFIC and DETAILED — describe exact colors, clothing, expressions, setting
+- INVENT a compelling STORY based on what you actually observe
+- Base everything on the VISUAL EVIDENCE in this media
 
 Return ONLY a JSON object (no markdown, no code fences) with these exact keys:
 {
-  "subject": "what is the main subject (be specific)",
+  "subject": "what is the main subject (be extremely specific)",
   "subjectType": "human OR animal OR object OR landscape OR abstract",
-  "characterDetails": "detailed appearance, clothing, hair, accessories",
-  "action": "what is happening — specific movements and activities",
-  "expression": "facial expression, body language, emotional state",
-  "performance": "acting style, naturalness, intensity level",
-  "camera": "shot type, angle, lens, movement",
-  "lighting": "type, direction, quality, color temperature",
-  "scene": "location, environment, background, setting",
-  "style": "visual style, color palette, aesthetic",
-  "technical": "quality, resolution, composition notes",
-  "story": "A detailed 3-5 sentence story describing what is happening in this scene. Include: who is the character, what are they doing, why are they doing it, what is the emotional context, what might happen next. Make it cinematic and compelling.",
-  "storyArc": "Brief story arc: Setup → Conflict → Climax → Resolution (in one sentence each)",
-  "characterMotivation": "What does the character want? What drives them in this scene?",
-  "emotionalJourney": "The emotional arc: e.g., 'curiosity → suspense → revelation → determination'",
-  "narrativeTone": "The overall tone of the story: e.g., 'mysterious thriller with romantic undertones'",
-  "backstory": "A brief backstory (2-3 sentences) about what led to this moment"
+  "characterDetails": "detailed appearance, clothing, hair, accessories, age estimate, gender presentation",
+  "action": "what is happening — specific movements and activities observed",
+  "expression": "facial expression, body language, emotional state visible",
+  "performance": "acting style, naturalness, intensity level observed",
+  "camera": "shot type, angle, lens feel, movement (if video)",
+  "lighting": "type, direction, quality, color temperature, shadows",
+  "scene": "location, environment, background, setting details",
+  "style": "visual style, color palette, aesthetic, genre feel",
+  "technical": "quality, resolution feel, composition, depth of field",
+  "story": "A detailed 3-5 sentence cinematic story based on what you see. Who is the character, what are they doing, why, what is the emotional context, what might happen next.",
+  "storyArc": "Brief story arc: Setup → Conflict → Climax → Resolution (one phrase each)",
+  "characterMotivation": "What does the character appear to want? What drives them in this scene?",
+  "emotionalJourney": "The emotional arc visible or implied: e.g., 'curiosity → suspense → revelation'",
+  "narrativeTone": "The overall tone: e.g., 'mysterious psychological thriller with gothic undertones'",
+  "backstory": "A brief backstory (2-3 sentences) about what likely led to this moment based on visual clues"
 }
 
-Make the story vivid, specific, and cinematic. Think like a screenwriter.` },
-            { type: 'image_url', image_url: { url: imageData } }
-          ]
-        }],
-        max_tokens: 2500
-      })
-    });
+Make the story vivid, specific, and cinematic. Think like a screenwriter analyzing a film still.` },
+          { type: 'image_url', image_url: { url: imageData } }
+        ]
+      }],
+      max_tokens: 2500
+    })
+  });
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || '';
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) return JSON.parse(jsonMatch[0]);
-    return null;
-  } catch (error) {
-    console.error('AI Analysis error:', error);
-    return null;
+  const data = await response.json();
+  
+  if (data.error) {
+    throw new Error(data.error.message || 'API error');
   }
+  
+  const content = data.choices?.[0]?.message?.content || '';
+  const jsonMatch = content.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) throw new Error('Invalid response format');
+  
+  return JSON.parse(jsonMatch[0]);
 }
 
 /* ============================================================
-   SIMULATED ANALYSIS (FALLBACK) — WITH STORY
-============================================================ */
-function simulateAnalysis(mediaData) {
-  const isVideo = mediaData.type.startsWith('video');
-  return {
-    subject: isVideo ? 'A young woman walking through a rain-soaked city street at night' : 'A young woman standing in a dimly lit room, gazing out a rain-streaked window',
-    subjectType: 'human',
-    characterDetails: 'A woman in her late 20s with shoulder-length dark hair, wearing a weathered beige trench coat over a black turtleneck, a silver pendant necklace, and carrying a worn leather satchel',
-    action: isVideo ? 'Walking purposefully through the rain, occasionally glancing over her shoulder as if being followed, her coat billowing slightly in the wind' : 'Standing still with one hand resting on the window frame, her reflection visible in the glass, lost in thought',
-    expression: 'A mix of determination and quiet worry — her brow slightly furrowed, lips pressed together, eyes focused yet distant',
-    performance: 'Naturalistic and understated, conveying deep internal conflict through subtle gestures',
-    camera: isVideo ? 'Medium tracking shot following her from behind at a slight angle, handheld with gentle sway' : 'Medium close-up shot from a low angle, with shallow depth of field blurring the city lights behind her',
-    lighting: 'Cinematic chiaroscuro with warm amber streetlights contrasting against cool blue moonlight, creating dramatic shadows across her face',
-    scene: 'A narrow cobblestone street in an old European city at night, with vintage streetlamps, wet reflections on the stones, and distant silhouettes of gothic architecture',
-    style: 'Neo-noir cinematic aesthetic with a melancholic, mysterious atmosphere — reminiscent of films like Blade Runner 2049 and Amélie',
-    technical: 'High-quality cinematic composition, 4K resolution, filmic color grading with teal and orange tones, subtle film grain',
-    story: 'Elena has been following the cryptic clues from her missing sister\'s journal for three nights now. Each lead takes her deeper into the city\'s forgotten underbelly, where shadows seem to move on their own. Tonight, she finally feels she\'s being watched — not by danger, but by the truth she\'s been avoiding. The pendant around her neck, her sister\'s last gift, feels heavier than usual. She knows the answers lie in the old bookshop at the end of this street, but something inside her hesitates. Some doors, once opened, can never be closed again.',
-    storyArc: 'Setup: Elena follows her sister\'s journal clues through the city → Conflict: She realizes she\'s being watched and the truth may be dangerous → Climax: She reaches the bookshop and must choose whether to enter → Resolution: She discovers a family secret that changes everything',
-    characterMotivation: 'Elena is driven by a desperate need to find her missing sister and uncover the truth about their family\'s past, even at great personal risk',
-    emotionalJourney: 'Determination → Growing unease → Fear of the unknown → Courageous resolve → Shocking revelation',
-    narrativeTone: 'A mysterious psychological thriller with gothic undertones and a deeply personal emotional core',
-    backstory: 'Elena\'s sister vanished mysteriously two weeks ago after discovering an old family letter hidden in their grandmother\'s attic. The letter hinted at a secret that powerful people wanted buried. Elena, a journalist by trade, couldn\'t let it go — despite warnings from everyone she loved.'
-  };
-}
-
-/* ============================================================
-   GENERATE BUTTON
+   GENERATE BUTTON — REAL ANALYSIS ONLY
 ============================================================ */
 document.getElementById('generatePromptBtn').addEventListener('click', async () => {
-  if (!currentMedia.filename) { alert('Please upload a video or image first!'); return; }
+  // Clear previous warnings
+  const warningBox = document.getElementById('warningBox');
+  warningBox.classList.remove('show');
+  warningBox.textContent = '';
+  
+  // Validation
+  if (!currentMedia.filename) {
+    showWarning('Please upload a video or image first!');
+    return;
+  }
+  
+  const apiKey = apiKeyInput.value.trim();
+  if (!apiKey || apiKey.length < 20 || !apiKey.startsWith('sk-')) {
+    showWarning('⚠️ API key is REQUIRED for real media analysis. Please add your OpenAI API key above. Without it, prompts cannot be generated from your media.');
+    return;
+  }
+  
   const selectedModels = modelSelectCtrl.getSelected();
-  if (selectedModels.length === 0) { alert('Please select at least one target model!'); return; }
+  if (selectedModels.length === 0) {
+    showWarning('Please select at least one target model!');
+    return;
+  }
 
   const btn = document.getElementById('generatePromptBtn');
   const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner"></span> Analyzing story...';
+  btn.innerHTML = '<span class="spinner"></span> Analyzing your media...';
   btn.disabled = true;
 
   const card = document.getElementById('analysisCard');
+  const promptCard = document.getElementById('promptCard');
   const progressFill = document.getElementById('progressFill');
   const status = document.getElementById('analysisStatus');
-  const badge = document.getElementById('analysisModeBadge');
   card.style.display = 'block';
+  promptCard.style.display = 'none';
 
-  progressFill.style.width = '20%';
-  status.textContent = '🔍 Loading media...';
+  try {
+    progressFill.style.width = '20%';
+    status.textContent = '🔍 Loading your media...';
 
-  let analysisData;
-  let isRealAnalysis = false;
-  const apiKey = document.getElementById('apiKeyInput').value.trim();
-
-  if (apiKey) {
     progressFill.style.width = '40%';
-    status.textContent = '🤖 Running GPT-4 Vision AI analysis with story detection...';
-    analysisData = await analyzeWithAI(currentMedia);
-    if (analysisData) {
-      isRealAnalysis = true;
-      realAnalysisData = analysisData;
-      badge.textContent = '✓ REAL AI + STORY';
-      badge.className = 'analysis-mode-badge badge-real';
+    status.textContent = '🤖 Sending to GPT-4 Vision for real analysis...';
+    
+    const analysisData = await analyzeWithAI(currentMedia);
+
+    progressFill.style.width = '85%';
+    status.textContent = '📝 Generating model-specific prompts from your media...';
+    await new Promise(r => setTimeout(r, 300));
+
+    progressFill.style.width = '100%';
+    status.textContent = '✅ Analysis complete — prompts based on YOUR media!';
+
+    displayAnalysisResults(analysisData);
+    generatePrompts(selectedModels, analysisData);
+
+  } catch (error) {
+    console.error('Analysis error:', error);
+    progressFill.style.width = '100%';
+    progressFill.style.background = 'var(--red)';
+    
+    if (error.message === 'VALID_API_KEY_REQUIRED') {
+      status.textContent = '❌ API key required — cannot analyze without it';
+      showWarning('️ A valid OpenAI API key is required to analyze your media. Please add your key above.');
+    } else if (error.message.includes('quota') || error.message.includes('billing')) {
+      status.textContent = '❌ API quota exceeded';
+      showWarning('⚠️ Your OpenAI API key has exceeded its quota or billing limit. Please check your OpenAI account.');
+    } else if (error.message.includes('rate')) {
+      status.textContent = '❌ Rate limit exceeded — please wait a moment';
+      showWarning('⚠️ Rate limit exceeded. Please wait a minute and try again.');
+    } else {
+      status.textContent = '❌ Analysis failed';
+      showWarning(`⚠️ Analysis failed: ${error.message}. Please check your API key and try again.`);
     }
+  } finally {
+    btn.innerHTML = originalText;
+    btn.disabled = false;
   }
-
-  if (!analysisData) {
-    progressFill.style.width = '60%';
-    status.textContent = ' Using simulated analysis with story (add API key for real AI)...';
-    await new Promise(r => setTimeout(r, 800));
-    analysisData = simulateAnalysis(currentMedia);
-    badge.textContent = '⚡ SIMULATED + STORY';
-    badge.className = 'analysis-mode-badge badge-simulated';
-  }
-
-  progressFill.style.width = '85%';
-  status.textContent = '📝 Generating cinematic story prompts...';
-  await new Promise(r => setTimeout(r, 400));
-
-  progressFill.style.width = '100%';
-  status.textContent = '✅ Complete!';
-
-  displayAnalysisResults(analysisData, isRealAnalysis);
-  generatePrompts(selectedModels, analysisData);
-
-  btn.innerHTML = originalText;
-  btn.disabled = false;
-  btn.classList.remove('show');
 });
 
-function displayAnalysisResults(data, isReal) {
+function showWarning(message) {
+  const warningBox = document.getElementById('warningBox');
+  warningBox.textContent = message;
+  warningBox.classList.add('show');
+  setTimeout(() => warningBox.scrollIntoView({ behavior:'smooth', block:'center' }), 100);
+}
+
+function displayAnalysisResults(data) {
   const grid = document.getElementById('analysisGrid');
   const subjectIcon = data.subjectType === 'human' ? '👤' : data.subjectType === 'animal' ? '🐾' : data.subjectType === 'landscape' ? '🏞️' : '📦';
   
+  const meta = currentMedia.metadata || {};
+  
   grid.innerHTML = `
+    <div class="analysis-card metadata-card">
+      <div class="label">📁 File Metadata</div>
+      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6;">
+        ${meta.fileName || 'Unknown'}<br>
+        ${meta.format || 'Unknown format'} • ${meta.fileSize || 'Unknown size'}
+        ${meta.width ? `<br>${meta.width}×${meta.height}px • ${meta.aspectRatio} aspect ratio` : ''}
+        ${meta.megapixels ? ` • ${meta.megapixels} MP` : ''}
+        ${meta.duration ? `<br>Duration: ${meta.duration}` : ''}
+      </div>
+    </div>
+    
     <div class="analysis-card"><div class="label">${subjectIcon} Subject</div><div class="value">${data.subject}</div><div class="sub">Type: ${data.subjectType || 'unknown'}</div></div>
     <div class="analysis-card"><div class="label">👤 Character Details</div><div class="value">${data.characterDetails}</div><div class="sub">Appearance & clothing</div></div>
-    <div class="analysis-card"><div class="label">🎬 Action</div><div class="value">${data.action}</div><div class="sub">Movement & activity</div></div>
+    <div class="analysis-card"><div class="label"> Action</div><div class="value">${data.action}</div><div class="sub">Movement & activity</div></div>
     <div class="analysis-card"><div class="label">😊 Expression</div><div class="value">${data.expression}</div><div class="sub">Emotion & body language</div></div>
     <div class="analysis-card"><div class="label">🎭 Performance</div><div class="value">${data.performance}</div><div class="sub">Style & intensity</div></div>
-    <div class="analysis-card"><div class="label">📷 Camera</div><div class="value">${data.camera}</div><div class="sub">Shot & angle</div></div>
+    <div class="analysis-card"><div class="label"> Camera</div><div class="value">${data.camera}</div><div class="sub">Shot & angle</div></div>
     <div class="analysis-card"><div class="label">💡 Lighting</div><div class="value">${data.lighting}</div><div class="sub">Quality & type</div></div>
     <div class="analysis-card"><div class="label">🌍 Scene</div><div class="value">${data.scene}</div><div class="sub">Setting & environment</div></div>
-    <div class="analysis-card"><div class="label">🎨 Style</div><div class="value">${data.style}</div><div class="sub">Visual aesthetic</div></div>
+    <div class="analysis-card"><div class="label"> Style</div><div class="value">${data.style}</div><div class="sub">Visual aesthetic</div></div>
     <div class="analysis-card"><div class="label">⚙️ Technical</div><div class="value">${data.technical}</div><div class="sub">Quality & composition</div></div>
     
     <div class="analysis-card story-card">
-      <div class="label">📖 STORY / NARRATIVE</div>
-      <div class="value">${data.story || 'No story available'}</div>
+      <div class="label">📖 STORY / NARRATIVE (Based on Your Media)</div>
+      <div class="value">${data.story || 'No story detected'}</div>
     </div>
     
     <div class="analysis-card">
@@ -884,21 +973,21 @@ function displayAnalysisResults(data, isReal) {
     </div>
     
     <div class="analysis-card">
-      <div class="label">📚 Backstory</div>
+      <div class="label"> Backstory</div>
       <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.backstory || 'N/A'}</div>
     </div>
   `;
 }
 
 /* ============================================================
-   PROMPT GENERATION (ANALYZER TAB) — WITH STORY
+   PROMPT GENERATION — BASED ON REAL ANALYSIS ONLY
 ============================================================ */
 function generatePrompts(selectedModels, analysis) {
   const promptCard = document.getElementById('promptCard');
   const output = document.getElementById('promptOutput');
   const tags = document.getElementById('modelTags');
 
-  // Build comprehensive base with story
+  // Build comprehensive base with story — ALL from real analysis
   const visualBase = `${analysis.subject}. ${analysis.characterDetails}. Action: ${analysis.action}. Expression: ${analysis.expression}. Performance: ${analysis.performance}. Camera: ${analysis.camera}. Lighting: ${analysis.lighting}. Scene: ${analysis.scene}. Style: ${analysis.style}. ${analysis.technical}.`;
   
   const storyBase = analysis.story ? `\n\n📖 STORY: ${analysis.story}` : '';
@@ -1023,7 +1112,7 @@ function buildModelSpecificPrompt(modelId, baseSubject, analysis) {
 }
 
 /* ============================================================
-   GENERATOR TAB — WITH STORY
+   GENERATOR TAB
 ============================================================ */
 document.getElementById('generateBtn').addEventListener('click', () => {
   const subject = document.getElementById('subjectInput').value.trim();
@@ -1046,14 +1135,13 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   const lightStr = lights.length ? lights.join(', ') : 'cinematic lighting';
   const moodStr = moods.length ? moods.join(', ') : 'cinematic mood';
 
-  // Build comprehensive prompt with story
   let fullPrompt = `${subject}.`;
   if (character) fullPrompt += `\n\n👤 CHARACTER: ${character}`;
-  if (action) fullPrompt += `\n🎬 ACTIONS & PERFORMANCE: ${action}`;
-  if (story) fullPrompt += `\n\n📖 STORY: ${story}`;
+  if (action) fullPrompt += `\n ACTIONS & PERFORMANCE: ${action}`;
+  if (story) fullPrompt += `\n\n STORY: ${story}`;
   if (arc) fullPrompt += `\n🎬 STORY ARC: ${arc}`;
   if (emotion) fullPrompt += `\n❤️ EMOTIONAL JOURNEY: ${emotion}`;
-  fullPrompt += `\n\n🎨 VISUAL STYLE: ${styleStr}`;
+  fullPrompt += `\n\n VISUAL STYLE: ${styleStr}`;
   fullPrompt += `\n📷 CAMERA: ${cameraStr}`;
   fullPrompt += `\n💡 LIGHTING: ${lightStr}`;
   fullPrompt += `\n🎭 MOOD: ${moodStr}`;
@@ -1105,7 +1193,7 @@ function downloadPrompt(id) {
   const blob = new Blob([text], {type:'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `promptforge_story_${Date.now()}.txt`;
+  a.download = `promptforge_${Date.now()}.txt`;
   a.click();
 }
 
@@ -1127,3 +1215,4 @@ document.getElementById('genModelSelect').dataset.label = 'AI Video & Image Mode
 </script>
 </body>
 </html>
+
