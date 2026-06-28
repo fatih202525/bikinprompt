@@ -146,7 +146,16 @@
     font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;
   }
   .analysis-card .value { font-size:1.05rem; font-weight:600; margin-top:6px; color:var(--cyan); }
-  .analysis-card .sub { font-size:0.85rem; color:var(--muted); margin-top:4px; }
+  .analysis-card .sub { font-size:0.85rem; color:var(--muted); margin-top:4px; line-height:1.5; }
+  .analysis-card.story-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(179,136,255,0.05));
+    border-color: var(--cyan);
+  }
+  .analysis-card.story-card .value {
+    font-size:1rem; color:var(--text); line-height:1.7; font-weight:400;
+    font-family:'Georgia', serif; font-style:italic;
+  }
   .progress-bar {
     width:100%; height:8px; background:var(--panel2); border-radius:10px;
     overflow:hidden; margin:12px 0;
@@ -158,7 +167,7 @@
   .prompt-output {
     background:var(--panel2); border:1px solid var(--border); border-radius:12px;
     padding:20px; margin-top:16px; min-height:120px;
-    font-family:'Courier New', monospace; font-size:0.95rem; line-height:1.6;
+    font-family:'Courier New', monospace; font-size:0.95rem; line-height:1.7;
     white-space:pre-wrap; word-wrap:break-word;
   }
   .prompt-output:empty::before { content:'Your generated prompt will appear here...'; color:var(--muted); }
@@ -187,6 +196,7 @@
     font-family:inherit;
   }
   .subject-input:focus { outline:none; border-color:var(--cyan); }
+  .subject-input.story-input { min-height:120px; font-family:'Georgia', serif; font-style:italic; }
   .media-preview {
     margin-top:16px; border-radius:12px; overflow:hidden;
     max-height:300px; background:#000; display:none;
@@ -218,7 +228,7 @@
 
   <div class="header">
     <div class="logo"> PromptForge AI</div>
-    <div class="tagline">Real AI analysis • 60+ models • Full style/camera/lighting/mood control</div>
+    <div class="tagline">Real AI analysis • Detailed story descriptions • 60+ models • Full creative control</div>
   </div>
 
   <div class="tabs">
@@ -232,11 +242,11 @@
     <div class="card">
       <div class="card-title"><span class="icon"></span> API Configuration (Optional)</div>
       <div class="api-key-section">
-        <label>OpenAI API Key — for real GPT-4 Vision analysis</label>
+        <label>OpenAI API Key — for real GPT-4 Vision analysis with story detection</label>
         <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-..." />
         <div class="api-hint">
-          💡 Without API key: simulated analysis (generic results)<br>
-          🔑 With API key: REAL AI analysis of your actual content<br>
+          💡 Without API key: simulated analysis (generic story)<br>
+          🔑 With API key: REAL AI analysis — detects actual story, characters, and narrative<br>
           <a href="https://platform.openai.com/api-keys" target="_blank">Get API key →</a>
         </div>
       </div>
@@ -266,7 +276,7 @@
       </div>
     </div>
 
-    <button class="btn-generate" id="generatePromptBtn">🎯 Analyze & Generate Prompts</button>
+    <button class="btn-generate" id="generatePromptBtn">🎯 Analyze Story & Generate Prompts</button>
 
     <div class="card" id="analysisCard" style="display:none;">
       <div class="card-title">
@@ -279,7 +289,7 @@
     </div>
 
     <div class="card" id="promptCard" style="display:none;">
-      <div class="card-title"><span class="icon">📝</span> Generated Prompts</div>
+      <div class="card-title"><span class="icon">📝</span> Generated Prompts (with Story)</div>
       <div id="modelTags"></div>
       <div class="prompt-output" id="promptOutput"></div>
       <div class="action-row">
@@ -295,7 +305,12 @@
 
     <div class="card">
       <div class="card-title"><span class="icon">💡</span> Subject / Idea</div>
-      <textarea class="subject-input" id="subjectInput" placeholder="Describe your scene..."></textarea>
+      <textarea class="subject-input" id="subjectInput" placeholder="Describe the basic scene..."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📖</span> Story / Narrative <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(detailed story description)</span></div>
+      <textarea class="subject-input story-input" id="storyInput" placeholder="Write the full story... e.g., 'A young detective named Maya discovers an ancient map hidden in her grandmother's attic. As she follows the clues through the foggy streets of Victorian London, she realizes she's being followed by a mysterious figure in a black cloak. The story builds tension as she races against time to solve the puzzle before the villain reaches the hidden treasure first. The climax reveals the treasure is not gold, but a family secret that changes everything...'"></textarea>
     </div>
 
     <div class="grid-2">
@@ -323,11 +338,22 @@
     <div class="grid-2">
       <div class="card">
         <div class="card-title"><span class="icon">👤</span> Character Description</div>
-        <textarea class="subject-input" id="characterInput" placeholder="e.g., 'Young woman with red hair, leather jacket, confident expression'"></textarea>
+        <textarea class="subject-input" id="characterInput" placeholder="e.g., 'Maya - a 25-year-old detective with sharp green eyes, wearing a vintage trench coat, determined expression'"></textarea>
       </div>
       <div class="card">
         <div class="card-title"><span class="icon">🎬</span> Actions & Performance</div>
-        <textarea class="subject-input" id="actionInput" placeholder="e.g., 'Walking confidently, intense eye contact, dramatic gestures'"></textarea>
+        <textarea class="subject-input" id="actionInput" placeholder="e.g., 'Sneaking through shadows, examining clues with magnifying glass, sudden realization moment, running through foggy streets'"></textarea>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🎭</span> Story Arc</div>
+        <textarea class="subject-input" id="arcInput" placeholder="e.g., 'Setup: Discovery of map → Rising Action: Following clues → Climax: Confrontation → Resolution: Secret revealed'"></textarea>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">💭</span> Emotional Journey</div>
+        <textarea class="subject-input" id="emotionInput" placeholder="e.g., 'Curiosity → Suspense → Fear → Determination → Shock → Relief → Wonder'"></textarea>
       </div>
     </div>
 
@@ -337,11 +363,11 @@
     </div>
 
     <div class="action-row" style="justify-content:center;margin:20px 0;">
-      <button class="btn btn-primary" id="generateBtn" style="padding:16px 40px;font-size:1.05rem;">✨ Generate Cinematic Prompt</button>
+      <button class="btn btn-primary" id="generateBtn" style="padding:16px 40px;font-size:1.05rem;">✨ Generate Cinematic Story Prompt</button>
     </div>
 
     <div class="card" id="genPromptCard" style="display:none;">
-      <div class="card-title"><span class="icon">📝</span> Your Cinematic Prompt</div>
+      <div class="card-title"><span class="icon">📝</span> Your Cinematic Story Prompt</div>
       <div id="genModelTags"></div>
       <div class="prompt-output" id="genPromptOutput"></div>
       <div class="action-row">
@@ -352,13 +378,13 @@
 
   </div>
 
-  <div class="footer-note">PromptForge AI • Real AI analysis + 60+ models • 100% client-side</div>
+  <div class="footer-note">PromptForge AI • Real AI analysis + detailed story descriptions • 60+ models • 100% client-side</div>
 
 </div>
 
 <script>
 /* ============================================================
-   FULL DATA - 60+ MODELS, 30+ STYLES, 30+ ANGLES, 30+ LIGHTING, 25+ MOODS
+   FULL DATA - 60+ MODELS
 ============================================================ */
 const MODELS = [
   // IMAGE - Major
@@ -652,7 +678,7 @@ async function extractVideoFrames(videoFile, numFrames = 3) {
 }
 
 /* ============================================================
-   REAL AI ANALYSIS (GPT-4 Vision)
+   REAL AI ANALYSIS (GPT-4 Vision) — WITH STORY DETECTION
 ============================================================ */
 async function analyzeWithAI(mediaData) {
   const apiKey = document.getElementById('apiKeyInput').value.trim();
@@ -680,28 +706,40 @@ async function analyzeWithAI(mediaData) {
         messages: [{
           role: 'user',
           content: [
-            { type: 'text', text: `Analyze this ${mediaData.type.startsWith('video') ? 'video frame' : 'image'} in extreme detail. Be 100% accurate - if it's a human, say HUMAN. If it's an animal, say ANIMAL. Never confuse them.
+            { type: 'text', text: `You are a master cinematographer and storyteller. Analyze this ${mediaData.type.startsWith('video') ? 'video frame' : 'image'} in extreme detail.
+
+CRITICAL RULES:
+- If the subject is a HUMAN, say "human" — NEVER say "animal"
+- If the subject is an ANIMAL, say "animal"
+- Be SPECIFIC: describe exact details, not generic terms
+- INVENT a compelling STORY based on what you see — what's the narrative?
 
 Return ONLY a JSON object (no markdown, no code fences) with these exact keys:
 {
-  "subject": "what is the main subject (human/animal/object/scene)",
+  "subject": "what is the main subject (be specific)",
   "subjectType": "human OR animal OR object OR landscape OR abstract",
-  "characterDetails": "if human: age, gender, appearance, clothing, hair, accessories. If animal: species, color, size, markings. If object: type, material, color.",
-  "action": "what is happening - specific movements, activities, gestures",
+  "characterDetails": "detailed appearance, clothing, hair, accessories",
+  "action": "what is happening — specific movements and activities",
   "expression": "facial expression, body language, emotional state",
   "performance": "acting style, naturalness, intensity level",
   "camera": "shot type, angle, lens, movement",
   "lighting": "type, direction, quality, color temperature",
   "scene": "location, environment, background, setting",
   "style": "visual style, color palette, aesthetic",
-  "technical": "quality, resolution, composition notes"
+  "technical": "quality, resolution, composition notes",
+  "story": "A detailed 3-5 sentence story describing what is happening in this scene. Include: who is the character, what are they doing, why are they doing it, what is the emotional context, what might happen next. Make it cinematic and compelling.",
+  "storyArc": "Brief story arc: Setup → Conflict → Climax → Resolution (in one sentence each)",
+  "characterMotivation": "What does the character want? What drives them in this scene?",
+  "emotionalJourney": "The emotional arc: e.g., 'curiosity → suspense → revelation → determination'",
+  "narrativeTone": "The overall tone of the story: e.g., 'mysterious thriller with romantic undertones'",
+  "backstory": "A brief backstory (2-3 sentences) about what led to this moment"
 }
 
-Be SPECIFIC. Don't say "a person" - say "a young woman with curly brown hair wearing a red leather jacket". Don't say "animal" if it's clearly a human.` },
+Make the story vivid, specific, and cinematic. Think like a screenwriter.` },
             { type: 'image_url', image_url: { url: imageData } }
           ]
         }],
-        max_tokens: 1500
+        max_tokens: 2500
       })
     });
 
@@ -717,22 +755,28 @@ Be SPECIFIC. Don't say "a person" - say "a young woman with curly brown hair wea
 }
 
 /* ============================================================
-   SIMULATED ANALYSIS (FALLBACK)
+   SIMULATED ANALYSIS (FALLBACK) — WITH STORY
 ============================================================ */
 function simulateAnalysis(mediaData) {
   const isVideo = mediaData.type.startsWith('video');
   return {
-    subject: isVideo ? 'A person in motion' : 'A person in frame',
+    subject: isVideo ? 'A young woman walking through a rain-soaked city street at night' : 'A young woman standing in a dimly lit room, gazing out a rain-streaked window',
     subjectType: 'human',
-    characterDetails: 'Adult human, casual clothing, natural appearance',
-    action: isVideo ? 'Walking and moving naturally through the scene' : 'Standing or posing naturally',
-    expression: 'Neutral to slight smile, relaxed demeanor',
-    performance: 'Natural and authentic, documentary-style',
-    camera: isVideo ? 'Medium shot with slight handheld movement' : 'Medium shot, static composition',
-    lighting: 'Natural ambient lighting, balanced exposure',
-    scene: 'Indoor or outdoor everyday setting',
-    style: 'Realistic, documentary style, natural colors',
-    technical: 'Good quality, well-composed, proper exposure'
+    characterDetails: 'A woman in her late 20s with shoulder-length dark hair, wearing a weathered beige trench coat over a black turtleneck, a silver pendant necklace, and carrying a worn leather satchel',
+    action: isVideo ? 'Walking purposefully through the rain, occasionally glancing over her shoulder as if being followed, her coat billowing slightly in the wind' : 'Standing still with one hand resting on the window frame, her reflection visible in the glass, lost in thought',
+    expression: 'A mix of determination and quiet worry — her brow slightly furrowed, lips pressed together, eyes focused yet distant',
+    performance: 'Naturalistic and understated, conveying deep internal conflict through subtle gestures',
+    camera: isVideo ? 'Medium tracking shot following her from behind at a slight angle, handheld with gentle sway' : 'Medium close-up shot from a low angle, with shallow depth of field blurring the city lights behind her',
+    lighting: 'Cinematic chiaroscuro with warm amber streetlights contrasting against cool blue moonlight, creating dramatic shadows across her face',
+    scene: 'A narrow cobblestone street in an old European city at night, with vintage streetlamps, wet reflections on the stones, and distant silhouettes of gothic architecture',
+    style: 'Neo-noir cinematic aesthetic with a melancholic, mysterious atmosphere — reminiscent of films like Blade Runner 2049 and Amélie',
+    technical: 'High-quality cinematic composition, 4K resolution, filmic color grading with teal and orange tones, subtle film grain',
+    story: 'Elena has been following the cryptic clues from her missing sister\'s journal for three nights now. Each lead takes her deeper into the city\'s forgotten underbelly, where shadows seem to move on their own. Tonight, she finally feels she\'s being watched — not by danger, but by the truth she\'s been avoiding. The pendant around her neck, her sister\'s last gift, feels heavier than usual. She knows the answers lie in the old bookshop at the end of this street, but something inside her hesitates. Some doors, once opened, can never be closed again.',
+    storyArc: 'Setup: Elena follows her sister\'s journal clues through the city → Conflict: She realizes she\'s being watched and the truth may be dangerous → Climax: She reaches the bookshop and must choose whether to enter → Resolution: She discovers a family secret that changes everything',
+    characterMotivation: 'Elena is driven by a desperate need to find her missing sister and uncover the truth about their family\'s past, even at great personal risk',
+    emotionalJourney: 'Determination → Growing unease → Fear of the unknown → Courageous resolve → Shocking revelation',
+    narrativeTone: 'A mysterious psychological thriller with gothic undertones and a deeply personal emotional core',
+    backstory: 'Elena\'s sister vanished mysteriously two weeks ago after discovering an old family letter hidden in their grandmother\'s attic. The letter hinted at a secret that powerful people wanted buried. Elena, a journalist by trade, couldn\'t let it go — despite warnings from everyone she loved.'
   };
 }
 
@@ -746,7 +790,7 @@ document.getElementById('generatePromptBtn').addEventListener('click', async () 
 
   const btn = document.getElementById('generatePromptBtn');
   const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner"></span> Analyzing...';
+  btn.innerHTML = '<span class="spinner"></span> Analyzing story...';
   btn.disabled = true;
 
   const card = document.getElementById('analysisCard');
@@ -764,27 +808,27 @@ document.getElementById('generatePromptBtn').addEventListener('click', async () 
 
   if (apiKey) {
     progressFill.style.width = '40%';
-    status.textContent = '🤖 Running GPT-4 Vision AI analysis...';
+    status.textContent = '🤖 Running GPT-4 Vision AI analysis with story detection...';
     analysisData = await analyzeWithAI(currentMedia);
     if (analysisData) {
       isRealAnalysis = true;
       realAnalysisData = analysisData;
-      badge.textContent = '✓ REAL AI ANALYSIS';
+      badge.textContent = '✓ REAL AI + STORY';
       badge.className = 'analysis-mode-badge badge-real';
     }
   }
 
   if (!analysisData) {
     progressFill.style.width = '60%';
-    status.textContent = ' Using simulated analysis (add API key for real AI)...';
+    status.textContent = ' Using simulated analysis with story (add API key for real AI)...';
     await new Promise(r => setTimeout(r, 800));
     analysisData = simulateAnalysis(currentMedia);
-    badge.textContent = '⚡ SIMULATED';
+    badge.textContent = '⚡ SIMULATED + STORY';
     badge.className = 'analysis-mode-badge badge-simulated';
   }
 
   progressFill.style.width = '85%';
-  status.textContent = '📝 Generating optimized prompts...';
+  status.textContent = '📝 Generating cinematic story prompts...';
   await new Promise(r => setTimeout(r, 400));
 
   progressFill.style.width = '100%';
@@ -801,6 +845,7 @@ document.getElementById('generatePromptBtn').addEventListener('click', async () 
 function displayAnalysisResults(data, isReal) {
   const grid = document.getElementById('analysisGrid');
   const subjectIcon = data.subjectType === 'human' ? '👤' : data.subjectType === 'animal' ? '🐾' : data.subjectType === 'landscape' ? '🏞️' : '📦';
+  
   grid.innerHTML = `
     <div class="analysis-card"><div class="label">${subjectIcon} Subject</div><div class="value">${data.subject}</div><div class="sub">Type: ${data.subjectType || 'unknown'}</div></div>
     <div class="analysis-card"><div class="label">👤 Character Details</div><div class="value">${data.characterDetails}</div><div class="sub">Appearance & clothing</div></div>
@@ -809,23 +854,63 @@ function displayAnalysisResults(data, isReal) {
     <div class="analysis-card"><div class="label">🎭 Performance</div><div class="value">${data.performance}</div><div class="sub">Style & intensity</div></div>
     <div class="analysis-card"><div class="label">📷 Camera</div><div class="value">${data.camera}</div><div class="sub">Shot & angle</div></div>
     <div class="analysis-card"><div class="label">💡 Lighting</div><div class="value">${data.lighting}</div><div class="sub">Quality & type</div></div>
-    <div class="analysis-card"><div class="label"> Scene</div><div class="value">${data.scene}</div><div class="sub">Setting & environment</div></div>
+    <div class="analysis-card"><div class="label">🌍 Scene</div><div class="value">${data.scene}</div><div class="sub">Setting & environment</div></div>
     <div class="analysis-card"><div class="label">🎨 Style</div><div class="value">${data.style}</div><div class="sub">Visual aesthetic</div></div>
     <div class="analysis-card"><div class="label">⚙️ Technical</div><div class="value">${data.technical}</div><div class="sub">Quality & composition</div></div>
+    
+    <div class="analysis-card story-card">
+      <div class="label">📖 STORY / NARRATIVE</div>
+      <div class="value">${data.story || 'No story available'}</div>
+    </div>
+    
+    <div class="analysis-card">
+      <div class="label">🎬 Story Arc</div>
+      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.storyArc || 'N/A'}</div>
+    </div>
+    
+    <div class="analysis-card">
+      <div class="label">💭 Character Motivation</div>
+      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.characterMotivation || 'N/A'}</div>
+    </div>
+    
+    <div class="analysis-card">
+      <div class="label">❤️ Emotional Journey</div>
+      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.emotionalJourney || 'N/A'}</div>
+    </div>
+    
+    <div class="analysis-card">
+      <div class="label">🎭 Narrative Tone</div>
+      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.narrativeTone || 'N/A'}</div>
+    </div>
+    
+    <div class="analysis-card">
+      <div class="label">📚 Backstory</div>
+      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.backstory || 'N/A'}</div>
+    </div>
   `;
 }
 
 /* ============================================================
-   PROMPT GENERATION (ANALYZER TAB)
+   PROMPT GENERATION (ANALYZER TAB) — WITH STORY
 ============================================================ */
 function generatePrompts(selectedModels, analysis) {
   const promptCard = document.getElementById('promptCard');
   const output = document.getElementById('promptOutput');
   const tags = document.getElementById('modelTags');
 
-  const baseSubject = `${analysis.subject}. ${analysis.characterDetails}. Action: ${analysis.action}. Expression: ${analysis.expression}. Performance: ${analysis.performance}. Camera: ${analysis.camera}. Lighting: ${analysis.lighting}. Scene: ${analysis.scene}. Style: ${analysis.style}. ${analysis.technical}.`;
+  // Build comprehensive base with story
+  const visualBase = `${analysis.subject}. ${analysis.characterDetails}. Action: ${analysis.action}. Expression: ${analysis.expression}. Performance: ${analysis.performance}. Camera: ${analysis.camera}. Lighting: ${analysis.lighting}. Scene: ${analysis.scene}. Style: ${analysis.style}. ${analysis.technical}.`;
+  
+  const storyBase = analysis.story ? `\n\n📖 STORY: ${analysis.story}` : '';
+  const arcBase = analysis.storyArc ? `\n🎬 STORY ARC: ${analysis.storyArc}` : '';
+  const motivationBase = analysis.characterMotivation ? `\n💭 CHARACTER MOTIVATION: ${analysis.characterMotivation}` : '';
+  const emotionBase = analysis.emotionalJourney ? `\n❤️ EMOTIONAL JOURNEY: ${analysis.emotionalJourney}` : '';
+  const toneBase = analysis.narrativeTone ? `\n🎭 NARRATIVE TONE: ${analysis.narrativeTone}` : '';
+  const backstoryBase = analysis.backstory ? `\n📚 BACKSTORY: ${analysis.backstory}` : '';
+  
+  const fullBase = visualBase + storyBase + arcBase + motivationBase + emotionBase + toneBase + backstoryBase;
 
-  const prompts = selectedModels.map(mid => buildModelSpecificPrompt(mid, baseSubject, analysis));
+  const prompts = selectedModels.map(mid => buildModelSpecificPrompt(mid, fullBase, analysis));
 
   tags.innerHTML = selectedModels.map(mid => {
     const m = MODELS.find(x => x.id === mid);
@@ -844,10 +929,9 @@ function buildModelSpecificPrompt(modelId, baseSubject, analysis) {
 
   const header = `[${model.name}]`;
   const suffix = isImage
-    ? '\n\nUltra-detailed, 8K, professional quality, sharp focus, masterpiece'
-    : '\n\nDuration: 10s • 16:9 • High fidelity • Professional cinematic output • Natural motion';
+    ? '\n\nUltra-detailed, 8K, professional quality, sharp focus, masterpiece, cinematic composition'
+    : '\n\nDuration: 10s • 16:9 • High fidelity • Professional cinematic output • Natural motion • Narrative-driven';
 
-  // Model-specific tuning
   const tuning = {
     'midjourney': '\n--ar 16:9 --v 7.0 --style raw --chaos 20\nQuality: 2 --stylize 250\nNegative: blurry, low quality, distorted, deformed',
     'midjourney6': '\n--ar 16:9 --v 6.1\nQuality: 1 --stylize 100\nNegative: deformed, ugly, bad anatomy',
@@ -890,56 +974,56 @@ function buildModelSpecificPrompt(modelId, baseSubject, analysis) {
     'removebg': '\nBackground removal\nClean edges',
     'upscale': '\n4x upscaling\nDetail enhancement',
     'inpaint': '\nSelective editing\nSeamless blending',
-    'sora': '\nStyle: photorealistic cinematic\nDuration: 10s\nAspect: 16:9\nMotion: fluid and natural\nTemporal consistency: high',
-    'sora2': '\nEnhanced physics simulation\n4K output\nMulti-shot coherence\nAdvanced motion control',
-    'runway': '\nCamera control enabled\nMotion brush active\nGen-4.5 alpha quality\nNatural physics',
-    'runway3': '\nGen-3 Alpha mode\nEnhanced temporal consistency\nCamera control enabled\nMotion intensity: medium-high',
-    'kling': '\nMode: Professional\nDuration: 10s\nCamera control enabled\nMotion amplitude: medium\nQuality: 1080p cinematic',
-    'kling2': '\nPro mode enabled\nEnhanced realism\nDuration: 10s\nHigh motion fidelity',
-    'veo': '\nCinematic quality\nNatural motion\nCoherent scene progression\n1080p/4K output',
-    'veo2': '\nVeo 2 cinematic pipeline\nEnhanced physics\n4K resolution\nNatural lighting simulation',
-    'seedance': '\nSeedance cinematic mode\nHigh motion fidelity\nAspect ratio 16:9',
-    'wan': '\nWAN 2.6 cinematic pipeline\nChinese cinema aesthetic support\nHigh-res output',
-    'wan2': '\nWAN 2.2 cinematic pipeline\nHigh-res output',
-    'luma': '\nLuma Ray 3 cinematic mode\nKeyframe: start with subject\nQuality: ultra-high\nDuration: 5s loop',
+    'sora': '\nStyle: photorealistic cinematic\nDuration: 10s\nAspect: 16:9\nMotion: fluid and natural\nTemporal consistency: high\nNarrative coherence: high',
+    'sora2': '\nEnhanced physics simulation\n4K output\nMulti-shot coherence\nAdvanced motion control\nStory continuity: maintained',
+    'runway': '\nCamera control enabled\nMotion brush active\nGen-4.5 alpha quality\nNatural physics\nNarrative pacing: cinematic',
+    'runway3': '\nGen-3 Alpha mode\nEnhanced temporal consistency\nCamera control enabled\nMotion intensity: medium-high\nCharacter continuity: high',
+    'kling': '\nMode: Professional\nDuration: 10s\nCamera control enabled\nMotion amplitude: medium\nQuality: 1080p cinematic\nEmotional expression: high fidelity',
+    'kling2': '\nPro mode enabled\nEnhanced realism\nDuration: 10s\nHigh motion fidelity\nCharacter performance: nuanced',
+    'veo': '\nCinematic quality\nNatural motion\nCoherent scene progression\n1080p/4K output\nStory-driven narrative',
+    'veo2': '\nVeo 2 cinematic pipeline\nEnhanced physics\n4K resolution\nNatural lighting simulation\nNarrative arc support',
+    'seedance': '\nSeedance cinematic mode\nHigh motion fidelity\nAspect ratio 16:9\nCharacter-driven storytelling',
+    'wan': '\nWAN 2.6 cinematic pipeline\nChinese cinema aesthetic support\nHigh-res output\nEmotional narrative support',
+    'wan2': '\nWAN 2.2 cinematic pipeline\nHigh-res output\nNarrative coherence',
+    'luma': '\nLuma Ray 3 cinematic mode\nKeyframe: start with subject\nQuality: ultra-high\nDuration: 5s loop\nStory beat: key moment',
     'luma2': '\nLuma cinematic mode\nKeyframe: start with subject\nQuality: high\nDuration: 5s loop',
-    'pika': '\nMotion intensity: 5\nNegative: blurry, low quality',
-    'hailuo': '\nHailuo cinematic mode\nEnhanced character consistency\nProfessional quality',
-    'haiper': '\nHaiper professional mode\nHigh detail',
-    'mochi': '\nMochi 1 open-source model\nHigh-quality motion\n10B parameter model\nNatural physics',
-    'hunyuan': '\nHunyuan 13B+ model\nProfessional grade\nEnhanced realism',
-    'ltx': '\nLTX-2 22B model\nHigh-resolution output\nProfessional cinematic quality',
-    'vidu': '\nVidu Q2 mode\nEnhanced temporal consistency\nProfessional quality',
-    'minimax': '\nMinimax professional mode\nHigh detail\nCamera control\nNatural motion physics',
-    'stable': '\nSVD open-source model\nCustomizable parameters\nHigh flexibility',
-    'moonvalley': '\nMoonvalley cinematic mode\nArtistic style support\nEnhanced creativity',
-    'cogvideo': '\nCogVideo model\nOpen-source\nHigh-quality generation\nResearch-grade',
-    'invideo': '\nInVideo AI mode\nTemplate-based\nQuick generation\nMarketing optimized',
-    'fliki': '\nFliki mode\nVoiceover integration\nQuick turnaround\nSocial media optimized',
-    'pictory': '\nPictory mode\nText-to-video\nAutomated editing\nContent marketing',
-    'synthesia': '\nSynthesia AI avatar mode\nProfessional presentation\nMulti-language support',
-    'heygen': '\nHeyGen avatar mode\nNatural lip-sync\nProfessional quality\nBusiness presentations',
-    'did': '\nD-ID talking head mode\nAI avatar\nNatural expressions',
-    'colossyan': '\nColossyan AI actor mode\nCorporate training\nProfessional quality\nMulti-avatar',
-    'elai': '\nElai.io mode\nAI presenter\nProfessional output\nEducational content',
-    'deepbrain': '\nDeepBrain AI mode\nAdvanced algorithms\nMultilingual voiceovers',
-    'flexclip': '\nFlexClip mode\nEasy editing\nQuick generation\nSocial media',
-    'veed': '\nVEED.io mode\nAI-powered editing\nQuick turnaround',
-    'kapwing': '\nKapwing mode\nCollaborative editing\nSocial media optimized',
-    'domo': '\nDomoAI mode\nAnime style support\nArtistic generation',
-    'gaga': '\nGaga AI mode\nMusic video generation\nEnhanced creativity',
-    'freebeat': '\nfreebeat.ai integrated studio\nMusic sync\nProfessional production',
-    'magic': '\nMagicTime mode\nTime-lapse learning\nPhysics-accurate\nMetamorphic capabilities',
-    'phenaki': '\nPhenaki mode\nVariable length video\nStory-driven\nNarrative focused',
-    'imagen': '\nGoogle Imagen Video\nHigh fidelity\nProfessional quality\nResearch-grade',
-    'makeavideo': '\nMeta Make-A-Video\nHigh quality\nNatural motion\nProfessional output',
+    'pika': '\nMotion intensity: 5\nNegative: blurry, low quality\nEmotional storytelling enabled',
+    'hailuo': '\nHailuo cinematic mode\nEnhanced character consistency\nProfessional quality\nNarrative performance: high',
+    'haiper': '\nHaiper professional mode\nHigh detail\nCharacter-driven motion',
+    'mochi': '\nMochi 1 open-source model\nHigh-quality motion\n10B parameter model\nNatural physics\nEmotional authenticity',
+    'hunyuan': '\nHunyuan 13B+ model\nProfessional grade\nEnhanced realism\nCharacter depth',
+    'ltx': '\nLTX-2 22B model\nHigh-resolution output\nProfessional cinematic quality\nNarrative flow',
+    'vidu': '\nVidu Q2 mode\nEnhanced temporal consistency\nProfessional quality\nStory continuity',
+    'minimax': '\nMinimax professional mode\nHigh detail\nCamera control\nNatural motion physics\nEmotional range',
+    'stable': '\nSVD open-source model\nCustomizable parameters\nHigh flexibility\nNarrative control',
+    'moonvalley': '\nMoonvalley cinematic mode\nArtistic style support\nEnhanced creativity\nStory-driven visuals',
+    'cogvideo': '\nCogVideo model\nOpen-source\nHigh-quality generation\nResearch-grade\nNarrative understanding',
+    'invideo': '\nInVideo AI mode\nTemplate-based\nQuick generation\nMarketing optimized\nStory templates',
+    'fliki': '\nFliki mode\nVoiceover integration\nQuick turnaround\nSocial media optimized\nNarration-ready',
+    'pictory': '\nPictory mode\nText-to-video\nAutomated editing\nContent marketing\nScript-to-screen',
+    'synthesia': '\nSynthesia AI avatar mode\nProfessional presentation\nMulti-language support\nCharacter performance',
+    'heygen': '\nHeyGen avatar mode\nNatural lip-sync\nProfessional quality\nBusiness presentations\nEmotional delivery',
+    'did': '\nD-ID talking head mode\nAI avatar\nNatural expressions\nCharacter animation',
+    'colossyan': '\nColossyan AI actor mode\nCorporate training\nProfessional quality\nMulti-avatar\nCharacter-driven',
+    'elai': '\nElai.io mode\nAI presenter\nProfessional output\nEducational content\nNarrative delivery',
+    'deepbrain': '\nDeepBrain AI mode\nAdvanced algorithms\nMultilingual voiceovers\nCharacter depth',
+    'flexclip': '\nFlexClip mode\nEasy editing\nQuick generation\nSocial media\nStory templates',
+    'veed': '\nVEED.io mode\nAI-powered editing\nQuick turnaround\nNarrative pacing',
+    'kapwing': '\nKapwing mode\nCollaborative editing\nSocial media optimized\nStory-driven edits',
+    'domo': '\nDomoAI mode\nAnime style support\nArtistic generation\nCharacter animation',
+    'gaga': '\nGaga AI mode\nMusic video generation\nEnhanced creativity\nNarrative music sync',
+    'freebeat': '\nfreebeat.ai integrated studio\nMusic sync\nProfessional production\nStory-music integration',
+    'magic': '\nMagicTime mode\nTime-lapse learning\nPhysics-accurate\nMetamorphic capabilities\nStory progression',
+    'phenaki': '\nPhenaki mode\nVariable length video\nStory-driven\nNarrative focused\nLong-form storytelling',
+    'imagen': '\nGoogle Imagen Video\nHigh fidelity\nProfessional quality\nResearch-grade\nNarrative coherence',
+    'makeavideo': '\nMeta Make-A-Video\nHigh quality\nNatural motion\nProfessional output\nStory visualization',
   };
 
   return `${header}\n${baseSubject}${tuning[modelId] || suffix}`;
 }
 
 /* ============================================================
-   GENERATOR TAB
+   GENERATOR TAB — WITH STORY
 ============================================================ */
 document.getElementById('generateBtn').addEventListener('click', () => {
   const subject = document.getElementById('subjectInput').value.trim();
@@ -953,8 +1037,27 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   const moods = moodSelectCtrl.getSelected();
   const character = document.getElementById('characterInput').value.trim();
   const action = document.getElementById('actionInput').value.trim();
+  const story = document.getElementById('storyInput').value.trim();
+  const arc = document.getElementById('arcInput').value.trim();
+  const emotion = document.getElementById('emotionInput').value.trim();
 
-  const fullSubject = `${subject}${character ? '. Character: ' + character : ''}${action ? '. Actions & Performance: ' + action : ''}`;
+  const styleStr = styles.length ? styles.join(', ').toLowerCase() : 'cinematic';
+  const cameraStr = cameras.length ? cameras.join(', ') : 'cinematic framing';
+  const lightStr = lights.length ? lights.join(', ') : 'cinematic lighting';
+  const moodStr = moods.length ? moods.join(', ') : 'cinematic mood';
+
+  // Build comprehensive prompt with story
+  let fullPrompt = `${subject}.`;
+  if (character) fullPrompt += `\n\n👤 CHARACTER: ${character}`;
+  if (action) fullPrompt += `\n🎬 ACTIONS & PERFORMANCE: ${action}`;
+  if (story) fullPrompt += `\n\n📖 STORY: ${story}`;
+  if (arc) fullPrompt += `\n🎬 STORY ARC: ${arc}`;
+  if (emotion) fullPrompt += `\n❤️ EMOTIONAL JOURNEY: ${emotion}`;
+  fullPrompt += `\n\n🎨 VISUAL STYLE: ${styleStr}`;
+  fullPrompt += `\n📷 CAMERA: ${cameraStr}`;
+  fullPrompt += `\n💡 LIGHTING: ${lightStr}`;
+  fullPrompt += `\n🎭 MOOD: ${moodStr}`;
+  fullPrompt += `\n\nUltra-detailed, 4K, professional color grading, shallow depth of field, filmic look, cinematic composition, masterpiece quality.`;
 
   const promptCard = document.getElementById('genPromptCard');
   const output = document.getElementById('genPromptOutput');
@@ -962,12 +1065,11 @@ document.getElementById('generateBtn').addEventListener('click', () => {
 
   const prompts = models.map(mid => {
     const model = MODELS.find(x => x.id === mid);
-    const styleStr = styles.length ? styles.join(', ').toLowerCase() : 'cinematic';
-    const cameraStr = cameras.length ? cameras.join(', ') : 'cinematic framing';
-    const lightStr = lights.length ? lights.join(', ') : 'cinematic lighting';
-    const moodStr = moods.length ? moods.join(', ') : 'cinematic mood';
-    const base = `${fullSubject}. Visual style: ${styleStr}. Camera: ${cameraStr}. Lighting: ${lightStr}. Mood: ${moodStr}. Ultra-detailed, 4K, professional color grading, shallow depth of field, filmic look.`;
-    return `[${model.name}]\n${base}${model.category.includes('Image') ? '\n\nHigh quality • Professional output • Sharp focus' : '\n\nDuration: 10s • 16:9 • High fidelity • Natural motion'}`;
+    const isImage = model.category.includes('Image');
+    const suffix = isImage 
+      ? '\n\nSharp focus • Professional quality • Masterpiece • 8K resolution'
+      : '\n\nDuration: 10s • 16:9 • High fidelity • Natural motion • Narrative-driven • Character performance: nuanced';
+    return `[${model.name}]\n${fullPrompt}${suffix}`;
   });
 
   tags.innerHTML = models.map(mid => {
@@ -1003,7 +1105,7 @@ function downloadPrompt(id) {
   const blob = new Blob([text], {type:'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `promptforge_${Date.now()}.txt`;
+  a.download = `promptforge_story_${Date.now()}.txt`;
   a.click();
 }
 
