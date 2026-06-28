@@ -107,6 +107,34 @@
   }
   .btn-secondary:hover { border-color:var(--cyan); }
   .btn-icon { padding:10px 14px; }
+  
+  /* Generate Button - Large & Prominent */
+  .btn-generate {
+    padding:18px 48px; 
+    font-size:1.15rem; 
+    font-weight:700;
+    background:linear-gradient(135deg, #00e5ff, #b388ff);
+    color:#000;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    transition:all 0.3s;
+    box-shadow:0 4px 20px rgba(0,229,255,0.3);
+    margin:20px auto;
+    display:none;
+  }
+  .btn-generate:hover {
+    transform:translateY(-3px);
+    box-shadow:0 8px 30px rgba(0,229,255,0.5);
+  }
+  .btn-generate.show {
+    display:block;
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow:0 4px 20px rgba(0,229,255,0.3); }
+    50% { box-shadow:0 6px 30px rgba(0,229,255,0.5); }
+  }
 
   /* Multi-Select */
   .multi-select {
@@ -263,6 +291,14 @@
   .footer-note {
     text-align:center; color:var(--muted); font-size:0.8rem; padding:20px;
   }
+  
+  .upload-hint {
+    text-align:center;
+    color:var(--cyan);
+    font-size:0.9rem;
+    margin-top:12px;
+    font-weight:600;
+  }
 </style>
 </head>
 <body>
@@ -302,6 +338,7 @@
         <button class="btn btn-primary" id="loadUrlBtn">Load URL</button>
       </div>
       <div class="media-preview" id="mediaPreview"></div>
+      <div class="upload-hint" id="uploadHint" style="display:none;">✅ Media loaded! Now select models and click generate below ↓</div>
     </div>
 
     <div class="card">
@@ -340,8 +377,13 @@
       </div>
     </div>
 
+    <!-- GENERATE BUTTON -->
+    <button class="btn-generate" id="generatePromptBtn">
+      🎯 Generate Video/Image to Prompt
+    </button>
+
     <div class="card" id="analysisCard" style="display:none;">
-      <div class="card-title"><span class="icon"></span> Live Analysis</div>
+      <div class="card-title"><span class="icon">🔬</span> Live Analysis</div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       <div id="analysisStatus" style="color:var(--muted);font-size:0.9rem;">Initializing...</div>
       <div class="analysis-grid" id="analysisGrid"></div>
@@ -385,7 +427,7 @@
         <div class="multi-select" id="lightingSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon"></span> Mood / Atmosphere <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi-select)</span></div>
+        <div class="card-title"><span class="icon">🎭</span> Mood / Atmosphere <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi-select)</span></div>
         <div class="multi-select" id="moodSelect"></div>
       </div>
     </div>
@@ -400,7 +442,7 @@
     </div>
 
     <div class="card" id="genPromptCard" style="display:none;">
-      <div class="card-title"><span class="icon"></span> Your Cinematic Prompt</div>
+      <div class="card-title"><span class="icon">📝</span> Your Cinematic Prompt</div>
       <div id="genModelTags"></div>
       <div class="prompt-output" id="genPromptOutput"></div>
       <div class="action-row">
@@ -460,7 +502,7 @@ const MODELS = [
   {id:'baidu', name:'Baidu ERNIE', icon:'🔵', category:'Image - Asian'},
   {id:'aliyun', name:'Alibaba Tongyi', icon:'☁️', category:'Image - Asian'},
   {id:'bytedance', name:'ByteDance Jimeng', icon:'🎵', category:'Image - Asian'},
-  {id:'kling', name:'Kling Image', icon:'⚡', category:'Image - Asian'},
+  {id:'klingimg', name:'Kling Image', icon:'⚡', category:'Image - Asian'},
   {id:'sense', name:'SenseNova', icon:'👁️', category:'Image - Asian'},
   
   // Tier 5 - Niche & Experimental
@@ -471,7 +513,7 @@ const MODELS = [
   {id:'photoroom', name:'PhotoRoom', icon:'📸', category:'Image - Niche'},
   {id:'removebg', name:'Remove.bg', icon:'✂️', category:'Image - Niche'},
   {id:'upscale', name:'AI Upscaler', icon:'📈', category:'Image - Niche'},
-  {id:'inpaint', name:'Inpainting AI', icon:'', category:'Image - Niche'},
+  {id:'inpaint', name:'Inpainting AI', icon:'🎨', category:'Image - Niche'},
   
   // === AI VIDEO GENERATION MODELS ===
   
@@ -561,6 +603,9 @@ const MOODS = [
   'Gritty','Dreamy','Chaotic','Peaceful','Triumphant',
   'Lonely','Vibrant','Eerie','Majestic','Raw',
 ];
+
+// Global state
+let currentMedia = { filename:'', type:'', size:0, url:'' };
 
 /* ============================================================
    TAB SWITCHING
@@ -685,6 +730,8 @@ const moodSelectCtrl = createMultiSelect(
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
 const mediaPreview = document.getElementById('mediaPreview');
+const uploadHint = document.getElementById('uploadHint');
+const generateBtn = document.getElementById('generatePromptBtn');
 
 uploadZone.addEventListener('click', () => fileInput.click());
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
@@ -698,16 +745,24 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
 function handleFiles(files) {
   const file = files[0];
   const url = URL.createObjectURL(file);
+  currentMedia = { filename:file.name, type:file.type, size:file.size, url:url };
   showPreview(url, file.type);
-  runAnalysis(file.name, file.type, file.size);
+  uploadHint.style.display = 'block';
+  generateBtn.classList.add('show');
+  
+  // Run analysis but don't auto-generate prompts
+  runAnalysis(file.name, file.type, file.size, false);
 }
 
 document.getElementById('loadUrlBtn').addEventListener('click', () => {
   const url = document.getElementById('urlInput').value.trim();
   if (!url) return;
+  currentMedia = { filename:'URL Media', type:'url', size:0, url:url };
   mediaPreview.innerHTML = `<img src="${url}" onerror="this.outerHTML='<video src=\\'${url}\\' controls autoplay></video>'" />`;
   mediaPreview.style.display = 'block';
-  runAnalysis('URL Media', 'url', 0);
+  uploadHint.style.display = 'block';
+  generateBtn.classList.add('show');
+  runAnalysis('URL Media', 'url', 0, false);
 });
 
 function showPreview(url, type) {
@@ -726,7 +781,7 @@ function showPreview(url, type) {
 ============================================================ */
 let currentAnalysis = null;
 
-function runAnalysis(filename, type, size) {
+function runAnalysis(filename, type, size, autoGenerate = false) {
   const skipAI = document.getElementById('skipAI').checked;
   const card = document.getElementById('analysisCard');
   const promptCard = document.getElementById('promptCard');
@@ -745,7 +800,7 @@ function runAnalysis(filename, type, size) {
     {p:75, t:'📐 Analyzing camera movement & angles...'},
     {p:85, t:'💡 Evaluating lighting & color palette...'},
     {p:95, t:'🎬 Structuring scene composition...'},
-    {p:100, t:'✅ Analysis complete — generating prompts...'},
+    {p:100, t:'✅ Analysis complete! Click generate button below ↓'},
   ];
 
   let i = 0;
@@ -753,13 +808,16 @@ function runAnalysis(filename, type, size) {
     if (i >= steps.length) {
       clearInterval(interval);
       if (skipAI) {
-        status.innerHTML = '⚡ Instant generation mode — skipping deep analysis';
+        status.innerHTML = '⚡ Ready for instant generation';
         grid.innerHTML = '';
       } else {
-        status.innerHTML = '✅ Analysis complete';
+        status.innerHTML = '✅ Analysis complete! Click generate button below ↓';
         renderAnalysisResults(grid, filename, type, size);
       }
-      setTimeout(() => generatePrompts(filename, type), 400);
+      // Only auto-generate if explicitly requested
+      if (autoGenerate) {
+        setTimeout(() => generatePrompts(filename, type), 400);
+      }
       return;
     }
     progressFill.style.width = steps[i].p + '%';
@@ -794,6 +852,36 @@ function formatSize(b) {
   return (b/1073741824).toFixed(2)+' GB';
 }
 function rand(n) { return Math.floor(Math.random()*n); }
+
+/* ============================================================
+   GENERATE BUTTON CLICK HANDLER
+============================================================ */
+document.getElementById('generatePromptBtn').addEventListener('click', () => {
+  if (!currentMedia.filename) {
+    alert('Please upload a video or image first!');
+    return;
+  }
+  
+  const selectedModels = modelSelectCtrl.getSelected();
+  if (selectedModels.length === 0) {
+    alert('Please select at least one target model from the dropdown above!');
+    return;
+  }
+  
+  // Show generating state
+  const btn = document.getElementById('generatePromptBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span> Generating...';
+  btn.disabled = true;
+  
+  // Generate prompts
+  setTimeout(() => {
+    generatePrompts(currentMedia.filename, currentMedia.type);
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+    btn.classList.remove('show');
+  }, 800);
+});
 
 /* ============================================================
    PROMPT GENERATION
@@ -832,6 +920,9 @@ function generatePrompts(filename, type) {
   output.textContent = prompts.join('\n\n' + '═'.repeat(60) + '\n\n');
   promptCard.style.display = 'block';
   currentAnalysis = prompts;
+  
+  // Scroll to results
+  promptCard.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 
 function buildModelPrompt(modelId, subject, filename, type) {
@@ -893,7 +984,7 @@ function buildImagePrompt(modelId, subject) {
     'baidu': `[Baidu ERNIE]\n${base}\n\nChinese AI model\nHigh fidelity\nProfessional quality\nNegative: low quality, distorted`,
     'aliyun': `[Alibaba Tongyi]\n${base}\n\nChinese market\nHigh quality\nProfessional output\nNegative: low quality`,
     'bytedance': `[ByteDance Jimeng]\n${base}\n\nTikTok/Douyin optimized\nHigh quality\nFast generation\nNegative: low quality`,
-    'kling': `[Kling Image]\n${base}\n\nHigh fidelity\nProfessional quality\nAdvanced rendering\nNegative: low quality, artifacts`,
+    'klingimg': `[Kling Image]\n${base}\n\nHigh fidelity\nProfessional quality\nAdvanced rendering\nNegative: low quality, artifacts`,
     'sense': `[SenseNova]\n${base}\n\nChinese AI model\nHigh quality\nProfessional output\nNegative: low quality`,
     'pixverse': `[PixVerse]\n${base}\n\nVideo-to-image\nHigh quality\nProfessional output\nNegative: low quality`,
     'civitai': `[CivitAI Models]\n${base}\n\nCommunity models\nCustom LoRAs\nHigh quality\nNegative: as per model`,
@@ -1052,7 +1143,7 @@ function buildImageGeneratorPrompt(modelId, subject, styles, lights, moods) {
     'baidu': `[Baidu ERNIE]\n${base}\n\nChinese AI model\nHigh fidelity`,
     'aliyun': `[Alibaba Tongyi]\n${base}\n\nChinese market\nHigh quality`,
     'bytedance': `[ByteDance Jimeng]\n${base}\n\nTikTok optimized\nHigh quality`,
-    'kling': `[Kling Image]\n${base}\n\nHigh fidelity\nProfessional quality`,
+    'klingimg': `[Kling Image]\n${base}\n\nHigh fidelity\nProfessional quality`,
     'sense': `[SenseNova]\n${base}\n\nChinese AI model\nHigh quality`,
     'pixverse': `[PixVerse]\n${base}\n\nVideo-to-image\nHigh quality`,
     'civitai': `[CivitAI Models]\n${base}\n\nCommunity models\nCustom LoRAs`,
@@ -1176,4 +1267,3 @@ document.getElementById('genModelSelect').dataset.label = 'AI Video & Image Mode
 </script>
 </body>
 </html>
-
