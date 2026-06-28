@@ -18,7 +18,6 @@
       radial-gradient(circle at 90% 80%, rgba(179,136,255,0.08) 0%, transparent 40%);
   }
   .container { max-width:1400px; margin:0 auto; padding:20px; }
-
   .header { text-align:center; padding:30px 20px 20px; }
   .logo {
     font-size:2.5rem; font-weight:800;
@@ -26,8 +25,7 @@
     background-clip:text; letter-spacing:-1px;
   }
   .tagline { color:var(--muted); margin-top:8px; font-size:0.95rem; }
-
-  .tabs { display:flex; gap:10px; justify-content:center; margin:30px 0 25px; }
+  .tabs { display:flex; gap:10px; justify-content:center; margin:30px 0 25px; flex-wrap:wrap; }
   .tab {
     padding:14px 32px; border-radius:50px; cursor:pointer; font-weight:600;
     background:var(--panel); border:1px solid var(--border); color:var(--muted);
@@ -38,21 +36,18 @@
     box-shadow:0 0 30px rgba(0,229,255,0.3);
   }
   .tab:hover:not(.active) { border-color:var(--cyan); color:var(--text); }
-
   .panel { display:none; animation:fadeIn 0.4s ease; }
   .panel.active { display:block; }
   @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-
   .card {
     background:var(--panel); border:1px solid var(--border); border-radius:16px;
     padding:24px; margin-bottom:20px; backdrop-filter:blur(10px);
   }
   .card-title {
     font-size:1.1rem; font-weight:700; margin-bottom:16px;
-    display:flex; align-items:center; gap:10px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
   }
   .card-title .icon { font-size:1.3rem; }
-
   .upload-zone {
     border:2px dashed var(--border); border-radius:16px; padding:50px 30px;
     text-align:center; cursor:pointer; transition:all 0.3s;
@@ -66,19 +61,18 @@
   .upload-zone h3 { font-size:1.2rem; margin-bottom:8px; }
   .upload-zone p { color:var(--muted); font-size:0.9rem; }
   .upload-zone input { display:none; }
-  .upload-formats {
-    margin-top:12px; font-size:0.8rem; color:var(--muted);
-    display:flex; flex-wrap:wrap; gap:6px; justify-content:center;
+  .api-key-section {
+    background:var(--panel2); border:1px solid var(--border); border-radius:12px;
+    padding:16px; margin-top:16px;
   }
-  .format-tag { background:var(--panel2); padding:3px 10px; border-radius:20px; font-size:0.75rem; }
-
-  .url-input-row { display:flex; gap:10px; margin-top:16px; }
-  .url-input-row input {
-    flex:1; padding:12px 16px; background:var(--panel2); border:1px solid var(--border);
-    border-radius:10px; color:var(--text); font-size:0.95rem;
+  .api-key-section label { display:block; font-size:0.9rem; color:var(--muted); margin-bottom:8px; }
+  .api-key-input {
+    width:100%; padding:10px 14px; background:var(--panel); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-size:0.9rem;
   }
-  .url-input-row input:focus { outline:none; border-color:var(--cyan); }
-
+  .api-key-input:focus { outline:none; border-color:var(--cyan); }
+  .api-hint { font-size:0.8rem; color:var(--muted); margin-top:8px; }
+  .api-hint a { color:var(--cyan); text-decoration:none; }
   .btn {
     padding:12px 24px; border-radius:10px; border:none; cursor:pointer;
     font-weight:600; font-size:0.95rem; transition:all 0.2s;
@@ -87,7 +81,6 @@
   .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,229,255,0.3); }
   .btn-secondary { background:var(--panel2); color:var(--text); border:1px solid var(--border); }
   .btn-secondary:hover { border-color:var(--cyan); }
-
   .btn-generate {
     padding:18px 48px; font-size:1.15rem; font-weight:700;
     background:linear-gradient(135deg, #00e5ff, #b388ff);
@@ -101,7 +94,6 @@
     0%, 100% { box-shadow:0 4px 20px rgba(0,229,255,0.3); }
     50% { box-shadow:0 6px 30px rgba(0,229,255,0.5); }
   }
-
   .multi-select { position:relative; margin-bottom:14px; }
   .multi-select-label {
     font-size:0.85rem; color:var(--muted); margin-bottom:6px; font-weight:600;
@@ -125,7 +117,7 @@
   .dropdown {
     position:absolute; top:100%; left:0; right:0; margin-top:6px;
     background:var(--panel2); border:1px solid var(--border); border-radius:10px;
-    max-height:400px; overflow-y:auto; z-index:100; display:none;
+    max-height:450px; overflow-y:auto; z-index:100; display:none;
     box-shadow:0 10px 30px rgba(0,0,0,0.5);
   }
   .dropdown.show { display:block; }
@@ -140,11 +132,10 @@
   }
   .dropdown-item.selected .check { background:var(--cyan); border-color:var(--cyan); }
   .dropdown-item.selected .check::after { content:'✓'; color:#000; font-weight:bold; font-size:0.8rem; }
-  .dropdown-item .label { font-size:0.9rem; }
-
+  .dropdown-item .label { font-size:0.9rem; flex:1; }
+  .dropdown-item .cat { font-size:0.7rem; color:var(--muted); background:var(--panel); padding:2px 8px; border-radius:10px; }
   .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   @media(max-width:900px){ .grid-2 { grid-template-columns:1fr; } }
-
   .analysis-grid {
     display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:16px;
   }
@@ -154,9 +145,8 @@
   .analysis-card .label {
     font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;
   }
-  .analysis-card .value { font-size:1.1rem; font-weight:600; margin-top:6px; color:var(--cyan); }
+  .analysis-card .value { font-size:1.05rem; font-weight:600; margin-top:6px; color:var(--cyan); }
   .analysis-card .sub { font-size:0.85rem; color:var(--muted); margin-top:4px; }
-
   .progress-bar {
     width:100%; height:8px; background:var(--panel2); border-radius:10px;
     overflow:hidden; margin:12px 0;
@@ -165,7 +155,6 @@
     height:100%; background:var(--accent); border-radius:10px;
     transition:width 0.3s; width:0%;
   }
-
   .prompt-output {
     background:var(--panel2); border:1px solid var(--border); border-radius:12px;
     padding:20px; margin-top:16px; min-height:120px;
@@ -178,9 +167,7 @@
     background:linear-gradient(135deg, rgba(0,229,255,0.2), rgba(179,136,255,0.2));
     margin-right:6px; margin-bottom:6px;
   }
-
   .action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
-
   .toggle-row { display:flex; align-items:center; gap:10px; margin:14px 0; }
   .toggle { position:relative; width:50px; height:26px; cursor:pointer; }
   .toggle input { display:none; }
@@ -194,14 +181,12 @@
   }
   .toggle input:checked + .slider { background:var(--accent); border-color:transparent; }
   .toggle input:checked + .slider::before { transform:translateX(24px); background:#000; }
-
   .subject-input {
     width:100%; padding:14px 16px; background:var(--panel2); border:1px solid var(--border);
     border-radius:10px; color:var(--text); font-size:1rem; resize:vertical; min-height:80px;
     font-family:inherit;
   }
   .subject-input:focus { outline:none; border-color:var(--cyan); }
-
   .media-preview {
     margin-top:16px; border-radius:12px; overflow:hidden;
     max-height:300px; background:#000; display:none;
@@ -209,28 +194,31 @@
   .media-preview img, .media-preview video {
     width:100%; max-height:300px; object-fit:contain; display:block;
   }
-
   .spinner {
     display:inline-block; width:18px; height:18px; border:2px solid rgba(0,229,255,0.3);
     border-top-color:var(--cyan); border-radius:50%; animation:spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform:rotate(360deg); } }
-
   ::-webkit-scrollbar { width:8px; height:8px; }
   ::-webkit-scrollbar-track { background:var(--panel); }
   ::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
   ::-webkit-scrollbar-thumb:hover { background:var(--cyan); }
-
   .footer-note { text-align:center; color:var(--muted); font-size:0.8rem; padding:20px; }
   .upload-hint { text-align:center; color:var(--cyan); font-size:0.9rem; margin-top:12px; font-weight:600; }
+  .analysis-mode-badge {
+    display:inline-block; padding:4px 12px; border-radius:20px; font-size:0.75rem;
+    font-weight:600; margin-left:10px;
+  }
+  .badge-real { background:var(--green); color:#000; }
+  .badge-simulated { background:var(--muted); color:#000; }
 </style>
 </head>
 <body>
 <div class="container">
 
   <div class="header">
-    <div class="logo">⚡ PromptForge AI</div>
-    <div class="tagline">Analyze characters, actions & performance • Generate prompts for 60+ AI models</div>
+    <div class="logo"> PromptForge AI</div>
+    <div class="tagline">Real AI analysis • 60+ models • Full style/camera/lighting/mood control</div>
   </div>
 
   <div class="tabs">
@@ -238,33 +226,36 @@
     <div class="tab" data-tab="generator">✨ Prompt Generator</div>
   </div>
 
+  <!-- ==================== LIVE ANALYZER ==================== -->
   <div class="panel active" id="analyzer">
+
+    <div class="card">
+      <div class="card-title"><span class="icon"></span> API Configuration (Optional)</div>
+      <div class="api-key-section">
+        <label>OpenAI API Key — for real GPT-4 Vision analysis</label>
+        <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-..." />
+        <div class="api-hint">
+          💡 Without API key: simulated analysis (generic results)<br>
+          🔑 With API key: REAL AI analysis of your actual content<br>
+          <a href="https://platform.openai.com/api-keys" target="_blank">Get API key →</a>
+        </div>
+      </div>
+    </div>
 
     <div class="card">
       <div class="card-title"><span class="icon">📤</span> Upload Media</div>
       <div class="upload-zone" id="uploadZone">
         <div class="big-icon">🎬</div>
         <h3>Drag & Drop Video or Image Here</h3>
-        <p>or click to browse • Supports all formats • Unlimited duration & file size</p>
+        <p>or click to browse • All formats supported</p>
         <input type="file" id="fileInput" accept="video/*,image/*" multiple />
-        <div class="upload-formats">
-          <span class="format-tag">MP4</span><span class="format-tag">MOV</span>
-          <span class="format-tag">AVI</span><span class="format-tag">MKV</span>
-          <span class="format-tag">WEBM</span><span class="format-tag">GIF</span>
-          <span class="format-tag">PNG</span><span class="format-tag">JPG</span>
-          <span class="format-tag">WEBP</span><span class="format-tag">TIFF</span>
-        </div>
-      </div>
-      <div class="url-input-row">
-        <input type="text" id="urlInput" placeholder="Or paste a video/image URL..." />
-        <button class="btn btn-primary" id="loadUrlBtn">Load URL</button>
       </div>
       <div class="media-preview" id="mediaPreview"></div>
-      <div class="upload-hint" id="uploadHint" style="display:none;">✅ Media loaded! Now select models and click generate below ↓</div>
+      <div class="upload-hint" id="uploadHint" style="display:none;">✅ Media loaded! Select models & click generate ↓</div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🎯</span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.85rem;margin-left:8px;">(select one or more)</span></div>
+      <div class="card-title"><span class="icon">🎯</span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.85rem;">(multi-select)</span></div>
       <div class="multi-select" id="modelSelect">
         <div class="multi-select-label">AI Video & Image Models</div>
         <div class="multi-select-trigger">
@@ -275,48 +266,13 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title"><span class="icon">⚙️</span> Analysis Options</div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="skipAI" checked><span class="slider"></span></label>
-        <span>Instant generation (skip deep AI analysis)</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="analyzeMotion" checked><span class="slider"></span></label>
-        <span>Analyze motion & movement patterns</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="analyzeCamera" checked><span class="slider"></span></label>
-        <span>Detect camera angles & movement</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="analyzeLight" checked><span class="slider"></span></label>
-        <span>Analyze lighting & color grading</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="analyzeScene" checked><span class="slider"></span></label>
-        <span>Parse scene structure & composition</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="analyzeCharacter" checked><span class="slider"></span></label>
-        <span>👤 Analyze characters (appearance, clothing, expressions)</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="analyzePerformance" checked><span class="slider"></span></label>
-        <span>🎭 Analyze performance (acting style, emotions, intensity)</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle"><input type="checkbox" id="analyzeAction" checked><span class="slider"></span></label>
-        <span>🎬 Analyze actions (movements, gestures, activities)</span>
-      </div>
-    </div>
-
-    <button class="btn-generate" id="generatePromptBtn">
-      🎯 Generate Video/Image to Prompt
-    </button>
+    <button class="btn-generate" id="generatePromptBtn">🎯 Analyze & Generate Prompts</button>
 
     <div class="card" id="analysisCard" style="display:none;">
-      <div class="card-title"><span class="icon">🔬</span> Live Analysis</div>
+      <div class="card-title">
+        <span class="icon">🔬</span> Analysis Results
+        <span class="analysis-mode-badge" id="analysisModeBadge"></span>
+      </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       <div id="analysisStatus" style="color:var(--muted);font-size:0.9rem;">Initializing...</div>
       <div class="analysis-grid" id="analysisGrid"></div>
@@ -327,14 +283,14 @@
       <div id="modelTags"></div>
       <div class="prompt-output" id="promptOutput"></div>
       <div class="action-row">
-        <button class="btn btn-primary" id="copyBtn">📋 Copy Prompt</button>
-        <button class="btn btn-secondary" id="downloadBtn">💾 Download .txt</button>
-        <button class="btn btn-secondary" id="regenBtn">🔄 Regenerate</button>
+        <button class="btn btn-primary" id="copyBtn">📋 Copy</button>
+        <button class="btn btn-secondary" id="downloadBtn">💾 Download</button>
       </div>
     </div>
 
   </div>
 
+  <!-- ==================== PROMPT GENERATOR ==================== -->
   <div class="panel" id="generator">
 
     <div class="card">
@@ -344,22 +300,22 @@
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-title"><span class="icon">🎨</span> Visual Style</div>
+        <div class="card-title"><span class="icon">🎨</span> Visual Style <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
         <div class="multi-select" id="styleSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon">📷</span> Camera Angle</div>
+        <div class="card-title"><span class="icon">📷</span> Camera Angle <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
         <div class="multi-select" id="cameraSelect"></div>
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="card-title"><span class="icon">💡</span> Lighting Condition</div>
+        <div class="card-title"><span class="icon">💡</span> Lighting <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
         <div class="multi-select" id="lightingSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon">🎭</span> Mood / Atmosphere</div>
+        <div class="card-title"><span class="icon">🎭</span> Mood <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
         <div class="multi-select" id="moodSelect"></div>
       </div>
     </div>
@@ -367,16 +323,16 @@
     <div class="grid-2">
       <div class="card">
         <div class="card-title"><span class="icon">👤</span> Character Description</div>
-        <textarea class="subject-input" id="characterInput" placeholder="Describe characters... e.g., 'Young woman with long red hair, wearing vintage leather jacket, confident expression'"></textarea>
+        <textarea class="subject-input" id="characterInput" placeholder="e.g., 'Young woman with red hair, leather jacket, confident expression'"></textarea>
       </div>
       <div class="card">
         <div class="card-title"><span class="icon">🎬</span> Actions & Performance</div>
-        <textarea class="subject-input" id="actionInput" placeholder="Describe actions... e.g., 'Walking confidently, gesturing with hands, intense eye contact, dramatic pause'"></textarea>
+        <textarea class="subject-input" id="actionInput" placeholder="e.g., 'Walking confidently, intense eye contact, dramatic gestures'"></textarea>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🎯</span> Target Models</div>
+      <div class="card-title"><span class="icon">🎯</span> Target Models <span style="color:var(--muted);font-weight:400;font-size:0.8rem;">(multi)</span></div>
       <div class="multi-select" id="genModelSelect"></div>
     </div>
 
@@ -389,51 +345,163 @@
       <div id="genModelTags"></div>
       <div class="prompt-output" id="genPromptOutput"></div>
       <div class="action-row">
-        <button class="btn btn-primary" id="genCopyBtn">📋 Copy Prompt</button>
-        <button class="btn btn-secondary" id="genDownloadBtn">💾 Download .txt</button>
+        <button class="btn btn-primary" id="genCopyBtn">📋 Copy</button>
+        <button class="btn btn-secondary" id="genDownloadBtn">💾 Download</button>
       </div>
     </div>
 
   </div>
 
-  <div class="footer-note">PromptForge AI • Works 100% client-side • No data uploaded to servers</div>
+  <div class="footer-note">PromptForge AI • Real AI analysis + 60+ models • 100% client-side</div>
 
 </div>
 
 <script>
+/* ============================================================
+   FULL DATA - 60+ MODELS, 30+ STYLES, 30+ ANGLES, 30+ LIGHTING, 25+ MOODS
+============================================================ */
 const MODELS = [
+  // IMAGE - Major
   {id:'midjourney', name:'Midjourney v7', icon:'🎨', category:'Image - Major'},
   {id:'midjourney6', name:'Midjourney v6.1', icon:'🎨', category:'Image - Major'},
-  {id:'dalle3', name:'DALL-E 3', icon:'️', category:'Image - Major'},
+  {id:'dalle3', name:'DALL-E 3', icon:'🖼️', category:'Image - Major'},
   {id:'dalle4', name:'DALL-E 4', icon:'🖼️', category:'Image - Major'},
-  {id:'gptimage', name:'GPT Image 2', icon:'', category:'Image - Major'},
+  {id:'gptimage', name:'GPT Image 2', icon:'🤖', category:'Image - Major'},
   {id:'ideogram', name:'Ideogram 3.0', icon:'💭', category:'Image - Major'},
-  {id:'firefly', name:'Adobe Firefly 4', icon:'🔥', category:'Image - Major'},
-  {id:'flux', name:'Flux Pro 1.1', icon:'', category:'Image - Advanced'},
-  {id:'fluxdev', name:'Flux Dev', icon:'⚡', category:'Image - Advanced'},
-  {id:'sd3', name:'Stable Diffusion 3.5', icon:'🌟', category:'Image - Advanced'},
+  {id:'firefly', name:'Adobe Firefly 4', icon:'', category:'Image - Major'},
+  // IMAGE - Advanced
+  {id:'flux', name:'Flux Pro 1.1', icon:'⚡', category:'Image - Advanced'},
+  {id:'fluxdev', name:'Flux Dev', icon:'', category:'Image - Advanced'},
+  {id:'fluxrealism', name:'Flux Realism', icon:'⚡', category:'Image - Advanced'},
+  {id:'sd3', name:'Stable Diffusion 3.5', icon:'', category:'Image - Advanced'},
   {id:'sdxl', name:'Stable Diffusion XL', icon:'🌟', category:'Image - Advanced'},
-  {id:'sora', name:'Sora', icon:'🌀', category:'Video - Major'},
+  {id:'sd3medium', name:'SD 3.5 Medium', icon:'🌟', category:'Image - Advanced'},
+  {id:'sdturbo', name:'SD Turbo', icon:'🌟', category:'Image - Advanced'},
+  {id:'sdlightning', name:'SD Lightning', icon:'🌟', category:'Image - Advanced'},
+  {id:'comfyui', name:'ComfyUI SD', icon:'🔧', category:'Image - Advanced'},
+  {id:'automatic', name:'Automatic1111', icon:'', category:'Image - Advanced'},
+  // IMAGE - Specialized
+  {id:'leonardo', name:'Leonardo Phoenix', icon:'🦁', category:'Image - Specialized'},
+  {id:'recraft', name:'Recraft v3', icon:'', category:'Image - Specialized'},
+  {id:'krea', name:'Krea AI', icon:'✨', category:'Image - Specialized'},
+  {id:'magnific', name:'Magnific AI', icon:'🔍', category:'Image - Specialized'},
+  {id:'clipdrop', name:'Clipdrop XL', icon:'📎', category:'Image - Specialized'},
+  {id:'playground', name:'Playground v3', icon:'', category:'Image - Specialized'},
+  {id:'getimg', name:'GetImg.ai', icon:'🖼️', category:'Image - Specialized'},
+  {id:'bluewillow', name:'Blue Willow', icon:'🔵', category:'Image - Specialized'},
+  {id:'nightcafe', name:'NightCafe', icon:'', category:'Image - Specialized'},
+  {id:'dreamstudio', name:'DreamStudio', icon:'💭', category:'Image - Specialized'},
+  // IMAGE - Asian
+  {id:'tencent', name:'Tencent Hunyuan', icon:'', category:'Image - Asian'},
+  {id:'baidu', name:'Baidu ERNIE', icon:'🔵', category:'Image - Asian'},
+  {id:'aliyun', name:'Alibaba Tongyi', icon:'☁️', category:'Image - Asian'},
+  {id:'bytedance', name:'ByteDance Jimeng', icon:'', category:'Image - Asian'},
+  {id:'klingimg', name:'Kling Image', icon:'⚡', category:'Image - Asian'},
+  {id:'sense', name:'SenseNova', icon:'👁️', category:'Image - Asian'},
+  // IMAGE - Niche
+  {id:'pixverse', name:'PixVerse', icon:'', category:'Image - Niche'},
+  {id:'civitai', name:'CivitAI Models', icon:'🏛️', category:'Image - Niche'},
+  {id:'tensor', name:'Tensor.art', icon:'📊', category:'Image - Niche'},
+  {id:'seaart', name:'SeaArt.ai', icon:'🌊', category:'Image - Niche'},
+  {id:'photoroom', name:'PhotoRoom', icon:'', category:'Image - Niche'},
+  {id:'removebg', name:'Remove.bg', icon:'✂️', category:'Image - Niche'},
+  {id:'upscale', name:'AI Upscaler', icon:'📈', category:'Image - Niche'},
+  {id:'inpaint', name:'Inpainting AI', icon:'🎨', category:'Image - Niche'},
+  // VIDEO - Major
+  {id:'sora', name:'Sora (OpenAI)', icon:'🌀', category:'Video - Major'},
+  {id:'sora2', name:'Sora 2 Pro', icon:'', category:'Video - Major'},
   {id:'runway', name:'Runway Gen-4.5', icon:'🎬', category:'Video - Major'},
+  {id:'runway3', name:'Runway Gen-3 Alpha', icon:'', category:'Video - Major'},
   {id:'kling', name:'Kling 3.0', icon:'⚡', category:'Video - Major'},
-  {id:'veo', name:'Veo 3.1', icon:'', category:'Video - Major'},
-  {id:'wan', name:'WAN 2.6', icon:'☁️', category:'Video - Strong'},
+  {id:'kling2', name:'Kling 2.6 Pro', icon:'', category:'Video - Major'},
+  {id:'veo', name:'Veo 3.1 (Google)', icon:'🔮', category:'Video - Major'},
+  {id:'veo2', name:'Veo 2 (Google)', icon:'', category:'Video - Major'},
+  // VIDEO - Strong
+  {id:'seedance', name:'Seedance 1.5 Pro', icon:'', category:'Video - Strong'},
+  {id:'wan', name:'WAN 2.6 (Alibaba)', icon:'☁️', category:'Video - Strong'},
+  {id:'wan2', name:'WAN 2.2 (Alibaba)', icon:'☁️', category:'Video - Strong'},
   {id:'luma', name:'Luma Ray 3', icon:'💫', category:'Video - Strong'},
-  {id:'pika', name:'Pika 1.5', icon:'🐭', category:'Video - Strong'},
+  {id:'luma2', name:'Luma Dream Machine', icon:'💫', category:'Video - Strong'},
+  {id:'pika', name:'Pika 1.5', icon:'', category:'Video - Strong'},
+  {id:'hailuo', name:'Hailuo AI (Minimax)', icon:'🎭', category:'Video - Strong'},
+  {id:'haiper', name:'Haiper AI', icon:'🎬', category:'Video - Strong'},
+  // VIDEO - Emerging
+  {id:'mochi', name:'Mochi 1 (Genmo)', icon:'', category:'Video - Emerging'},
+  {id:'hunyuan', name:'Hunyuan Video (Tencent)', icon:'🐉', category:'Video - Emerging'},
+  {id:'ltx', name:'LTX-2 (Lightricks)', icon:'✨', category:'Video - Emerging'},
+  {id:'vidu', name:'Vidu Q2', icon:'🎥', category:'Video - Emerging'},
+  {id:'minimax', name:'Minimax AI', icon:'🤖', category:'Video - Emerging'},
+  {id:'stable', name:'Stable Video Diffusion', icon:'🎨', category:'Video - Emerging'},
+  {id:'moonvalley', name:'Moonvalley', icon:'', category:'Video - Emerging'},
+  {id:'cogvideo', name:'CogVideo', icon:'🧠', category:'Video - Emerging'},
+  // VIDEO - Specialized
+  {id:'invideo', name:'InVideo AI', icon:'📹', category:'Video - Specialized'},
+  {id:'fliki', name:'Fliki', icon:'🎞️', category:'Video - Specialized'},
+  {id:'pictory', name:'Pictory', icon:'🖼️', category:'Video - Specialized'},
+  {id:'synthesia', name:'Synthesia', icon:'👤', category:'Video - Specialized'},
+  {id:'heygen', name:'HeyGen', icon:'', category:'Video - Specialized'},
+  {id:'did', name:'D-ID', icon:'', category:'Video - Specialized'},
+  {id:'colossyan', name:'Colossyan', icon:'🏛️', category:'Video - Specialized'},
+  {id:'elai', name:'Elai.io', icon:'📺', category:'Video - Specialized'},
+  {id:'deepbrain', name:'DeepBrain AI', icon:'🧩', category:'Video - Specialized'},
+  {id:'flexclip', name:'FlexClip', icon:'', category:'Video - Specialized'},
+  {id:'veed', name:'VEED.io', icon:'✂️', category:'Video - Specialized'},
+  {id:'kapwing', name:'Kapwing', icon:'🎪', category:'Video - Specialized'},
+  {id:'domo', name:'DomoAI', icon:'🏠', category:'Video - Specialized'},
+  {id:'gaga', name:'Gaga AI', icon:'', category:'Video - Specialized'},
+  {id:'freebeat', name:'freebeat.ai', icon:'🎵', category:'Video - Specialized'},
+  {id:'magic', name:'MagicTime', icon:'⏰', category:'Video - Specialized'},
+  {id:'phenaki', name:'Phenaki', icon:'🎪', category:'Video - Specialized'},
+  {id:'imagen', name:'Imagen Video', icon:'🖼️', category:'Video - Specialized'},
+  {id:'makeavideo', name:'Make-A-Video', icon:'🎨', category:'Video - Specialized'},
 ];
 
-const VISUAL_STYLES = ['Cinematic','Photorealistic','Anime','3D Animation','Film Noir','Cyberpunk','Fantasy','Sci-Fi','Documentary','Vintage Film'];
-const CAMERA_ANGLES = ['Wide Shot','Close-Up','Medium Shot','Low Angle','High Angle','POV','Tracking Shot','Dutch Angle'];
-const LIGHTING = ['Natural Sunlight','Golden Hour','Neon Lights','Candlelight','Moonlight','Studio Lighting','Rim Lighting','Dramatic Shadows'];
-const MOODS = ['Mysterious','Euphoric','Melancholic','Tense','Serene','Epic','Dark','Hopeful','Romantic','Ominous'];
+const VISUAL_STYLES = [
+  'Cinematic','Photorealistic','Anime','3D Animation','Stop Motion',
+  'Film Noir','Cyberpunk','Steampunk','Fantasy','Sci-Fi',
+  'Documentary','Vintage Film','VHS Retro','Dreamlike','Surreal',
+  'Minimalist','Hyperrealistic','Watercolor','Oil Painting','Pixel Art',
+  'Claymation','Cel Shaded','Isometric','Low Poly','Manga',
+  'Gothic','Art Deco','Brutalist','Ethereal','Gritty Realism',
+  'Baroque','Renaissance','Pop Art','Impressionist','Expressionist',
+  'Ukiyo-e','Comic Book','Graphic Novel','Concept Art','Matte Painting',
+];
 
-const CHARACTER_TYPES = ['Young Adult','Middle-aged','Elderly','Child','Teenager','Professional','Warrior','Mystical Being','Robot/AI','Animal'];
-const EXPRESSIONS = ['Confident','Mysterious','Joyful','Sad','Angry','Surprised','Contemplative','Fierce','Gentle','Determined'];
-const PERFORMANCE_STYLES = ['Method Acting','Naturalistic','Theatrical','Subtle','Intense','Comedic','Dramatic','Minimalist','Expressive','Understated'];
-const ACTION_TYPES = ['Walking','Running','Fighting','Dancing','Speaking','Gesturing','Sitting','Standing','Jumping','Climbing'];
+const CAMERA_ANGLES = [
+  'Wide Shot','Close-Up','Extreme Close-Up','Medium Shot','Full Shot',
+  'Over-the-Shoulder','Low Angle','High Angle','Bird\'s Eye View','Worm\'s Eye View',
+  'Dutch Angle','Tracking Shot','Dolly Zoom','Crane Shot','Steadicam',
+  'Handheld','POV','Aerial Drone','Underwater','360° Orbit',
+  'Tilt-Up','Tilt-Down','Pan Left','Pan Right','Zoom In',
+  'Zoom Out','Rack Focus','Push-In','Pull-Back','Whip Pan',
+  'Snorricam','Crash Zoom','Jib Shot','Gimbal Shot','Time-lapse',
+];
 
-let currentMedia = { filename:'', type:'', size:0, url:'' };
+const LIGHTING = [
+  'Natural Sunlight','Golden Hour','Blue Hour','Overcast','Harsh Noon',
+  'Neon Lights','Candlelight','Firelight','Moonlight','Studio Lighting',
+  'Rim Lighting','Backlit','Silhouette','Chiaroscuro','Soft Diffused',
+  'High Key','Low Key','Dramatic Shadows','Volumetric Rays','Bioluminescent',
+  'Fluorescent','Tungsten','LED Panels','Practical Lights','Ambient Glow',
+  'Cinematic Color Grade','Teal & Orange','Desaturated','High Contrast','Pastel',
+  'Rembrandt Lighting','Butterfly Lighting','Split Lighting','Loop Lighting','Broad Lighting',
+];
 
+const MOODS = [
+  'Mysterious','Euphoric','Melancholic','Tense','Serene',
+  'Epic','Intimate','Whimsical','Dark','Hopeful',
+  'Nostalgic','Futuristic','Romantic','Ominous','Playful',
+  'Gritty','Dreamy','Chaotic','Peaceful','Triumphant',
+  'Lonely','Vibrant','Eerie','Majestic','Raw',
+  'Contemplative','Joyful','Foreboding','Liberating','Haunting',
+];
+
+let currentMedia = { filename:'', type:'', size:0, url:'', file:null };
+let realAnalysisData = null;
+
+/* ============================================================
+   TABS
+============================================================ */
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -443,6 +511,9 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
+/* ============================================================
+   MULTI-SELECT
+============================================================ */
 function createMultiSelect(container, options) {
   container.innerHTML = `
     <div class="multi-select-label">${container.dataset.label || 'Options'}</div>
@@ -461,7 +532,7 @@ function createMultiSelect(container, options) {
     const item = document.createElement('div');
     item.className = 'dropdown-item';
     item.dataset.value = opt.id || opt;
-    item.innerHTML = `<div class="check"></div><div class="label">${opt.icon || ''} ${opt.name || opt}</div>`;
+    item.innerHTML = `<div class="check"></div><div class="label">${opt.icon || ''} ${opt.name || opt}</div>${opt.category ? `<span class="cat">${opt.category}</span>` : ''}`;
     item.addEventListener('click', () => {
       const v = item.dataset.value;
       if (selected.has(v)) { selected.delete(v); item.classList.remove('selected'); }
@@ -509,13 +580,16 @@ function createMultiSelect(container, options) {
   return { getSelected: () => [...selected] };
 }
 
-const modelSelectCtrl = createMultiSelect(document.getElementById('modelSelect'), MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon})));
-const genModelSelectCtrl = createMultiSelect(document.getElementById('genModelSelect'), MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon})));
+const modelSelectCtrl = createMultiSelect(document.getElementById('modelSelect'), MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon, category:m.category})));
+const genModelSelectCtrl = createMultiSelect(document.getElementById('genModelSelect'), MODELS.map(m => ({id:m.id, name:m.name, icon:m.icon, category:m.category})));
 const styleSelectCtrl = createMultiSelect(document.getElementById('styleSelect'), VISUAL_STYLES.map(s => ({id:s, name:s})));
 const cameraSelectCtrl = createMultiSelect(document.getElementById('cameraSelect'), CAMERA_ANGLES.map(c => ({id:c, name:c})));
 const lightingSelectCtrl = createMultiSelect(document.getElementById('lightingSelect'), LIGHTING.map(l => ({id:l, name:l})));
 const moodSelectCtrl = createMultiSelect(document.getElementById('moodSelect'), MOODS.map(m => ({id:m, name:m})));
 
+/* ============================================================
+   FILE UPLOAD
+============================================================ */
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
 const mediaPreview = document.getElementById('mediaPreview');
@@ -534,158 +608,224 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
 function handleFiles(files) {
   const file = files[0];
   const url = URL.createObjectURL(file);
-  currentMedia = { filename:file.name, type:file.type, size:file.size, url:url };
+  currentMedia = { filename:file.name, type:file.type, size:file.size, url:url, file:file };
   showPreview(url, file.type);
   uploadHint.style.display = 'block';
   generateBtn.classList.add('show');
-  runAnalysis(file.name, file.type, file.size, false);
 }
-
-document.getElementById('loadUrlBtn').addEventListener('click', () => {
-  const url = document.getElementById('urlInput').value.trim();
-  if (!url) return;
-  currentMedia = { filename:'URL Media', type:'url', size:0, url:url };
-  mediaPreview.innerHTML = `<img src="${url}" onerror="this.outerHTML='<video src=\\'${url}\\' controls autoplay></video>'" />`;
-  mediaPreview.style.display = 'block';
-  uploadHint.style.display = 'block';
-  generateBtn.classList.add('show');
-  runAnalysis('URL Media', 'url', 0, false);
-});
 
 function showPreview(url, type) {
   if (type.startsWith('video')) {
     mediaPreview.innerHTML = `<video src="${url}" controls autoplay muted></video>`;
   } else if (type.startsWith('image')) {
     mediaPreview.innerHTML = `<img src="${url}" />`;
-  } else {
-    mediaPreview.innerHTML = `<div style="padding:30px;text-align:center;color:var(--muted);">${type || 'Unknown format'} loaded</div>`;
   }
   mediaPreview.style.display = 'block';
 }
 
-let currentAnalysis = null;
-
-function runAnalysis(filename, type, size, autoGenerate = false) {
-  const skipAI = document.getElementById('skipAI').checked;
-  const card = document.getElementById('analysisCard');
-  const promptCard = document.getElementById('promptCard');
-  card.style.display = 'block';
-  promptCard.style.display = 'none';
-
-  const progressFill = document.getElementById('progressFill');
-  const status = document.getElementById('analysisStatus');
-  const grid = document.getElementById('analysisGrid');
-
-  const steps = [
-    {p:10, t:'📥 Loading media file...'},
-    {p:20, t:'🔍 Detecting format & resolution...'},
-    {p:30, t:'🎞️ Parsing frames & keyframes...'},
-    {p:40, t:'🤖 Running Computer Vision model...'},
-    {p:50, t:'📐 Analyzing camera movement & angles...'},
-    {p:60, t:'💡 Evaluating lighting & color palette...'},
-    {p:70, t:'👤 Detecting characters & appearances...'},
-    {p:80, t:'🎭 Analyzing performance & emotions...'},
-    {p:90, t:'🎬 Identifying actions & movements...'},
-    {p:100, t:'✅ Analysis complete! Click generate button ↓'},
-  ];
-
-  let i = 0;
-  const interval = setInterval(() => {
-    if (i >= steps.length) {
-      clearInterval(interval);
-      if (skipAI) {
-        status.innerHTML = '⚡ Ready for instant generation';
-        grid.innerHTML = '';
-      } else {
-        status.innerHTML = '✅ Analysis complete! Click generate button below ↓';
-        renderAnalysisResults(grid, filename, type, size);
+/* ============================================================
+   VIDEO FRAME EXTRACTION
+============================================================ */
+async function extractVideoFrames(videoFile, numFrames = 3) {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.src = URL.createObjectURL(videoFile);
+    video.muted = true;
+    video.onloadedmetadata = async () => {
+      const duration = video.duration;
+      const frames = [];
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = Math.min(video.videoWidth, 1280);
+      canvas.height = Math.min(video.videoHeight, 720);
+      for (let i = 0; i < numFrames; i++) {
+        const time = (duration / (numFrames + 1)) * (i + 1);
+        video.currentTime = time;
+        await new Promise(r => { video.onseeked = r; });
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        frames.push(canvas.toDataURL('image/jpeg', 0.8));
       }
-      if (autoGenerate) setTimeout(() => generatePrompts(filename, type), 400);
-      return;
-    }
-    progressFill.style.width = steps[i].p + '%';
-    status.textContent = steps[i].t;
-    i++;
-  }, skipAI ? 100 : 400);
+      resolve(frames);
+    };
+    video.onerror = () => resolve([]);
+  });
 }
 
-function rand(n) { return Math.floor(Math.random()*n); }
+/* ============================================================
+   REAL AI ANALYSIS (GPT-4 Vision)
+============================================================ */
+async function analyzeWithAI(mediaData) {
+  const apiKey = document.getElementById('apiKeyInput').value.trim();
+  if (!apiKey) return null;
 
-function renderAnalysisResults(grid, filename, type, size) {
-  const motion = ['Slow pan','Fast tracking','Static','Handheld shake','Orbiting'][rand(5)];
-  const camera = CAMERA_ANGLES[rand(CAMERA_ANGLES.length)];
-  const light = LIGHTING[rand(LIGHTING.length)];
-  const scene = ['Three-act structure','Single continuous shot','Montage sequence','Establishing → Close-up'][rand(4)];
-  const character = CHARACTER_TYPES[rand(CHARACTER_TYPES.length)];
-  const expression = EXPRESSIONS[rand(EXPRESSIONS.length)];
-  const performance = PERFORMANCE_STYLES[rand(PERFORMANCE_STYLES.length)];
-  const action = ACTION_TYPES[rand(ACTION_TYPES.length)];
-  const emotion = ['Joy','Fear','Love','Anger','Surprise','Disgust','Trust','Anticipation'][rand(8)];
-  const intensity = ['Subtle','Moderate','High','Very High','Extreme'][rand(5)];
+  try {
+    let imageData;
+    if (mediaData.type.startsWith('image')) {
+      imageData = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(mediaData.file);
+      });
+    } else {
+      const frames = await extractVideoFrames(mediaData.file, 3);
+      imageData = frames[0] || frames[frames.length-1];
+    }
+    if (!imageData) return null;
 
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: `Analyze this ${mediaData.type.startsWith('video') ? 'video frame' : 'image'} in extreme detail. Be 100% accurate - if it's a human, say HUMAN. If it's an animal, say ANIMAL. Never confuse them.
+
+Return ONLY a JSON object (no markdown, no code fences) with these exact keys:
+{
+  "subject": "what is the main subject (human/animal/object/scene)",
+  "subjectType": "human OR animal OR object OR landscape OR abstract",
+  "characterDetails": "if human: age, gender, appearance, clothing, hair, accessories. If animal: species, color, size, markings. If object: type, material, color.",
+  "action": "what is happening - specific movements, activities, gestures",
+  "expression": "facial expression, body language, emotional state",
+  "performance": "acting style, naturalness, intensity level",
+  "camera": "shot type, angle, lens, movement",
+  "lighting": "type, direction, quality, color temperature",
+  "scene": "location, environment, background, setting",
+  "style": "visual style, color palette, aesthetic",
+  "technical": "quality, resolution, composition notes"
+}
+
+Be SPECIFIC. Don't say "a person" - say "a young woman with curly brown hair wearing a red leather jacket". Don't say "animal" if it's clearly a human.` },
+            { type: 'image_url', image_url: { url: imageData } }
+          ]
+        }],
+        max_tokens: 1500
+      })
+    });
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || '';
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (jsonMatch) return JSON.parse(jsonMatch[0]);
+    return null;
+  } catch (error) {
+    console.error('AI Analysis error:', error);
+    return null;
+  }
+}
+
+/* ============================================================
+   SIMULATED ANALYSIS (FALLBACK)
+============================================================ */
+function simulateAnalysis(mediaData) {
+  const isVideo = mediaData.type.startsWith('video');
+  return {
+    subject: isVideo ? 'A person in motion' : 'A person in frame',
+    subjectType: 'human',
+    characterDetails: 'Adult human, casual clothing, natural appearance',
+    action: isVideo ? 'Walking and moving naturally through the scene' : 'Standing or posing naturally',
+    expression: 'Neutral to slight smile, relaxed demeanor',
+    performance: 'Natural and authentic, documentary-style',
+    camera: isVideo ? 'Medium shot with slight handheld movement' : 'Medium shot, static composition',
+    lighting: 'Natural ambient lighting, balanced exposure',
+    scene: 'Indoor or outdoor everyday setting',
+    style: 'Realistic, documentary style, natural colors',
+    technical: 'Good quality, well-composed, proper exposure'
+  };
+}
+
+/* ============================================================
+   GENERATE BUTTON
+============================================================ */
+document.getElementById('generatePromptBtn').addEventListener('click', async () => {
+  if (!currentMedia.filename) { alert('Please upload a video or image first!'); return; }
+  const selectedModels = modelSelectCtrl.getSelected();
+  if (selectedModels.length === 0) { alert('Please select at least one target model!'); return; }
+
+  const btn = document.getElementById('generatePromptBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span> Analyzing...';
+  btn.disabled = true;
+
+  const card = document.getElementById('analysisCard');
+  const progressFill = document.getElementById('progressFill');
+  const status = document.getElementById('analysisStatus');
+  const badge = document.getElementById('analysisModeBadge');
+  card.style.display = 'block';
+
+  progressFill.style.width = '20%';
+  status.textContent = '🔍 Loading media...';
+
+  let analysisData;
+  let isRealAnalysis = false;
+  const apiKey = document.getElementById('apiKeyInput').value.trim();
+
+  if (apiKey) {
+    progressFill.style.width = '40%';
+    status.textContent = '🤖 Running GPT-4 Vision AI analysis...';
+    analysisData = await analyzeWithAI(currentMedia);
+    if (analysisData) {
+      isRealAnalysis = true;
+      realAnalysisData = analysisData;
+      badge.textContent = '✓ REAL AI ANALYSIS';
+      badge.className = 'analysis-mode-badge badge-real';
+    }
+  }
+
+  if (!analysisData) {
+    progressFill.style.width = '60%';
+    status.textContent = ' Using simulated analysis (add API key for real AI)...';
+    await new Promise(r => setTimeout(r, 800));
+    analysisData = simulateAnalysis(currentMedia);
+    badge.textContent = '⚡ SIMULATED';
+    badge.className = 'analysis-mode-badge badge-simulated';
+  }
+
+  progressFill.style.width = '85%';
+  status.textContent = '📝 Generating optimized prompts...';
+  await new Promise(r => setTimeout(r, 400));
+
+  progressFill.style.width = '100%';
+  status.textContent = '✅ Complete!';
+
+  displayAnalysisResults(analysisData, isRealAnalysis);
+  generatePrompts(selectedModels, analysisData);
+
+  btn.innerHTML = originalText;
+  btn.disabled = false;
+  btn.classList.remove('show');
+});
+
+function displayAnalysisResults(data, isReal) {
+  const grid = document.getElementById('analysisGrid');
+  const subjectIcon = data.subjectType === 'human' ? '👤' : data.subjectType === 'animal' ? '🐾' : data.subjectType === 'landscape' ? '🏞️' : '📦';
   grid.innerHTML = `
-    <div class="analysis-card"><div class="label">File</div><div class="value">${filename}</div><div class="sub">${type} • ${formatSize(size)}</div></div>
-    <div class="analysis-card"><div class="label">Motion</div><div class="value">${motion}</div><div class="sub">24-60 fps detected</div></div>
-    <div class="analysis-card"><div class="label">Camera</div><div class="value">${camera}</div><div class="sub">Stable • Smooth</div></div>
-    <div class="analysis-card"><div class="label">Lighting</div><div class="value">${light}</div><div class="sub">High dynamic range</div></div>
-    <div class="analysis-card"><div class="label">Scene Structure</div><div class="value">${scene}</div><div class="sub">Well-composed</div></div>
-    <div class="analysis-card"><div class="label">👤 Character</div><div class="value">${character}</div><div class="sub">${expression} expression</div></div>
-    <div class="analysis-card"><div class="label">🎭 Performance</div><div class="value">${performance}</div><div class="sub">Emotion: ${emotion}</div></div>
-    <div class="analysis-card"><div class="label">🎬 Action</div><div class="value">${action}</div><div class="sub">Intensity: ${intensity}</div></div>
+    <div class="analysis-card"><div class="label">${subjectIcon} Subject</div><div class="value">${data.subject}</div><div class="sub">Type: ${data.subjectType || 'unknown'}</div></div>
+    <div class="analysis-card"><div class="label">👤 Character Details</div><div class="value">${data.characterDetails}</div><div class="sub">Appearance & clothing</div></div>
+    <div class="analysis-card"><div class="label">🎬 Action</div><div class="value">${data.action}</div><div class="sub">Movement & activity</div></div>
+    <div class="analysis-card"><div class="label">😊 Expression</div><div class="value">${data.expression}</div><div class="sub">Emotion & body language</div></div>
+    <div class="analysis-card"><div class="label">🎭 Performance</div><div class="value">${data.performance}</div><div class="sub">Style & intensity</div></div>
+    <div class="analysis-card"><div class="label">📷 Camera</div><div class="value">${data.camera}</div><div class="sub">Shot & angle</div></div>
+    <div class="analysis-card"><div class="label">💡 Lighting</div><div class="value">${data.lighting}</div><div class="sub">Quality & type</div></div>
+    <div class="analysis-card"><div class="label"> Scene</div><div class="value">${data.scene}</div><div class="sub">Setting & environment</div></div>
+    <div class="analysis-card"><div class="label">🎨 Style</div><div class="value">${data.style}</div><div class="sub">Visual aesthetic</div></div>
+    <div class="analysis-card"><div class="label">⚙️ Technical</div><div class="value">${data.technical}</div><div class="sub">Quality & composition</div></div>
   `;
 }
 
-function formatSize(b) {
-  if (!b) return 'streaming';
-  if (b < 1024) return b+' B';
-  if (b < 1048576) return (b/1024).toFixed(1)+' KB';
-  if (b < 1073741824) return (b/1048576).toFixed(1)+' MB';
-  return (b/1073741824).toFixed(2)+' GB';
-}
-
-document.getElementById('generatePromptBtn').addEventListener('click', () => {
-  if (!currentMedia.filename) {
-    alert('Please upload a video or image first!');
-    return;
-  }
-  const selectedModels = modelSelectCtrl.getSelected();
-  if (selectedModels.length === 0) {
-    alert('Please select at least one target model!');
-    return;
-  }
-  const btn = document.getElementById('generatePromptBtn');
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner"></span> Generating...';
-  btn.disabled = true;
-  setTimeout(() => {
-    generatePrompts(currentMedia.filename, currentMedia.type);
-    btn.innerHTML = originalText;
-    btn.disabled = false;
-    btn.classList.remove('show');
-  }, 800);
-});
-
-function generatePrompts(filename, type) {
-  const selectedModels = modelSelectCtrl.getSelected();
-  if (selectedModels.length === 0) return;
-
+/* ============================================================
+   PROMPT GENERATION (ANALYZER TAB)
+============================================================ */
+function generatePrompts(selectedModels, analysis) {
   const promptCard = document.getElementById('promptCard');
   const output = document.getElementById('promptOutput');
   const tags = document.getElementById('modelTags');
 
-  const character = CHARACTER_TYPES[rand(CHARACTER_TYPES.length)];
-  const expression = EXPRESSIONS[rand(EXPRESSIONS.length)];
-  const performance = PERFORMANCE_STYLES[rand(PERFORMANCE_STYLES.length)];
-  const action = ACTION_TYPES[rand(ACTION_TYPES.length)];
-  const emotion = ['Joy','Fear','Love','Anger','Surprise'][rand(5)];
-  const intensity = ['Subtle','Moderate','High'][rand(3)];
+  const baseSubject = `${analysis.subject}. ${analysis.characterDetails}. Action: ${analysis.action}. Expression: ${analysis.expression}. Performance: ${analysis.performance}. Camera: ${analysis.camera}. Lighting: ${analysis.lighting}. Scene: ${analysis.scene}. Style: ${analysis.style}. ${analysis.technical}.`;
 
-  const subjects = [
-    `A ${character.toLowerCase()} with ${expression.toLowerCase()} expression, performing ${performance.toLowerCase()} acting while ${action.toLowerCase()} with ${intensity.toLowerCase()} intensity, conveying ${emotion.toLowerCase()}`,
-  ];
-  const baseSubject = subjects[0];
-
-  const prompts = selectedModels.map(mid => buildModelPrompt(mid, baseSubject, filename, type, {character, expression, performance, action, emotion, intensity}));
+  const prompts = selectedModels.map(mid => buildModelSpecificPrompt(mid, baseSubject, analysis));
 
   tags.innerHTML = selectedModels.map(mid => {
     const m = MODELS.find(x => x.id === mid);
@@ -694,87 +834,141 @@ function generatePrompts(filename, type) {
 
   output.textContent = prompts.join('\n\n' + '═'.repeat(60) + '\n\n');
   promptCard.style.display = 'block';
-  currentAnalysis = prompts;
   promptCard.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 
-function buildModelPrompt(modelId, subject, filename, type, analysis) {
+function buildModelSpecificPrompt(modelId, baseSubject, analysis) {
   const model = MODELS.find(m => m.id === modelId);
-  const isImageModel = model && model.category && model.category.includes('Image');
-  
-  if (isImageModel) {
-    return buildImagePrompt(modelId, subject, analysis);
-  } else {
-    return buildVideoPrompt(modelId, subject, analysis);
-  }
-}
+  if (!model) return baseSubject;
+  const isImage = model.category.includes('Image');
 
-function buildImagePrompt(modelId, subject, analysis) {
-  const {character, expression, performance, action, emotion, intensity} = analysis;
-  const base = `${subject}. Character: ${character} with ${expression} expression. Performance style: ${performance}. Action: ${action} with ${intensity} intensity. Emotion: ${emotion}. Ultra-detailed, 8K, professional quality.`;
+  const header = `[${model.name}]`;
+  const suffix = isImage
+    ? '\n\nUltra-detailed, 8K, professional quality, sharp focus, masterpiece'
+    : '\n\nDuration: 10s • 16:9 • High fidelity • Professional cinematic output • Natural motion';
 
-  const imageMap = {
-    'midjourney': `[Midjourney v7]\n${base}\n\n--ar 16:9 --v 7.0 --style raw\nQuality: 2 --stylize 250\nNegative: blurry, low quality, distorted`,
-    'midjourney6': `[Midjourney v6.1]\n${base}\n\n--ar 16:9 --v 6.1\nQuality: 1 --stylize 100`,
-    'dalle3': `[DALL-E 3]\n${base}\n\nAspect ratio: 16:9\nQuality: HD\nStyle: vivid`,
-    'dalle4': `[DALL-E 4]\n${base}\n\nAspect ratio: 16:9\nQuality: Ultra HD`,
-    'gptimage': `[GPT Image 2]\n${base}\n\nHigh fidelity rendering\nPhotorealistic quality`,
-    'ideogram': `[Ideogram 3.0]\n${base}\n\nText rendering enabled\nHigh detail`,
-    'firefly': `[Adobe Firefly 4]\n${base}\n\nContent credentials enabled\nCommercial safe`,
-    'flux': `[Flux Pro 1.1]\n${base}\n\nGuidance: 3.5\nSteps: 50\nHigh quality`,
-    'fluxdev': `[Flux Dev]\n${base}\n\nGuidance: 3.0\nSteps: 28\nFast generation`,
-    'sd3': `[Stable Diffusion 3.5]\n${base}\n\nSteps: 30\nCFG: 7\nHigh quality`,
-    'sdxl': `[Stable Diffusion XL]\n${base}\n\nSteps: 30\nCFG: 7\nRefiner enabled`,
+  // Model-specific tuning
+  const tuning = {
+    'midjourney': '\n--ar 16:9 --v 7.0 --style raw --chaos 20\nQuality: 2 --stylize 250\nNegative: blurry, low quality, distorted, deformed',
+    'midjourney6': '\n--ar 16:9 --v 6.1\nQuality: 1 --stylize 100\nNegative: deformed, ugly, bad anatomy',
+    'dalle3': '\nAspect ratio: 16:9\nQuality: HD\nStyle: vivid\nNegative: text, watermarks, signatures',
+    'dalle4': '\nAspect ratio: 16:9\nQuality: Ultra HD\nEnhanced detail and coherence',
+    'gptimage': '\nHigh fidelity rendering\nPhotorealistic quality\nAdvanced composition',
+    'ideogram': '\nText rendering enabled\nTypography support\nHigh detail',
+    'firefly': '\nContent credentials enabled\nCommercial safe\nHigh quality',
+    'flux': '\nGuidance: 3.5\nSteps: 50\nSampler: Euler\nNegative: low quality, worst quality',
+    'fluxdev': '\nGuidance: 3.0\nSteps: 28\nFast generation',
+    'fluxrealism': '\nPhotorealistic mode\nHigh detail\nNatural lighting',
+    'sd3': '\nSteps: 30\nCFG: 7\nSampler: DPM++ 2M Karras\nNegative: lowres, bad anatomy, bad hands',
+    'sdxl': '\nSteps: 30\nCFG: 7\nRefiner enabled\nNegative: blurry, low quality',
+    'sd3medium': '\nSteps: 28\nCFG: 7\nFast inference',
+    'sdturbo': '\nSteps: 1-4\nReal-time generation',
+    'sdlightning': '\nSteps: 4-8\nUltra-fast generation',
+    'comfyui': '\nCustom workflow\nNode-based control\nAdvanced settings',
+    'automatic': '\nSteps: 30\nCFG: 7\nSampler: Euler a\nNegative: low quality, bad anatomy',
+    'leonardo': '\nAlchemy enabled\nHigh resolution\nProfessional quality',
+    'recraft': '\nVector support\nStyle consistency\nProfessional output',
+    'krea': '\nReal-time generation\nEnhanced creativity',
+    'magnific': '\nUpscaling enabled\nDetail enhancement\nProfessional quality',
+    'clipdrop': '\nHigh resolution\nFast generation\nClean output',
+    'playground': '\nHigh quality\nFast inference\nProfessional output',
+    'getimg': '\nCustom models\nInpainting support',
+    'bluewillow': '\nDiscord-based\nCommunity models',
+    'nightcafe': '\nMultiple algorithms\nCommunity driven',
+    'dreamstudio': '\nStable Diffusion API\nCustomizable settings',
+    'tencent': '\nChinese market optimized\nHigh quality',
+    'baidu': '\nChinese AI model\nHigh fidelity',
+    'aliyun': '\nChinese market\nHigh quality',
+    'bytedance': '\nTikTok/Douyin optimized\nHigh quality',
+    'klingimg': '\nHigh fidelity\nProfessional quality\nAdvanced rendering',
+    'sense': '\nChinese AI model\nHigh quality',
+    'pixverse': '\nVideo-to-image\nHigh quality',
+    'civitai': '\nCommunity models\nCustom LoRAs',
+    'tensor': '\nCloud-based SD\nMultiple models',
+    'seaart': '\nAI art platform\nMultiple styles',
+    'photoroom': '\nBackground removal\nProduct photography',
+    'removebg': '\nBackground removal\nClean edges',
+    'upscale': '\n4x upscaling\nDetail enhancement',
+    'inpaint': '\nSelective editing\nSeamless blending',
+    'sora': '\nStyle: photorealistic cinematic\nDuration: 10s\nAspect: 16:9\nMotion: fluid and natural\nTemporal consistency: high',
+    'sora2': '\nEnhanced physics simulation\n4K output\nMulti-shot coherence\nAdvanced motion control',
+    'runway': '\nCamera control enabled\nMotion brush active\nGen-4.5 alpha quality\nNatural physics',
+    'runway3': '\nGen-3 Alpha mode\nEnhanced temporal consistency\nCamera control enabled\nMotion intensity: medium-high',
+    'kling': '\nMode: Professional\nDuration: 10s\nCamera control enabled\nMotion amplitude: medium\nQuality: 1080p cinematic',
+    'kling2': '\nPro mode enabled\nEnhanced realism\nDuration: 10s\nHigh motion fidelity',
+    'veo': '\nCinematic quality\nNatural motion\nCoherent scene progression\n1080p/4K output',
+    'veo2': '\nVeo 2 cinematic pipeline\nEnhanced physics\n4K resolution\nNatural lighting simulation',
+    'seedance': '\nSeedance cinematic mode\nHigh motion fidelity\nAspect ratio 16:9',
+    'wan': '\nWAN 2.6 cinematic pipeline\nChinese cinema aesthetic support\nHigh-res output',
+    'wan2': '\nWAN 2.2 cinematic pipeline\nHigh-res output',
+    'luma': '\nLuma Ray 3 cinematic mode\nKeyframe: start with subject\nQuality: ultra-high\nDuration: 5s loop',
+    'luma2': '\nLuma cinematic mode\nKeyframe: start with subject\nQuality: high\nDuration: 5s loop',
+    'pika': '\nMotion intensity: 5\nNegative: blurry, low quality',
+    'hailuo': '\nHailuo cinematic mode\nEnhanced character consistency\nProfessional quality',
+    'haiper': '\nHaiper professional mode\nHigh detail',
+    'mochi': '\nMochi 1 open-source model\nHigh-quality motion\n10B parameter model\nNatural physics',
+    'hunyuan': '\nHunyuan 13B+ model\nProfessional grade\nEnhanced realism',
+    'ltx': '\nLTX-2 22B model\nHigh-resolution output\nProfessional cinematic quality',
+    'vidu': '\nVidu Q2 mode\nEnhanced temporal consistency\nProfessional quality',
+    'minimax': '\nMinimax professional mode\nHigh detail\nCamera control\nNatural motion physics',
+    'stable': '\nSVD open-source model\nCustomizable parameters\nHigh flexibility',
+    'moonvalley': '\nMoonvalley cinematic mode\nArtistic style support\nEnhanced creativity',
+    'cogvideo': '\nCogVideo model\nOpen-source\nHigh-quality generation\nResearch-grade',
+    'invideo': '\nInVideo AI mode\nTemplate-based\nQuick generation\nMarketing optimized',
+    'fliki': '\nFliki mode\nVoiceover integration\nQuick turnaround\nSocial media optimized',
+    'pictory': '\nPictory mode\nText-to-video\nAutomated editing\nContent marketing',
+    'synthesia': '\nSynthesia AI avatar mode\nProfessional presentation\nMulti-language support',
+    'heygen': '\nHeyGen avatar mode\nNatural lip-sync\nProfessional quality\nBusiness presentations',
+    'did': '\nD-ID talking head mode\nAI avatar\nNatural expressions',
+    'colossyan': '\nColossyan AI actor mode\nCorporate training\nProfessional quality\nMulti-avatar',
+    'elai': '\nElai.io mode\nAI presenter\nProfessional output\nEducational content',
+    'deepbrain': '\nDeepBrain AI mode\nAdvanced algorithms\nMultilingual voiceovers',
+    'flexclip': '\nFlexClip mode\nEasy editing\nQuick generation\nSocial media',
+    'veed': '\nVEED.io mode\nAI-powered editing\nQuick turnaround',
+    'kapwing': '\nKapwing mode\nCollaborative editing\nSocial media optimized',
+    'domo': '\nDomoAI mode\nAnime style support\nArtistic generation',
+    'gaga': '\nGaga AI mode\nMusic video generation\nEnhanced creativity',
+    'freebeat': '\nfreebeat.ai integrated studio\nMusic sync\nProfessional production',
+    'magic': '\nMagicTime mode\nTime-lapse learning\nPhysics-accurate\nMetamorphic capabilities',
+    'phenaki': '\nPhenaki mode\nVariable length video\nStory-driven\nNarrative focused',
+    'imagen': '\nGoogle Imagen Video\nHigh fidelity\nProfessional quality\nResearch-grade',
+    'makeavideo': '\nMeta Make-A-Video\nHigh quality\nNatural motion\nProfessional output',
   };
 
-  return imageMap[modelId] || base;
+  return `${header}\n${baseSubject}${tuning[modelId] || suffix}`;
 }
 
-function buildVideoPrompt(modelId, subject, analysis) {
-  const {character, expression, performance, action, emotion, intensity} = analysis;
-  const motion = ['slow cinematic pan','smooth tracking shot','dynamic handheld','gentle orbit'][rand(4)];
-  const camera = CAMERA_ANGLES[rand(CAMERA_ANGLES.length)];
-  const light = LIGHTING[rand(LIGHTING.length)];
-  const style = VISUAL_STYLES[rand(VISUAL_STYLES.length)];
-
-  const base = `${subject}. Shot in ${style.toLowerCase()} style, ${camera.toLowerCase()}, ${motion}, ${light.toLowerCase()} lighting. Character: ${character} with ${expression} expression. Performance: ${performance}. Action: ${action} with ${intensity} intensity. Emotion: ${emotion}. High detail, 4K, cinematic.`;
-
-  const videoMap = {
-    'sora': `[Sora]\n${base}\n\nDuration: 10s • 16:9 • Temporal consistency: high • Motion: natural physics`,
-    'runway': `[Runway Gen-4.5]\n${base}\n\nCamera control enabled • Motion brush active • Gen-4.5 alpha quality`,
-    'kling': `[Kling 3.0]\n${base}\n\nProfessional mode • 1080p • Camera: ${camera} • Motion amplitude: medium`,
-    'veo': `[Google Veo 3.1]\n${base}\n\nCinematic coherence • Natural motion • 1080p/4K output`,
-    'wan': `[WAN 2.6]\n${base}\n\nWAN 2.6 cinematic • High-res • Motion: fluid • Camera: ${camera}`,
-    'luma': `[Luma Ray 3]\n${base}\n\nCinematic mode • Ultra-high quality • 5s loop • Keyframe control`,
-    'pika': `[Pika 1.5]\n${base}\n\nMotion intensity: 5 • Style: ${style} • Negative: blurry, distorted`,
-  };
-
-  return videoMap[modelId] || base;
-}
-
+/* ============================================================
+   GENERATOR TAB
+============================================================ */
 document.getElementById('generateBtn').addEventListener('click', () => {
   const subject = document.getElementById('subjectInput').value.trim();
   if (!subject) { alert('Please enter a subject or idea.'); return; }
+  const models = genModelSelectCtrl.getSelected();
+  if (models.length === 0) { alert('Please select at least one target model.'); return; }
 
   const styles = styleSelectCtrl.getSelected();
   const cameras = cameraSelectCtrl.getSelected();
   const lights = lightingSelectCtrl.getSelected();
   const moods = moodSelectCtrl.getSelected();
-  const models = genModelSelectCtrl.getSelected();
   const character = document.getElementById('characterInput').value.trim();
   const action = document.getElementById('actionInput').value.trim();
 
-  if (models.length === 0) { alert('Please select at least one target model.'); return; }
+  const fullSubject = `${subject}${character ? '. Character: ' + character : ''}${action ? '. Actions & Performance: ' + action : ''}`;
 
   const promptCard = document.getElementById('genPromptCard');
   const output = document.getElementById('genPromptOutput');
   const tags = document.getElementById('genModelTags');
 
-  const fullSubject = character || action 
-    ? `${subject}. ${character ? 'Character: ' + character + '.' : ''} ${action ? 'Actions: ' + action + '.' : ''}`
-    : subject;
-
-  const prompts = models.map(mid => buildGeneratorPrompt(mid, fullSubject, styles, cameras, lights, moods));
+  const prompts = models.map(mid => {
+    const model = MODELS.find(x => x.id === mid);
+    const styleStr = styles.length ? styles.join(', ').toLowerCase() : 'cinematic';
+    const cameraStr = cameras.length ? cameras.join(', ') : 'cinematic framing';
+    const lightStr = lights.length ? lights.join(', ') : 'cinematic lighting';
+    const moodStr = moods.length ? moods.join(', ') : 'cinematic mood';
+    const base = `${fullSubject}. Visual style: ${styleStr}. Camera: ${cameraStr}. Lighting: ${lightStr}. Mood: ${moodStr}. Ultra-detailed, 4K, professional color grading, shallow depth of field, filmic look.`;
+    return `[${model.name}]\n${base}${model.category.includes('Image') ? '\n\nHigh quality • Professional output • Sharp focus' : '\n\nDuration: 10s • 16:9 • High fidelity • Natural motion'}`;
+  });
 
   tags.innerHTML = models.map(mid => {
     const m = MODELS.find(x => x.id === mid);
@@ -783,37 +977,16 @@ document.getElementById('generateBtn').addEventListener('click', () => {
 
   output.textContent = prompts.join('\n\n' + '═'.repeat(60) + '\n\n');
   promptCard.style.display = 'block';
-  currentAnalysis = prompts;
+  promptCard.scrollIntoView({ behavior:'smooth', block:'nearest' });
 });
 
-function buildGeneratorPrompt(modelId, subject, styles, cameras, lights, moods) {
-  const styleStr = styles.length ? styles.join(', ').toLowerCase() : 'cinematic';
-  const cameraStr = cameras.length ? cameras.join(', ') : 'cinematic framing';
-  const lightStr = lights.length ? lights.join(', ') : 'cinematic lighting';
-  const moodStr = moods.length ? moods.join(', ') : 'cinematic';
-
-  const model = MODELS.find(m => m.id === modelId);
-  const isImageModel = model && model.category && model.category.includes('Image');
-
-  const base = `${subject}. Visual style: ${styleStr}. Camera: ${cameraStr}. Lighting: ${lightStr}. Mood: ${moodStr}. Ultra-detailed, 4K, professional quality.`;
-
-  if (isImageModel) {
-    return `[${model.name}]\n${base}\n\nHigh quality • Professional output`;
-  } else {
-    return `[${model.name}]\n${base}\n\nDuration: 10s • 16:9 • High quality • Professional output`;
-  }
-}
-
+/* ============================================================
+   COPY / DOWNLOAD
+============================================================ */
 document.getElementById('copyBtn').addEventListener('click', () => copyPrompt('promptOutput'));
 document.getElementById('genCopyBtn').addEventListener('click', () => copyPrompt('genPromptOutput'));
 document.getElementById('downloadBtn').addEventListener('click', () => downloadPrompt('promptOutput'));
 document.getElementById('genDownloadBtn').addEventListener('click', () => downloadPrompt('genPromptOutput'));
-document.getElementById('regenBtn').addEventListener('click', () => {
-  if (currentAnalysis) {
-    const out = document.getElementById('promptOutput');
-    out.textContent = currentAnalysis.map(p => p.split('\n').map(l => l.replace(/\[.*?\]/, m => m + ' [REGENERATED]')).join('\n')).join('\n\n'+'═'.repeat(60)+'\n\n');
-  }
-});
 
 function copyPrompt(id) {
   const text = document.getElementById(id).textContent;
@@ -834,6 +1007,9 @@ function downloadPrompt(id) {
   a.click();
 }
 
+/* ============================================================
+   INIT LABELS
+============================================================ */
 document.getElementById('styleSelect').dataset.label = 'Visual Styles';
 document.getElementById('cameraSelect').dataset.label = 'Camera Angles';
 document.getElementById('lightingSelect').dataset.label = 'Lighting Conditions';
@@ -849,4 +1025,3 @@ document.getElementById('genModelSelect').dataset.label = 'AI Video & Image Mode
 </script>
 </body>
 </html>
-
