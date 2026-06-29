@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PromptForge AI — Advanced Video Scene & Movement Analysis</title>
+<title>PromptForge AI — Video & Image Storyline Analyzer</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', system-ui, -apple-system, sans-serif; }
   :root {
     --bg:#0a0a14; --panel:#12121f; --panel2:#1a1a2e; --border:#2a2a3e;
     --cyan:#00e5ff; --purple:#b388ff; --pink:#ff4081; --green:#00e676;
-    --orange:#ff9500; --red:#ff3b5c;
+    --orange:#ff9500; --red:#ff3b5c; --gold:#ffd700;
     --text:#e8e8f0; --muted:#8888a0; --accent:linear-gradient(135deg,#00e5ff,#b388ff);
   }
   body {
@@ -152,6 +152,26 @@
     font-size:1rem; color:var(--text); line-height:1.7; font-weight:400;
     font-family:'Georgia', serif; font-style:italic;
   }
+  .analysis-card.plot-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,149,0,0.06));
+    border-color: var(--gold);
+  }
+  .analysis-card.plot-card .label { color:var(--gold); }
+  .analysis-card.plot-card .value {
+    font-size:0.95rem; color:var(--text); line-height:1.7; font-weight:400;
+  }
+  .analysis-card.plot-card .plot-section {
+    margin:10px 0; padding:10px 14px;
+    background:rgba(0,0,0,0.2); border-radius:8px; border-left:3px solid var(--gold);
+  }
+  .analysis-card.plot-card .plot-section-title {
+    font-size:0.75rem; color:var(--gold); text-transform:uppercase; letter-spacing:1px;
+    margin-bottom:6px; font-weight:700;
+  }
+  .analysis-card.plot-card .plot-section-text {
+    font-size:0.9rem; color:var(--text); line-height:1.6;
+  }
   .analysis-card.metadata-card {
     background: linear-gradient(135deg, rgba(255,149,0,0.08), rgba(255,59,92,0.05));
     border-color: var(--orange);
@@ -164,9 +184,7 @@
     background: linear-gradient(135deg, rgba(179,136,255,0.08), rgba(255,64,129,0.05));
     border-color: var(--purple);
   }
-  .detected-objects {
-    display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;
-  }
+  .detected-objects { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
   .detected-tag {
     background:rgba(0,230,118,0.15); border:1px solid var(--green);
     padding:4px 10px; border-radius:16px; font-size:0.8rem; color:var(--green);
@@ -235,9 +253,7 @@
   .model-status.loading { color:var(--orange); }
   .model-status.ready { color:var(--green); }
   .model-status.error { color:var(--red); }
-  .color-palette {
-    display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;
-  }
+  .color-palette { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
   .color-swatch {
     width:30px; height:30px; border-radius:6px; border:2px solid var(--border);
     position:relative;
@@ -267,7 +283,7 @@
 
   <div class="header">
     <div class="logo">⚡ PromptForge AI</div>
-    <div class="tagline">Advanced video scene & character movement analysis • 100% browser-based • No API key</div>
+    <div class="tagline">Advanced video scene & storyline analysis • Detailed plot generation • 100% browser-based</div>
   </div>
 
   <div class="tabs">
@@ -283,12 +299,12 @@
       <div class="info-box">
         <div class="info-icon">✅</div>
         <div class="info-text">
-          <strong>Advanced Multi-Model Analysis</strong><br>
+          <strong>Advanced Multi-Model Analysis with Storyline Generation</strong><br>
           • <strong>COCO-SSD</strong>: Detects 80+ objects (people, animals, vehicles)<br>
           • <strong>PoseNet</strong>: Tracks human body poses & movements<br>
           • <strong>MobileNet</strong>: Classifies scenes & environments<br>
-          • <strong>Optical Flow</strong>: Analyzes motion direction & speed<br>
-          <strong>All processing happens locally in your browser — 100% private</strong>
+          • <strong>Story Engine</strong>: Generates detailed plot from detected elements<br>
+          <strong>All processing happens locally — 100% private, no API key needed</strong>
         </div>
       </div>
       <div class="model-status loading" id="modelStatus">
@@ -298,11 +314,11 @@
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">📤</span> Upload Your Media</div>
+      <div class="card-title"><span class="icon"></span> Upload Your Media</div>
       <div class="upload-zone" id="uploadZone">
         <div class="big-icon">🎬</div>
         <h3>Drag & Drop Video or Image Here</h3>
-        <p>or click to browse • Analyzes scenes, characters & movements locally</p>
+        <p>or click to browse • Analyzes scenes, characters, movements & generates storyline</p>
         <input type="file" id="fileInput" accept="video/*,image/*" />
       </div>
       <div class="media-preview" id="mediaPreview"></div>
@@ -321,7 +337,7 @@
       </div>
     </div>
 
-    <button class="btn-generate" id="generatePromptBtn">🎯 Analyze Scenes & Generate Prompts</button>
+    <button class="btn-generate" id="generatePromptBtn">🎯 Analyze & Generate Storyline Prompts</button>
 
     <div class="warning-box" id="warningBox"></div>
 
@@ -339,7 +355,7 @@
     </div>
 
     <div class="card" id="promptCard" style="display:none;">
-      <div class="card-title"><span class="icon">📝</span> Prompts Based on Your Media</div>
+      <div class="card-title"><span class="icon">📝</span> Prompts with Detailed Storyline</div>
       <div id="modelTags"></div>
       <div class="prompt-output" id="promptOutput"></div>
       <div class="action-row">
@@ -380,7 +396,7 @@
         <div class="multi-select" id="lightingSelect"></div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="icon">🎭</span> Mood</div>
+        <div class="card-title"><span class="icon"></span> Mood</div>
         <div class="multi-select" id="moodSelect"></div>
       </div>
     </div>
@@ -421,14 +437,14 @@
       <div id="genModelTags"></div>
       <div class="prompt-output" id="genPromptOutput"></div>
       <div class="action-row">
-        <button class="btn btn-primary" id="genCopyBtn">📋 Copy</button>
+        <button class="btn btn-primary" id="genCopyBtn"> Copy</button>
         <button class="btn btn-secondary" id="genDownloadBtn">💾 Download</button>
       </div>
     </div>
 
   </div>
 
-  <div class="footer-note">PromptForge AI • Advanced browser-based AI • Scene & movement analysis • 100% private</div>
+  <div class="footer-note">PromptForge AI • Advanced browser-based AI • Storyline & plot analysis • 100% private</div>
 
 </div>
 
@@ -444,35 +460,35 @@
 ============================================================ */
 const MODELS = [
   {id:'midjourney', name:'Midjourney v7', icon:'🎨', category:'Image - Major'},
-  {id:'midjourney6', name:'Midjourney v6.1', icon:'', category:'Image - Major'},
+  {id:'midjourney6', name:'Midjourney v6.1', icon:'🎨', category:'Image - Major'},
   {id:'dalle3', name:'DALL-E 3', icon:'🖼️', category:'Image - Major'},
-  {id:'dalle4', name:'DALL-E 4', icon:'️', category:'Image - Major'},
+  {id:'dalle4', name:'DALL-E 4', icon:'🖼️', category:'Image - Major'},
   {id:'gptimage', name:'GPT Image 2', icon:'🤖', category:'Image - Major'},
   {id:'ideogram', name:'Ideogram 3.0', icon:'💭', category:'Image - Major'},
-  {id:'firefly', name:'Adobe Firefly 4', icon:'🔥', category:'Image - Major'},
+  {id:'firefly', name:'Adobe Firefly 4', icon:'', category:'Image - Major'},
   {id:'flux', name:'Flux Pro 1.1', icon:'⚡', category:'Image - Advanced'},
   {id:'fluxdev', name:'Flux Dev', icon:'⚡', category:'Image - Advanced'},
-  {id:'fluxrealism', name:'Flux Realism', icon:'', category:'Image - Advanced'},
+  {id:'fluxrealism', name:'Flux Realism', icon:'⚡', category:'Image - Advanced'},
   {id:'sd3', name:'Stable Diffusion 3.5', icon:'🌟', category:'Image - Advanced'},
-  {id:'sdxl', name:'Stable Diffusion XL', icon:'', category:'Image - Advanced'},
+  {id:'sdxl', name:'Stable Diffusion XL', icon:'🌟', category:'Image - Advanced'},
   {id:'sd3medium', name:'SD 3.5 Medium', icon:'🌟', category:'Image - Advanced'},
   {id:'sdturbo', name:'SD Turbo', icon:'🌟', category:'Image - Advanced'},
-  {id:'sdlightning', name:'SD Lightning', icon:'', category:'Image - Advanced'},
+  {id:'sdlightning', name:'SD Lightning', icon:'🌟', category:'Image - Advanced'},
   {id:'comfyui', name:'ComfyUI SD', icon:'🔧', category:'Image - Advanced'},
   {id:'automatic', name:'Automatic1111', icon:'🔧', category:'Image - Advanced'},
   {id:'leonardo', name:'Leonardo Phoenix', icon:'🦁', category:'Image - Specialized'},
-  {id:'recraft', name:'Recraft v3', icon:'', category:'Image - Specialized'},
+  {id:'recraft', name:'Recraft v3', icon:'🎯', category:'Image - Specialized'},
   {id:'krea', name:'Krea AI', icon:'✨', category:'Image - Specialized'},
   {id:'magnific', name:'Magnific AI', icon:'🔍', category:'Image - Specialized'},
   {id:'clipdrop', name:'Clipdrop XL', icon:'📎', category:'Image - Specialized'},
-  {id:'playground', name:'Playground v3', icon:'', category:'Image - Specialized'},
+  {id:'playground', name:'Playground v3', icon:'🎪', category:'Image - Specialized'},
   {id:'getimg', name:'GetImg.ai', icon:'🖼️', category:'Image - Specialized'},
   {id:'bluewillow', name:'Blue Willow', icon:'🔵', category:'Image - Specialized'},
-  {id:'nightcafe', name:'NightCafe', icon:'', category:'Image - Specialized'},
+  {id:'nightcafe', name:'NightCafe', icon:'🌃', category:'Image - Specialized'},
   {id:'dreamstudio', name:'DreamStudio', icon:'💭', category:'Image - Specialized'},
   {id:'tencent', name:'Tencent Hunyuan', icon:'🐉', category:'Image - Asian'},
   {id:'baidu', name:'Baidu ERNIE', icon:'🔵', category:'Image - Asian'},
-  {id:'aliyun', name:'Alibaba Tongyi', icon:'️', category:'Image - Asian'},
+  {id:'aliyun', name:'Alibaba Tongyi', icon:'☁️', category:'Image - Asian'},
   {id:'bytedance', name:'ByteDance Jimeng', icon:'🎵', category:'Image - Asian'},
   {id:'klingimg', name:'Kling Image', icon:'⚡', category:'Image - Asian'},
   {id:'sense', name:'SenseNova', icon:'👁️', category:'Image - Asian'},
@@ -480,7 +496,7 @@ const MODELS = [
   {id:'civitai', name:'CivitAI Models', icon:'🏛️', category:'Image - Niche'},
   {id:'tensor', name:'Tensor.art', icon:'📊', category:'Image - Niche'},
   {id:'seaart', name:'SeaArt.ai', icon:'🌊', category:'Image - Niche'},
-  {id:'photoroom', name:'PhotoRoom', icon:'', category:'Image - Niche'},
+  {id:'photoroom', name:'PhotoRoom', icon:'📸', category:'Image - Niche'},
   {id:'removebg', name:'Remove.bg', icon:'✂️', category:'Image - Niche'},
   {id:'upscale', name:'AI Upscaler', icon:'📈', category:'Image - Niche'},
   {id:'inpaint', name:'Inpainting AI', icon:'🎨', category:'Image - Niche'},
@@ -490,40 +506,40 @@ const MODELS = [
   {id:'runway3', name:'Runway Gen-3 Alpha', icon:'🎬', category:'Video - Major'},
   {id:'kling', name:'Kling 3.0', icon:'⚡', category:'Video - Major'},
   {id:'kling2', name:'Kling 2.6 Pro', icon:'⚡', category:'Video - Major'},
-  {id:'veo', name:'Veo 3.1 (Google)', icon:'', category:'Video - Major'},
+  {id:'veo', name:'Veo 3.1 (Google)', icon:'🔮', category:'Video - Major'},
   {id:'veo2', name:'Veo 2 (Google)', icon:'🔮', category:'Video - Major'},
-  {id:'seedance', name:'Seedance 1.5 Pro', icon:'', category:'Video - Strong'},
+  {id:'seedance', name:'Seedance 1.5 Pro', icon:'🌱', category:'Video - Strong'},
   {id:'wan', name:'WAN 2.6 (Alibaba)', icon:'☁️', category:'Video - Strong'},
-  {id:'wan2', name:'WAN 2.2 (Alibaba)', icon:'️', category:'Video - Strong'},
+  {id:'wan2', name:'WAN 2.2 (Alibaba)', icon:'☁️', category:'Video - Strong'},
   {id:'luma', name:'Luma Ray 3', icon:'💫', category:'Video - Strong'},
   {id:'luma2', name:'Luma Dream Machine', icon:'💫', category:'Video - Strong'},
-  {id:'pika', name:'Pika 1.5', icon:'', category:'Video - Strong'},
+  {id:'pika', name:'Pika 1.5', icon:'🐭', category:'Video - Strong'},
   {id:'hailuo', name:'Hailuo AI (Minimax)', icon:'🎭', category:'Video - Strong'},
   {id:'haiper', name:'Haiper AI', icon:'🎬', category:'Video - Strong'},
   {id:'mochi', name:'Mochi 1 (Genmo)', icon:'🍡', category:'Video - Emerging'},
-  {id:'hunyuan', name:'Hunyuan Video (Tencent)', icon:'', category:'Video - Emerging'},
+  {id:'hunyuan', name:'Hunyuan Video (Tencent)', icon:'🐉', category:'Video - Emerging'},
   {id:'ltx', name:'LTX-2 (Lightricks)', icon:'✨', category:'Video - Emerging'},
   {id:'vidu', name:'Vidu Q2', icon:'🎥', category:'Video - Emerging'},
-  {id:'minimax', name:'Minimax AI', icon:'', category:'Video - Emerging'},
-  {id:'stable', name:'Stable Video Diffusion', icon:'🎨', category:'Video - Emerging'},
+  {id:'minimax', name:'Minimax AI', icon:'🤖', category:'Video - Emerging'},
+  {id:'stable', name:'Stable Video Diffusion', icon:'', category:'Video - Emerging'},
   {id:'moonvalley', name:'Moonvalley', icon:'🌙', category:'Video - Emerging'},
   {id:'cogvideo', name:'CogVideo', icon:'🧠', category:'Video - Emerging'},
   {id:'invideo', name:'InVideo AI', icon:'📹', category:'Video - Specialized'},
-  {id:'fliki', name:'Fliki', icon:'️', category:'Video - Specialized'},
-  {id:'pictory', name:'Pictory', icon:'🖼️', category:'Video - Specialized'},
+  {id:'fliki', name:'Fliki', icon:'🎞️', category:'Video - Specialized'},
+  {id:'pictory', name:'Pictory', icon:'️', category:'Video - Specialized'},
   {id:'synthesia', name:'Synthesia', icon:'👤', category:'Video - Specialized'},
   {id:'heygen', name:'HeyGen', icon:'🎪', category:'Video - Specialized'},
-  {id:'did', name:'D-ID', icon:'', category:'Video - Specialized'},
+  {id:'did', name:'D-ID', icon:'🎭', category:'Video - Specialized'},
   {id:'colossyan', name:'Colossyan', icon:'🏛️', category:'Video - Specialized'},
   {id:'elai', name:'Elai.io', icon:'📺', category:'Video - Specialized'},
   {id:'deepbrain', name:'DeepBrain AI', icon:'🧩', category:'Video - Specialized'},
-  {id:'flexclip', name:'FlexClip', icon:'', category:'Video - Specialized'},
-  {id:'veed', name:'VEED.io', icon:'✂️', category:'Video - Specialized'},
+  {id:'flexclip', name:'FlexClip', icon:'🎬', category:'Video - Specialized'},
+  {id:'veed', name:'VEED.io', icon:'️', category:'Video - Specialized'},
   {id:'kapwing', name:'Kapwing', icon:'🎪', category:'Video - Specialized'},
   {id:'domo', name:'DomoAI', icon:'🏠', category:'Video - Specialized'},
-  {id:'gaga', name:'Gaga AI', icon:'', category:'Video - Specialized'},
-  {id:'freebeat', name:'freebeat.ai', icon:'🎵', category:'Video - Specialized'},
-  {id:'magic', name:'MagicTime', icon:'⏰', category:'Video - Specialized'},
+  {id:'gaga', name:'Gaga AI', icon:'🎵', category:'Video - Specialized'},
+  {id:'freebeat', name:'freebeat.ai', icon:'', category:'Video - Specialized'},
+  {id:'magic', name:'MagicTime', icon:'', category:'Video - Specialized'},
   {id:'phenaki', name:'Phenaki', icon:'🎪', category:'Video - Specialized'},
   {id:'imagen', name:'Imagen Video', icon:'🖼️', category:'Video - Specialized'},
   {id:'makeavideo', name:'Make-A-Video', icon:'🎨', category:'Video - Specialized'},
@@ -568,6 +584,46 @@ const MOODS = [
   'Lonely','Vibrant','Eerie','Majestic','Raw',
   'Contemplative','Joyful','Foreboding','Liberating','Haunting',
 ];
+
+// Story plot templates based on detected elements
+const PLOT_TEMPLATES = {
+  human_alone: {
+    genre: 'Character Study / Drama',
+    protagonist: 'A solitary figure navigating their world',
+    conflict: 'Internal struggle or external challenge',
+    theme: 'Self-discovery, resilience, or transformation'
+  },
+  human_multiple: {
+    genre: 'Relationship Drama / Ensemble',
+    protagonist: 'Multiple characters with intersecting stories',
+    conflict: 'Interpersonal dynamics or shared challenge',
+    theme: 'Connection, conflict, or collaboration'
+  },
+  human_animal: {
+    genre: 'Bond / Adventure',
+    protagonist: 'A human and animal companion',
+    conflict: 'Journey together or protecting each other',
+    theme: 'Loyalty, friendship, or survival'
+  },
+  action_scene: {
+    genre: 'Action / Thriller',
+    protagonist: 'A character in motion, driven by purpose',
+    conflict: 'Physical challenge or urgent mission',
+    theme: 'Courage, determination, or survival'
+  },
+  nature_scene: {
+    genre: 'Atmospheric / Contemplative',
+    protagonist: 'The environment itself as the main character',
+    conflict: 'Natural forces or passage of time',
+    theme: 'Beauty, impermanence, or harmony'
+  },
+  urban_scene: {
+    genre: 'Urban Drama / Documentary',
+    protagonist: 'Life within the city landscape',
+    conflict: 'Modern life challenges or urban stories',
+    theme: 'Community, isolation, or progress'
+  }
+};
 
 let currentMedia = { filename:'', type:'', size:0, url:'', file:null, metadata:{} };
 let cocoModel = null;
@@ -685,7 +741,7 @@ async function loadModels() {
     
     modelsReady = true;
     statusEl.className = 'model-status ready';
-    statusEl.innerHTML = '<span>✓</span><span>All AI models loaded: COCO-SSD + PoseNet + MobileNet</span>';
+    statusEl.innerHTML = '<span>✓</span><span>All AI models loaded: COCO-SSD + PoseNet + MobileNet + Story Engine</span>';
   } catch (error) {
     console.error('Model loading error:', error);
     statusEl.className = 'model-status error';
@@ -841,11 +897,9 @@ async function analyzeMedia(mediaData) {
   for (let i = 0; i < frames.length; i++) {
     const frame = frames[i];
     
-    // Object detection
     const detections = await cocoModel.detect(frame.canvas);
     allDetections.push({ time: frame.time, detections: detections });
     
-    // Pose estimation
     const poses = await posenetModel.estimateMultiplePoses(frame.canvas, {
       flipHorizontal: false,
       maxDetections: 5,
@@ -854,21 +908,15 @@ async function analyzeMedia(mediaData) {
     });
     allPoses.push({ time: frame.time, poses: poses });
     
-    // Scene classification
     const classifications = await mobilenetModel.classify(frame.canvas);
     allClassifications.push({ time: frame.time, classifications: classifications });
   }
 
-  // Extract colors from first frame
   const colors = await extractDominantColors(frames[0].canvas);
-  
-  // Analyze motion between frames
   const motionAnalysis = analyzeMotionBetweenFrames(frames);
-  
-  // Analyze pose changes (character movements)
   const poseAnalysis = analyzePoseChanges(allPoses);
   
-  // Build comprehensive analysis
+  // Build comprehensive analysis WITH DETAILED STORYLINE
   const analysis = buildComprehensiveAnalysis(
     allDetections, allPoses, allClassifications, 
     colors, motionAnalysis, poseAnalysis, frames, mediaData
@@ -881,7 +929,6 @@ function analyzeMotionBetweenFrames(frames) {
   if (frames.length < 2) return { level: 'static', intensity: 0, direction: 'none' };
   
   let totalDiff = 0;
-  let motionVectors = { x: 0, y: 0 };
   const numComparisons = frames.length - 1;
   
   for (let i = 0; i < numComparisons; i++) {
@@ -889,22 +936,14 @@ function analyzeMotionBetweenFrames(frames) {
     const frame2 = frames[i + 1].imageData;
     
     let frameDiff = 0;
-    let vectorX = 0;
-    let vectorY = 0;
-    const sampleStep = 16; // Sample every 16th pixel for speed
+    const sampleStep = 16;
     
     for (let y = 0; y < frame1.height; y += sampleStep) {
       for (let x = 0; x < frame1.width; x += sampleStep) {
         const idx = (y * frame1.width + x) * 4;
-        const r1 = frame1.data[idx];
-        const g1 = frame1.data[idx + 1];
-        const b1 = frame1.data[idx + 2];
-        
-        const r2 = frame2.data[idx];
-        const g2 = frame2.data[idx + 1];
-        const b2 = frame2.data[idx + 2];
-        
-        frameDiff += Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
+        frameDiff += Math.abs(frame1.data[idx] - frame2.data[idx]);
+        frameDiff += Math.abs(frame1.data[idx + 1] - frame2.data[idx + 1]);
+        frameDiff += Math.abs(frame1.data[idx + 2] - frame2.data[idx + 2]);
       }
     }
     
@@ -935,13 +974,11 @@ function analyzePoseChanges(allPoses) {
                       'leftWrist', 'rightWrist', 'leftHip', 'rightHip',
                       'leftKnee', 'rightKnee', 'leftAnkle', 'rightAnkle'];
   
-  // Track pose changes between frames
   for (let i = 0; i < allPoses.length - 1; i++) {
     const poses1 = allPoses[i].poses;
     const poses2 = allPoses[i + 1].poses;
     
     if (poses1.length > 0 && poses2.length > 0) {
-      // Compare first detected person
       const pose1 = poses1[0];
       const pose2 = poses2[0];
       
@@ -1008,17 +1045,145 @@ async function extractDominantColors(canvas, numColors = 5) {
   });
 }
 
+/* ============================================================
+   DETAILED STORYLINE GENERATOR
+============================================================ */
+function generateDetailedStoryline(analysisData) {
+  const {
+    subjectType, personCount, hasPeople, detectedObjects, 
+    motionData, poseData, scene, lighting, isVideo
+  } = analysisData;
+  
+  // Determine plot type based on detected elements
+  let plotType = 'nature_scene';
+  if (hasPeople && personCount === 1) plotType = 'human_alone';
+  else if (hasPeople && personCount > 1) plotType = 'human_multiple';
+  else if (hasPeople && detectedObjects.some(o => ['dog', 'cat', 'bird', 'horse'].includes(o))) plotType = 'human_animal';
+  else if (motionData.level === 'high motion' || poseData.movementTypes.length > 0) plotType = 'action_scene';
+  else if (detectedObjects.some(o => ['car', 'truck', 'building', 'road'].includes(o))) plotType = 'urban_scene';
+  
+  const plotTemplate = PLOT_TEMPLATES[plotType];
+  
+  // Build detailed storyline sections
+  const logline = generateLogline(analysisData, plotTemplate);
+  const synopsis = generateSynopsis(analysisData, plotTemplate);
+  const plotOutline = generatePlotOutline(analysisData, plotTemplate);
+  const characterArc = generateCharacterArc(analysisData, plotTemplate);
+  const thematicElements = generateThematicElements(analysisData, plotTemplate);
+  const visualNarrative = generateVisualNarrative(analysisData, plotTemplate);
+  
+  return {
+    logline,
+    synopsis,
+    plotOutline,
+    characterArc,
+    thematicElements,
+    visualNarrative,
+    plotType: plotTemplate.genre,
+    fullStoryline: `${logline}\n\n${synopsis}\n\nPLOT OUTLINE:\n${plotOutline}\n\nCHARACTER ARC:\n${characterArc}\n\nTHEMES:\n${thematicElements}\n\nVISUAL NARRATIVE:\n${visualNarrative}`
+  };
+}
+
+function generateLogline(data, template) {
+  const subject = data.subjectType === 'human' 
+    ? (data.personCount > 1 ? 'A group of people' : 'A person')
+    : data.subjectType === 'animal' ? 'An animal' : 'A scene';
+  
+  const action = data.action || 'present in the environment';
+  const setting = data.scene || 'an unspecified location';
+  const mood = data.motionData.level === 'high motion' ? 'intense' : 
+               data.motionData.level === 'moderate motion' ? 'dynamic' : 'contemplative';
+  
+  return `LOGLINE: ${subject} ${action} in ${setting}, creating a ${mood} ${template.genre.toLowerCase()} narrative about ${template.theme.toLowerCase()}.`;
+}
+
+function generateSynopsis(data, template) {
+  const isVideo = data.isVideo;
+  const subject = data.subjectType === 'human' 
+    ? (data.personCount > 1 ? `${data.personCount} individuals` : 'A central character')
+    : data.subjectType === 'animal' ? 'An animal subject' : 'The environment';
+  
+  let synopsis = `SYNOPSIS: `;
+  
+  if (isVideo) {
+    synopsis += `This video tells the story of ${subject} ${data.action}. `;
+    if (data.poseData.hasMovement) {
+      synopsis += `Through ${data.poseData.movementTypes.join(' and ')}, the narrative unfolds with physical expression. `;
+    }
+    synopsis += `Set against ${data.scene} with ${data.lighting}, the ${data.motionData.level} creates ${data.motionData.level === 'high motion' ? 'a sense of urgency and energy' : data.motionData.level === 'moderate motion' ? 'deliberate pacing and purpose' : 'a contemplative atmosphere'}. `;
+    synopsis += `The story explores ${template.theme.toLowerCase()}, with ${template.conflict.toLowerCase()} driving the narrative forward.`;
+  } else {
+    synopsis += `This image captures a pivotal moment in the story of ${subject}. `;
+    synopsis += `Frozen in time, ${subject.toLowerCase()} ${data.action}, suggesting a larger narrative about ${template.theme.toLowerCase()}. `;
+    synopsis += `The composition, with ${data.lighting} and ${data.scene}, invites the viewer to imagine what came before and what comes after this captured instant.`;
+  }
+  
+  return synopsis;
+}
+
+function generatePlotOutline(data, template) {
+  const isVideo = data.isVideo;
+  const subject = data.subjectType === 'human' ? 'the character' : data.subjectType === 'animal' ? 'the animal' : 'the scene';
+  
+  if (isVideo) {
+    return `• BEGINNING (Setup): The scene opens with ${subject} ${data.action} in ${data.scene}. The ${data.lighting} establishes the mood.\n\n• MIDDLE (Development): ${data.poseData.hasMovement ? `Through ${data.poseData.movementTypes.join(' and ')}, ${subject} engages with the environment, creating tension and narrative momentum.` : `The ${data.motionData.level} suggests underlying activity as the story develops.`} The ${template.conflict.toLowerCase()} becomes apparent.\n\n• CLIMAX (Peak): The moment of greatest ${data.motionData.level === 'high motion' ? 'action and intensity' : data.motionData.level === 'moderate motion' ? 'purpose and focus' : 'emotional resonance'} — ${subject} faces the central challenge of ${template.conflict.toLowerCase()}.\n\n• RESOLUTION (Conclusion): The narrative resolves with ${subject} having undergone ${template.theme.toLowerCase()}, leaving the viewer with a sense of ${data.motionData.level === 'high motion' ? 'catharsis' : 'contemplation'}.`;
+  } else {
+    return `• BEFORE (Implied Past): ${subject} arrived at this moment through circumstances suggested by ${data.scene} and ${data.lighting}.\n\n• NOW (Captured Moment): The image freezes ${subject} ${data.action} — a pivotal instant that encapsulates ${template.theme.toLowerCase()}.\n\n• AFTER (Implied Future): The story continues beyond the frame, with ${subject} carrying forward the implications of this moment and ${template.conflict.toLowerCase()}.`;
+  }
+}
+
+function generateCharacterArc(data, template) {
+  const subject = data.subjectType === 'human' 
+    ? (data.personCount > 1 ? 'The characters' : 'The character')
+    : data.subjectType === 'animal' ? 'The animal' : 'The scene elements';
+  
+  let arc = `${subject} ${data.personCount > 1 ? 'experience' : 'experiences'} a journey of ${template.theme.toLowerCase()}. `;
+  
+  if (data.poseData.hasMovement) {
+    arc += `Physical expression through ${data.poseData.movementTypes.join(' and ')} reveals internal transformation. `;
+  }
+  
+  arc += `Starting from a state of ${data.motionData.level === 'high motion' ? 'active engagement' : data.motionData.level === 'moderate motion' ? 'purposeful action' : 'quiet observation'}, ${subject.toLowerCase()} ${data.personCount > 1 ? 'navigate' : 'navigates'} ${template.conflict.toLowerCase()}, ultimately reaching a state of ${template.theme.toLowerCase()}. `;
+  
+  if (data.detectedObjects.includes('tie') || data.detectedObjects.includes('backpack')) {
+    arc += `Visual details like ${data.detectedObjects.filter(o => ['tie', 'backpack', 'handbag', 'umbrella'].includes(o)).join(', ')} suggest social context and personal history.`;
+  }
+  
+  return arc;
+}
+
+function generateThematicElements(data, template) {
+  let themes = `Primary Theme: ${template.theme}\n\n`;
+  themes += `Supporting Themes:\n`;
+  themes += `• ${data.subjectType === 'human' ? 'Human experience and emotion' : data.subjectType === 'animal' ? 'Nature and instinct' : 'Environment and atmosphere'}\n`;
+  themes += `• ${data.motionData.level === 'high motion' ? 'Energy and urgency' : data.motionData.level === 'moderate motion' ? 'Purpose and determination' : 'Stillness and reflection'}\n`;
+  themes += `• ${data.lighting.includes('dark') || data.lighting.includes('low') ? 'Mystery and depth' : data.lighting.includes('bright') ? 'Clarity and openness' : 'Balance and nuance'}\n`;
+  themes += `• ${template.conflict}\n\n`;
+  themes += `Visual Metaphors: The ${data.scene} serves as metaphor for ${template.theme.toLowerCase()}, while ${data.lighting} symbolizes ${data.lighting.includes('dark') ? 'the unknown or hidden truths' : data.lighting.includes('bright') ? 'revelation and clarity' : 'the complexity of the situation'}.`;
+  
+  return themes;
+}
+
+function generateVisualNarrative(data, template) {
+  let narrative = `The visual storytelling unfolds through:\n\n`;
+  narrative += `• COMPOSITION: ${data.camera} frames ${data.subjectType === 'human' ? (data.personCount > 1 ? 'the characters' : 'the character') : data.subject} within ${data.scene}, creating visual hierarchy and focus.\n\n`;
+  narrative += `• LIGHTING: ${data.lighting} establishes mood and directs attention, with color palette (${data.dominantColors.slice(0, 3).join(', ')}) reinforcing the emotional tone.\n\n`;
+  narrative += `• MOVEMENT: ${data.isVideo ? (data.motionData.level === 'high motion' ? 'Dynamic motion creates energy and urgency' : data.motionData.level === 'moderate motion' ? 'Moderate movement suggests purposeful action' : 'Subtle motion invites contemplation') : 'The frozen moment captures peak narrative tension'}. ${data.poseData.hasMovement ? `Character movements (${data.poseData.movementTypes.join(', ')}) add physical storytelling.` : ''}\n\n`;
+  narrative += `• DETAILS: Detected elements (${data.detectedObjects.slice(0, 6).join(', ')}) enrich the narrative world, providing context and depth to ${template.genre.toLowerCase()}.\n\n`;
+  narrative += `• ATMOSPHERE: The combination of ${data.scene}, ${data.lighting}, and ${data.motionData.level} creates a cohesive visual narrative that supports ${template.theme.toLowerCase()}.`;
+  
+  return narrative;
+}
+
 function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications, colors, motionAnalysis, poseAnalysis, frames, mediaData) {
   const isVideo = mediaData.type.startsWith('video');
   const meta = mediaData.metadata || {};
   
-  // Collect all detected objects across frames
   const allObjects = allDetections.flatMap(f => f.detections.map(d => d.class));
   const uniqueObjects = [...new Set(allObjects)];
   const objectCounts = {};
   allObjects.forEach(obj => { objectCounts[obj] = (objectCounts[obj] || 0) + 1; });
   
-  // Determine main subject
   const personCount = allObjects.filter(o => ['person', 'man', 'woman', 'boy', 'girl', 'child'].includes(o.toLowerCase())).length;
   const hasPeople = personCount > 0;
   const mainObject = uniqueObjects[0] || 'scene';
@@ -1035,7 +1200,6 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     subjectDesc = animals[0] || 'an animal';
   }
   
-  // Build character details
   let characterDetails = 'Not applicable';
   if (subjectType === 'human') {
     characterDetails = hasPeople ? `${personCount} human figure${personCount > 1 ? 's' : ''} detected` : 'A person detected';
@@ -1043,7 +1207,6 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     if (allObjects.includes('backpack')) characterDetails += ', carrying a backpack';
   }
   
-  // Build action description from pose analysis
   let actionDescription = 'present in the scene';
   if (isVideo && poseAnalysis.hasMovement) {
     const movementTypes = poseAnalysis.movementTypes;
@@ -1060,7 +1223,6 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     actionDescription = `${motionAnalysis.level} detected in the scene`;
   }
   
-  // Build scene description from classifications
   const topClassification = allClassifications[0]?.classifications[0]?.className || 'unknown';
   let sceneDescription = 'indoor or outdoor setting';
   
@@ -1075,7 +1237,6 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     if (allObjects.includes('tv') || allObjects.includes('laptop')) sceneDescription += ' and technology';
   }
   
-  // Determine lighting from colors
   let lightingDescription = 'natural lighting';
   if (colors.length > 0) {
     const avgBrightness = colors.reduce((sum, color) => {
@@ -1094,7 +1255,6 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     else lightingDescription = 'very dark, moody atmosphere with minimal light';
   }
   
-  // Determine camera/framing
   let cameraDescription = 'standard framing';
   if (meta.aspectRatio) {
     const ratio = parseFloat(meta.aspectRatio);
@@ -1105,56 +1265,8 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     else cameraDescription = 'portrait orientation framing';
   }
   
-  // Build detailed story with scenes and movements
-  let story = '';
-  if (isVideo) {
-    story = `This video captures ${subjectDesc} ${actionDescription}. `;
-    
-    if (poseAnalysis.hasMovement) {
-      story += `The character${personCount > 1 ? 's' : ''} ${poseAnalysis.movementTypes.join(' and ')}, creating a dynamic scene. `;
-    }
-    
-    story += `Set in ${sceneDescription}, the ${lightingDescription} creates atmosphere. `;
-    
-    if (uniqueObjects.length > 0) {
-      story += `The scene includes ${uniqueObjects.slice(0, 5).join(', ')}, adding context to the narrative. `;
-    }
-    
-    story += `The ${motionAnalysis.level} (intensity: ${motionAnalysis.intensity}) suggests ${motionAnalysis.level === 'high motion' ? 'energetic action' : motionAnalysis.level === 'moderate motion' ? 'deliberate movement' : 'subtle activity'}.`;
-  } else {
-    story = `This image features ${subjectDesc} ${actionDescription}. `;
-    story += `Set in ${sceneDescription}, with ${lightingDescription}. `;
-    if (uniqueObjects.length > 0) {
-      story += `Visible elements include ${uniqueObjects.slice(0, 5).join(', ')}.`;
-    }
-  }
-  
-  // Build story arc
-  const storyArc = isVideo
-    ? 'Setup: Scene establishment with characters → Development: Character movements and interactions → Climax: Key action moment → Resolution: Scene conclusion'
-    : 'Setup: Scene composition → Focus: Main subject emphasis → Detail: Supporting elements → Resolution: Overall impression';
-  
-  // Character motivation
-  const characterMotivation = subjectType === 'human'
-    ? `The character${personCount > 1 ? 's' : ''} appear${personCount > 1 ? '' : 's'} engaged in ${actionDescription}, suggesting purpose and intention`
-    : subjectType === 'animal'
-    ? `The animal moves naturally within ${sceneDescription}`
-    : `The scene presents ${subjectDesc} in ${sceneDescription}`;
-  
-  // Emotional journey
-  const emotionalJourney = poseAnalysis.hasMovement
-    ? `Active engagement → ${poseAnalysis.movementTypes.includes('arm movement') ? 'expressive gesture' : 'movement'} → ${motionAnalysis.level === 'high motion' ? 'energetic climax' : 'controlled action'} → resolution`
-    : `Observation → contemplation → appreciation → understanding`;
-  
-  // Narrative tone
-  const narrativeTone = `${motionAnalysis.level === 'high motion' ? 'Dynamic and energetic' : motionAnalysis.level === 'moderate motion' ? 'Deliberate and purposeful' : 'Calm and observational'}, set in ${sceneDescription} with ${lightingDescription}`;
-  
-  // Backstory
-  const backstory = isVideo
-    ? `This video captures a moment of ${actionDescription}. The ${motionAnalysis.level} and ${poseAnalysis.hasMovement ? 'character movements' : 'scene dynamics'} suggest a narrative of ${subjectType === 'human' ? 'human activity and interaction' : subjectType === 'animal' ? 'natural behavior' : 'environmental presence'}.`
-    : `This image captures ${subjectDesc} in ${sceneDescription}. The composition and ${lightingDescription} create a moment frozen in time, inviting contemplation of the story behind this scene.`;
-  
-  return {
+  // Build basic analysis data
+  const basicAnalysis = {
     subject: `${subjectDesc} ${actionDescription}`,
     subjectType: subjectType,
     characterDetails: characterDetails,
@@ -1166,13 +1278,6 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     scene: sceneDescription,
     style: topClassification.includes('outdoor') ? 'natural documentary style' : 'cinematic composition',
     technical: `${meta.width || 'Unknown'}×${meta.height || 'Unknown'}px, ${meta.format || 'unknown'}, ${meta.fileSize || 'unknown size'}`,
-    story: story,
-    storyArc: storyArc,
-    characterMotivation: characterMotivation,
-    emotionalJourney: emotionalJourney,
-    narrativeTone: narrativeTone,
-    backstory: backstory,
-    // Additional detailed data
     detectedObjects: uniqueObjects,
     objectCounts: objectCounts,
     topClassification: topClassification,
@@ -1182,6 +1287,23 @@ function buildComprehensiveAnalysis(allDetections, allPoses, allClassifications,
     hasPeople: hasPeople,
     personCount: personCount,
     isVideo: isVideo
+  };
+  
+  // Generate detailed storyline
+  const storyline = generateDetailedStoryline(basicAnalysis);
+  
+  // Merge storyline into analysis
+  return {
+    ...basicAnalysis,
+    storyline: storyline,
+    story: storyline.logline + ' ' + storyline.synopsis,
+    storyArc: storyline.plotOutline,
+    characterMotivation: storyline.characterArc,
+    emotionalJourney: `${motionAnalysis.level === 'high motion' ? 'Active engagement' : motionAnalysis.level === 'moderate motion' ? 'Purposeful action' : 'Quiet observation'} → ${poseAnalysis.hasMovement ? 'Physical expression' : 'Visual contemplation'} → ${motionAnalysis.level === 'high motion' ? 'Energetic climax' : 'Emotional resonance'} → Resolution`,
+    narrativeTone: `${motionAnalysis.level === 'high motion' ? 'Dynamic and energetic' : motionAnalysis.level === 'moderate motion' ? 'Deliberate and purposeful' : 'Calm and observational'}, ${storyline.plotType}`,
+    backstory: isVideo
+      ? `This video captures a moment of ${actionDescription}. The ${motionAnalysis.level} and ${poseAnalysis.hasMovement ? 'character movements' : 'scene dynamics'} suggest a narrative of ${subjectType === 'human' ? 'human activity and interaction' : subjectType === 'animal' ? 'natural behavior' : 'environmental presence'}.`
+      : `This image captures ${subjectDesc} in ${sceneDescription}. The composition and ${lightingDescription} create a moment frozen in time, inviting contemplation of the story behind this scene.`
   };
 }
 
@@ -1198,7 +1320,7 @@ document.getElementById('generatePromptBtn').addEventListener('click', async () 
   }
   
   if (!modelsReady) {
-    showWarning('⚠️ AI models are still loading. Please wait and try again.');
+    showWarning('️ AI models are still loading. Please wait and try again.');
     return;
   }
   
@@ -1210,7 +1332,7 @@ document.getElementById('generatePromptBtn').addEventListener('click', async () 
 
   const btn = document.getElementById('generatePromptBtn');
   const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner"></span> Analyzing scenes & movements...';
+  btn.innerHTML = '<span class="spinner"></span> Analyzing & generating storyline...';
   btn.disabled = true;
 
   const card = document.getElementById('analysisCard');
@@ -1227,18 +1349,21 @@ document.getElementById('generatePromptBtn').addEventListener('click', async () 
     status.textContent = '🔍 Extracting frames from your media...';
 
     progressFill.style.width = '40%';
-    status.textContent = '🧠 Running object detection (COCO-SSD)...';
+    status.textContent = '🧠 Running object detection & pose tracking...';
     
     const { analysis, frameThumbnails } = await analyzeMedia(currentMedia);
+
+    progressFill.style.width = '70%';
+    status.textContent = '📖 Generating detailed storyline & plot...';
+    await new Promise(r => setTimeout(r, 400));
 
     progressFill.style.width = '85%';
     status.textContent = '📝 Generating model-specific prompts...';
     await new Promise(r => setTimeout(r, 300));
 
     progressFill.style.width = '100%';
-    status.textContent = '✅ Analysis complete!';
+    status.textContent = '✅ Analysis & storyline complete!';
 
-    // Show frame timeline for videos
     if (frameThumbnails.length > 1) {
       frameTimeline.style.display = 'flex';
       frameTimeline.innerHTML = frameThumbnails.map((thumb, i) => 
@@ -1253,8 +1378,8 @@ document.getElementById('generatePromptBtn').addEventListener('click', async () 
     console.error('Analysis error:', error);
     progressFill.style.width = '100%';
     progressFill.style.background = 'var(--red)';
-    status.textContent = '❌ Analysis failed';
-    showWarning(`️ Analysis failed: ${error.message}`);
+    status.textContent = ' Analysis failed';
+    showWarning(`⚠️ Analysis failed: ${error.message}`);
   } finally {
     btn.innerHTML = originalText;
     btn.disabled = false;
@@ -1270,7 +1395,7 @@ function showWarning(message) {
 
 function displayAnalysisResults(data) {
   const grid = document.getElementById('analysisGrid');
-  const subjectIcon = data.subjectType === 'human' ? '👤' : data.subjectType === 'animal' ? '🐾' : data.subjectType === 'landscape' ? '🏞️' : '📦';
+  const subjectIcon = data.subjectType === 'human' ? '' : data.subjectType === 'animal' ? '🐾' : data.subjectType === 'landscape' ? '🏞️' : '';
   
   const meta = currentMedia.metadata || {};
   
@@ -1285,6 +1410,8 @@ function displayAnalysisResults(data) {
   const movementTags = data.poseData.movementTypes.length > 0
     ? data.poseData.movementTypes.map(m => `<span class="movement-tag">${m}</span>`).join('')
     : '<span class="movement-tag">no significant movement</span>';
+  
+  const storyline = data.storyline;
   
   grid.innerHTML = `
     <div class="analysis-card metadata-card">
@@ -1305,7 +1432,7 @@ function displayAnalysisResults(data) {
     </div>
     
     <div class="analysis-card movement-card">
-      <div class="label"> Character Movements (PoseNet)</div>
+      <div class="label">🎭 Character Movements (PoseNet)</div>
       <div class="value" style="font-size:0.95rem; color:var(--text);">${data.poseData.movementTypes.length} movement types</div>
       <div class="detected-objects">${movementTags}</div>
     </div>
@@ -1318,49 +1445,70 @@ function displayAnalysisResults(data) {
     
     <div class="analysis-card"><div class="label">${subjectIcon} Subject</div><div class="value">${data.subject}</div><div class="sub">Type: ${data.subjectType}</div></div>
     <div class="analysis-card"><div class="label">👤 Character Details</div><div class="value">${data.characterDetails}</div><div class="sub">Appearance & details</div></div>
-    <div class="analysis-card"><div class="label"> Action & Movement</div><div class="value">${data.action}</div><div class="sub">Character movements & activities</div></div>
+    <div class="analysis-card"><div class="label">🎬 Action & Movement</div><div class="value">${data.action}</div><div class="sub">Character movements & activities</div></div>
     <div class="analysis-card"><div class="label">😊 Expression</div><div class="value">${data.expression}</div><div class="sub">Emotion & mood</div></div>
     <div class="analysis-card"><div class="label">🎭 Performance</div><div class="value">${data.performance}</div><div class="sub">Motion analysis</div></div>
     <div class="analysis-card"><div class="label">📷 Camera</div><div class="value">${data.camera}</div><div class="sub">Shot & framing</div></div>
-    <div class="analysis-card"><div class="label"> Lighting</div><div class="value">${data.lighting}</div><div class="sub">Quality & type</div></div>
+    <div class="analysis-card"><div class="label">💡 Lighting</div><div class="value">${data.lighting}</div><div class="sub">Quality & type</div></div>
     <div class="analysis-card"><div class="label">🌍 Scene</div><div class="value">${data.scene}</div><div class="sub">Setting & environment</div></div>
     <div class="analysis-card"><div class="label">🎨 Style</div><div class="value">${data.style}</div><div class="sub">Visual aesthetic</div></div>
-    <div class="analysis-card"><div class="label">️ Technical</div><div class="value">${data.technical}</div><div class="sub">Quality & specs</div></div>
+    <div class="analysis-card"><div class="label">⚙️ Technical</div><div class="value">${data.technical}</div><div class="sub">Quality & specs</div></div>
+    
+    <div class="analysis-card plot-card">
+      <div class="label">📖 DETAILED STORYLINE & PLOT</div>
+      <div class="value">
+        <div class="plot-section">
+          <div class="plot-section-title">🎬 Genre & Plot Type</div>
+          <div class="plot-section-text">${storyline.plotType}</div>
+        </div>
+        <div class="plot-section">
+          <div class="plot-section-title">📝 Logline</div>
+          <div class="plot-section-text">${storyline.logline.replace('LOGLINE: ', '')}</div>
+        </div>
+        <div class="plot-section">
+          <div class="plot-section-title">📚 Synopsis</div>
+          <div class="plot-section-text">${storyline.synopsis.replace('SYNOPSIS: ', '')}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="analysis-card plot-card">
+      <div class="label">🎭 PLOT OUTLINE</div>
+      <div class="value">
+        <div class="plot-section-text" style="white-space:pre-wrap;">${storyline.plotOutline}</div>
+      </div>
+    </div>
+    
+    <div class="analysis-card plot-card">
+      <div class="label">👤 CHARACTER ARC</div>
+      <div class="value">
+        <div class="plot-section-text">${storyline.characterArc}</div>
+      </div>
+    </div>
+    
+    <div class="analysis-card plot-card">
+      <div class="label">💭 THEMATIC ELEMENTS</div>
+      <div class="value">
+        <div class="plot-section-text" style="white-space:pre-wrap;">${storyline.thematicElements}</div>
+      </div>
+    </div>
+    
+    <div class="analysis-card plot-card">
+      <div class="label">🎨 VISUAL NARRATIVE</div>
+      <div class="value">
+        <div class="plot-section-text" style="white-space:pre-wrap;">${storyline.visualNarrative}</div>
+      </div>
+    </div>
     
     <div class="analysis-card story-card">
-      <div class="label">📖 STORY / NARRATIVE (Based on Your Media)</div>
-      <div class="value">${data.story}</div>
-    </div>
-    
-    <div class="analysis-card">
-      <div class="label">🎬 Story Arc</div>
-      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.storyArc}</div>
-    </div>
-    
-    <div class="analysis-card">
-      <div class="label"> Character Motivation</div>
-      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.characterMotivation}</div>
-    </div>
-    
-    <div class="analysis-card">
-      <div class="label">❤️ Emotional Journey</div>
-      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.emotionalJourney}</div>
-    </div>
-    
-    <div class="analysis-card">
-      <div class="label"> Narrative Tone</div>
-      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.narrativeTone}</div>
-    </div>
-    
-    <div class="analysis-card">
-      <div class="label">📚 Backstory</div>
-      <div class="value" style="font-size:0.95rem; color:var(--text); line-height:1.6; font-weight:400;">${data.backstory}</div>
+      <div class="label">📖 FULL STORYLINE (For Prompts)</div>
+      <div class="value">${storyline.fullStoryline}</div>
     </div>
   `;
 }
 
 /* ============================================================
-   PROMPT GENERATION
+   PROMPT GENERATION WITH STORYLINE
 ============================================================ */
 function generatePrompts(selectedModels, analysis) {
   const promptCard = document.getElementById('promptCard');
@@ -1369,14 +1517,33 @@ function generatePrompts(selectedModels, analysis) {
 
   const visualBase = `${analysis.subject}. ${analysis.characterDetails}. Action: ${analysis.action}. Expression: ${analysis.expression}. Performance: ${analysis.performance}. Camera: ${analysis.camera}. Lighting: ${analysis.lighting}. Scene: ${analysis.scene}. Style: ${analysis.style}. ${analysis.technical}.`;
   
-  const storyBase = analysis.story ? `\n\n📖 STORY: ${analysis.story}` : '';
+  const storyline = analysis.storyline;
+  const storylineBlock = `
+
+📖 DETAILED STORYLINE:
+Genre: ${storyline.plotType}
+Logline: ${storyline.logline.replace('LOGLINE: ', '')}
+Synopsis: ${storyline.synopsis.replace('SYNOPSIS: ', '')}
+
+🎭 PLOT OUTLINE:
+${storyline.plotOutline}
+
+👤 CHARACTER ARC:
+${storyline.characterArc}
+
+💭 THEMES:
+${storyline.thematicElements}
+
+ VISUAL NARRATIVE:
+${storyline.visualNarrative}`;
+  
   const arcBase = analysis.storyArc ? `\n🎬 STORY ARC: ${analysis.storyArc}` : '';
   const motivationBase = analysis.characterMotivation ? `\n💭 CHARACTER MOTIVATION: ${analysis.characterMotivation}` : '';
   const emotionBase = analysis.emotionalJourney ? `\n❤️ EMOTIONAL JOURNEY: ${analysis.emotionalJourney}` : '';
-  const toneBase = analysis.narrativeTone ? `\n🎭 NARRATIVE TONE: ${analysis.narrativeTone}` : '';
+  const toneBase = analysis.narrativeTone ? `\n NARRATIVE TONE: ${analysis.narrativeTone}` : '';
   const backstoryBase = analysis.backstory ? `\n📚 BACKSTORY: ${analysis.backstory}` : '';
   
-  const fullBase = visualBase + storyBase + arcBase + motivationBase + emotionBase + toneBase + backstoryBase;
+  const fullBase = visualBase + storylineBlock + arcBase + motivationBase + emotionBase + toneBase + backstoryBase;
 
   const prompts = selectedModels.map(mid => buildModelSpecificPrompt(mid, fullBase, analysis));
 
@@ -1442,49 +1609,49 @@ function buildModelSpecificPrompt(modelId, baseSubject, analysis) {
     'removebg': '\nBackground removal\nClean edges',
     'upscale': '\n4x upscaling\nDetail enhancement',
     'inpaint': '\nSelective editing\nSeamless blending',
-    'sora': '\nStyle: photorealistic cinematic\nDuration: 10s\nAspect: 16:9\nMotion: fluid and natural\nTemporal consistency: high\nNarrative coherence: high',
-    'sora2': '\nEnhanced physics simulation\n4K output\nMulti-shot coherence\nAdvanced motion control\nStory continuity: maintained',
-    'runway': '\nCamera control enabled\nMotion brush active\nGen-4.5 alpha quality\nNatural physics\nNarrative pacing: cinematic',
-    'runway3': '\nGen-3 Alpha mode\nEnhanced temporal consistency\nCamera control enabled\nMotion intensity: medium-high\nCharacter continuity: high',
-    'kling': '\nMode: Professional\nDuration: 10s\nCamera control enabled\nMotion amplitude: medium\nQuality: 1080p cinematic\nEmotional expression: high fidelity',
-    'kling2': '\nPro mode enabled\nEnhanced realism\nDuration: 10s\nHigh motion fidelity\nCharacter performance: nuanced',
-    'veo': '\nCinematic quality\nNatural motion\nCoherent scene progression\n1080p/4K output\nStory-driven narrative',
-    'veo2': '\nVeo 2 cinematic pipeline\nEnhanced physics\n4K resolution\nNatural lighting simulation\nNarrative arc support',
-    'seedance': '\nSeedance cinematic mode\nHigh motion fidelity\nAspect ratio 16:9\nCharacter-driven storytelling',
-    'wan': '\nWAN 2.6 cinematic pipeline\nChinese cinema aesthetic support\nHigh-res output\nEmotional narrative support',
-    'wan2': '\nWAN 2.2 cinematic pipeline\nHigh-res output\nNarrative coherence',
-    'luma': '\nLuma Ray 3 cinematic mode\nKeyframe: start with subject\nQuality: ultra-high\nDuration: 5s loop\nStory beat: key moment',
-    'luma2': '\nLuma cinematic mode\nKeyframe: start with subject\nQuality: high\nDuration: 5s loop',
-    'pika': '\nMotion intensity: 5\nNegative: blurry, low quality\nEmotional storytelling enabled',
-    'hailuo': '\nHailuo cinematic mode\nEnhanced character consistency\nProfessional quality\nNarrative performance: high',
-    'haiper': '\nHaiper professional mode\nHigh detail\nCharacter-driven motion',
-    'mochi': '\nMochi 1 open-source model\nHigh-quality motion\n10B parameter model\nNatural physics\nEmotional authenticity',
-    'hunyuan': '\nHunyuan 13B+ model\nProfessional grade\nEnhanced realism\nCharacter depth',
-    'ltx': '\nLTX-2 22B model\nHigh-resolution output\nProfessional cinematic quality\nNarrative flow',
-    'vidu': '\nVidu Q2 mode\nEnhanced temporal consistency\nProfessional quality\nStory continuity',
-    'minimax': '\nMinimax professional mode\nHigh detail\nCamera control\nNatural motion physics\nEmotional range',
-    'stable': '\nSVD open-source model\nCustomizable parameters\nHigh flexibility\nNarrative control',
-    'moonvalley': '\nMoonvalley cinematic mode\nArtistic style support\nEnhanced creativity\nStory-driven visuals',
-    'cogvideo': '\nCogVideo model\nOpen-source\nHigh-quality generation\nResearch-grade\nNarrative understanding',
-    'invideo': '\nInVideo AI mode\nTemplate-based\nQuick generation\nMarketing optimized\nStory templates',
-    'fliki': '\nFliki mode\nVoiceover integration\nQuick turnaround\nSocial media optimized\nNarration-ready',
-    'pictory': '\nPictory mode\nText-to-video\nAutomated editing\nContent marketing\nScript-to-screen',
-    'synthesia': '\nSynthesia AI avatar mode\nProfessional presentation\nMulti-language support\nCharacter performance',
-    'heygen': '\nHeyGen avatar mode\nNatural lip-sync\nProfessional quality\nBusiness presentations\nEmotional delivery',
-    'did': '\nD-ID talking head mode\nAI avatar\nNatural expressions\nCharacter animation',
-    'colossyan': '\nColossyan AI actor mode\nCorporate training\nProfessional quality\nMulti-avatar\nCharacter-driven',
-    'elai': '\nElai.io mode\nAI presenter\nProfessional output\nEducational content\nNarrative delivery',
-    'deepbrain': '\nDeepBrain AI mode\nAdvanced algorithms\nMultilingual voiceovers\nCharacter depth',
-    'flexclip': '\nFlexClip mode\nEasy editing\nQuick generation\nSocial media\nStory templates',
-    'veed': '\nVEED.io mode\nAI-powered editing\nQuick turnaround\nNarrative pacing',
-    'kapwing': '\nKapwing mode\nCollaborative editing\nSocial media optimized\nStory-driven edits',
-    'domo': '\nDomoAI mode\nAnime style support\nArtistic generation\nCharacter animation',
-    'gaga': '\nGaga AI mode\nMusic video generation\nEnhanced creativity\nNarrative music sync',
-    'freebeat': '\nfreebeat.ai integrated studio\nMusic sync\nProfessional production\nStory-music integration',
-    'magic': '\nMagicTime mode\nTime-lapse learning\nPhysics-accurate\nMetamorphic capabilities\nStory progression',
-    'phenaki': '\nPhenaki mode\nVariable length video\nStory-driven\nNarrative focused\nLong-form storytelling',
-    'imagen': '\nGoogle Imagen Video\nHigh fidelity\nProfessional quality\nResearch-grade\nNarrative coherence',
-    'makeavideo': '\nMeta Make-A-Video\nHigh quality\nNatural motion\nProfessional output\nStory visualization',
+    'sora': '\nStyle: photorealistic cinematic\nDuration: 10s\nAspect: 16:9\nMotion: fluid and natural\nTemporal consistency: high\nNarrative coherence: high\nStory-driven: enabled',
+    'sora2': '\nEnhanced physics simulation\n4K output\nMulti-shot coherence\nAdvanced motion control\nStory continuity: maintained\nPlot-aware generation',
+    'runway': '\nCamera control enabled\nMotion brush active\nGen-4.5 alpha quality\nNatural physics\nNarrative pacing: cinematic\nStory structure: supported',
+    'runway3': '\nGen-3 Alpha mode\nEnhanced temporal consistency\nCamera control enabled\nMotion intensity: medium-high\nCharacter continuity: high\nPlot coherence: enabled',
+    'kling': '\nMode: Professional\nDuration: 10s\nCamera control enabled\nMotion amplitude: medium\nQuality: 1080p cinematic\nEmotional expression: high fidelity\nStory mode: active',
+    'kling2': '\nPro mode enabled\nEnhanced realism\nDuration: 10s\nHigh motion fidelity\nCharacter performance: nuanced\nNarrative depth: enhanced',
+    'veo': '\nCinematic quality\nNatural motion\nCoherent scene progression\n1080p/4K output\nStory-driven narrative\nPlot structure: supported',
+    'veo2': '\nVeo 2 cinematic pipeline\nEnhanced physics\n4K resolution\nNatural lighting simulation\nNarrative arc support\nStoryline integration: enabled',
+    'seedance': '\nSeedance cinematic mode\nHigh motion fidelity\nAspect ratio 16:9\nCharacter-driven storytelling\nPlot awareness: active',
+    'wan': '\nWAN 2.6 cinematic pipeline\nChinese cinema aesthetic support\nHigh-res output\nEmotional narrative support\nStory structure: enabled',
+    'wan2': '\nWAN 2.2 cinematic pipeline\nHigh-res output\nNarrative coherence\nPlot-driven generation',
+    'luma': '\nLuma Ray 3 cinematic mode\nKeyframe: start with subject\nQuality: ultra-high\nDuration: 5s loop\nStory beat: key moment\nNarrative flow: maintained',
+    'luma2': '\nLuma cinematic mode\nKeyframe: start with subject\nQuality: high\nDuration: 5s loop\nStory continuity: enabled',
+    'pika': '\nMotion intensity: 5\nNegative: blurry, low quality\nEmotional storytelling enabled\nPlot coherence: active',
+    'hailuo': '\nHailuo cinematic mode\nEnhanced character consistency\nProfessional quality\nNarrative performance: high\nStory-driven: enabled',
+    'haiper': '\nHaiper professional mode\nHigh detail\nCharacter-driven motion\nNarrative support: active',
+    'mochi': '\nMochi 1 open-source model\nHigh-quality motion\n10B parameter model\nNatural physics\nEmotional authenticity\nStory mode: enabled',
+    'hunyuan': '\nHunyuan 13B+ model\nProfessional grade\nEnhanced realism\nCharacter depth\nNarrative coherence: high',
+    'ltx': '\nLTX-2 22B model\nHigh-resolution output\nProfessional cinematic quality\nNarrative flow\nPlot structure: supported',
+    'vidu': '\nVidu Q2 mode\nEnhanced temporal consistency\nProfessional quality\nStory continuity\nNarrative depth: enhanced',
+    'minimax': '\nMinimax professional mode\nHigh detail\nCamera control\nNatural motion physics\nEmotional range\nStory-driven: active',
+    'stable': '\nSVD open-source model\nCustomizable parameters\nHigh flexibility\nNarrative control\nPlot awareness: enabled',
+    'moonvalley': '\nMoonvalley cinematic mode\nArtistic style support\nEnhanced creativity\nStory-driven visuals\nNarrative depth: active',
+    'cogvideo': '\nCogVideo model\nOpen-source\nHigh-quality generation\nResearch-grade\nNarrative understanding\nStory mode: enabled',
+    'invideo': '\nInVideo AI mode\nTemplate-based\nQuick generation\nMarketing optimized\nStory templates\nPlot structure: supported',
+    'fliki': '\nFliki mode\nVoiceover integration\nQuick turnaround\nSocial media optimized\nNarration-ready\nStory-driven: active',
+    'pictory': '\nPictory mode\nText-to-video\nAutomated editing\nContent marketing\nScript-to-screen\nPlot coherence: enabled',
+    'synthesia': '\nSynthesia AI avatar mode\nProfessional presentation\nMulti-language support\nCharacter performance\nStory delivery: enhanced',
+    'heygen': '\nHeyGen avatar mode\nNatural lip-sync\nProfessional quality\nBusiness presentations\nEmotional delivery\nNarrative support: active',
+    'did': '\nD-ID talking head mode\nAI avatar\nNatural expressions\nCharacter animation\nStory mode: enabled',
+    'colossyan': '\nColossyan AI actor mode\nCorporate training\nProfessional quality\nMulti-avatar\nCharacter-driven\nPlot structure: supported',
+    'elai': '\nElai.io mode\nAI presenter\nProfessional output\nEducational content\nNarrative delivery\nStory-driven: active',
+    'deepbrain': '\nDeepBrain AI mode\nAdvanced algorithms\nMultilingual voiceovers\nCharacter depth\nNarrative coherence: high',
+    'flexclip': '\nFlexClip mode\nEasy editing\nQuick generation\nSocial media\nStory templates\nPlot support: enabled',
+    'veed': '\nVEED.io mode\nAI-powered editing\nQuick turnaround\nNarrative pacing\nStory structure: active',
+    'kapwing': '\nKapwing mode\nCollaborative editing\nSocial media optimized\nStory-driven edits\nPlot coherence: enabled',
+    'domo': '\nDomoAI mode\nAnime style support\nArtistic generation\nCharacter animation\nStory mode: active',
+    'gaga': '\nGaga AI mode\nMusic video generation\nEnhanced creativity\nNarrative music sync\nStory-driven: enabled',
+    'freebeat': '\nfreebeat.ai integrated studio\nMusic sync\nProfessional production\nStory-music integration\nPlot structure: supported',
+    'magic': '\nMagicTime mode\nTime-lapse learning\nPhysics-accurate\nMetamorphic capabilities\nStory progression\nNarrative flow: maintained',
+    'phenaki': '\nPhenaki mode\nVariable length video\nStory-driven\nNarrative focused\nLong-form storytelling\nPlot depth: enhanced',
+    'imagen': '\nGoogle Imagen Video\nHigh fidelity\nProfessional quality\nResearch-grade\nNarrative coherence\nStory mode: active',
+    'makeavideo': '\nMeta Make-A-Video\nHigh quality\nNatural motion\nProfessional output\nStory visualization\nPlot support: enabled',
   };
 
   return `${header}\n${baseSubject}${tuning[modelId] || suffix}`;
@@ -1518,12 +1685,12 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   if (character) fullPrompt += `\n\n👤 CHARACTER: ${character}`;
   if (action) fullPrompt += `\n🎬 ACTIONS & PERFORMANCE: ${action}`;
   if (story) fullPrompt += `\n\n📖 STORY: ${story}`;
-  if (arc) fullPrompt += `\n🎬 STORY ARC: ${arc}`;
+  if (arc) fullPrompt += `\n STORY ARC: ${arc}`;
   if (emotion) fullPrompt += `\n❤️ EMOTIONAL JOURNEY: ${emotion}`;
   fullPrompt += `\n\n🎨 VISUAL STYLE: ${styleStr}`;
-  fullPrompt += `\n📷 CAMERA: ${cameraStr}`;
+  fullPrompt += `\n CAMERA: ${cameraStr}`;
   fullPrompt += `\n💡 LIGHTING: ${lightStr}`;
-  fullPrompt += `\n MOOD: ${moodStr}`;
+  fullPrompt += `\n🎭 MOOD: ${moodStr}`;
   fullPrompt += `\n\nUltra-detailed, 4K, professional color grading, shallow depth of field, filmic look, cinematic composition, masterpiece quality.`;
 
   const promptCard = document.getElementById('genPromptCard');
@@ -1572,7 +1739,7 @@ function downloadPrompt(id) {
   const blob = new Blob([text], {type:'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `promptforge_${Date.now()}.txt`;
+  a.download = `promptforge_storyline_${Date.now()}.txt`;
   a.click();
 }
 
